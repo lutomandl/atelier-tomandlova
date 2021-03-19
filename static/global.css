@@ -1,9 +1,11 @@
-body {
+html, body {
+	background-color: #B68981;
 	margin: 0;
-	font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	font-family: Didot, serif;
 	font-size: 14px;
 	line-height: 1.5;
-	color: #333;
+	color: #585858;
+	scroll-behavior: smooth;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -13,21 +15,39 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-	font-size: 2em;
+	font-size: 48px;
 }
 
 a {
 	color: inherit;
 }
 
-code {
-	font-family: menlo, inconsolata, monospace;
-	font-size: calc(1em - 2px);
-	color: #555;
-	background-color: #f0f0f0;
-	padding: 0.2em 0.4em;
+button {
+	background-color: #B68981;
+	border: none;
 	border-radius: 2px;
+	outline: none;
+	padding-left: 20px;
+	padding-right: 20px;
+	min-width: 150px;
+	max-width: max-content;
+	height: 60px;
+	font-size: 18px;
+	font-family: Didot, sarif;
+	color: #E5E5E5;
+	z-index: 2;
+} 
+
+button.inverted {
+	color: #585858;
+	background-color: #E5CDC6;
 }
+
+button:hover {
+	text-decoration: underline;
+	cursor: pointer;
+} 
+
 
 @media (min-width: 400px) {
 	body {
