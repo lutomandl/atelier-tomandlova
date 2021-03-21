@@ -1,0 +1,46 @@
+<style>
+    div.icons {
+        display: flex;
+        justify-content: space-between;
+        margin: 70px 10% 30px 10%;
+    }
+
+    div.icon {
+        width: 30%;
+        display: block;
+    }
+
+    div.icon > img {
+        max-width: 200px;
+        margin-bottom: 28px;
+    }
+
+    img.half-circle {
+        max-width: 40vw;
+        left:20vw;
+        bottom: -100px;
+    }
+</style>
+
+<section id="our-work" class="light">
+	<h1>Naši práci charakterizuje...</h1>
+	<div class="icons">
+		<div class="icon">
+			<img alt="design" src="design.svg">
+			<h2>Jedinečný design</h2>
+			<p>Komfortní oděv vzniká promyšleným výběrem tkaniny, individuálně voleným tvarem, hrou barev a kompozicí výtvarného detailu.</p>
+		</div>
+		<div class="icon">
+			<img alt="fabric" src="fabric.svg">
+			<h2>Kvalitní materiály</h2>
+			<p>Podstatnou složkou je kvalitní přírodní materiál, jeho krása, jedinečnost a specifické vlastnosti, blahodárné pro lidské tělo.</p>
+		</div>
+		<div class="icon">
+			<img alt="sewing machine" src="sewing-machine.svg">
+			<h2>Ruční výroba</h2>
+			<p>Naše oděvy by nebyly, jaké jsou, bez mistrovského krejčovského zpracování.</p>
+		</div>
+	</div>
+	<a href="o-nas"><button>Zjistit více</button></a>
+	<img class="graphics half-circle" alt="half-circle" src="half-circle.svg">
+</section>

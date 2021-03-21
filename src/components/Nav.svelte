@@ -6,9 +6,8 @@
 	nav {
 		height: 100px;
 		font-weight: 300;
-		padding: 0em 3em;
-		position: static;
-		top: 0;
+		padding: 0 48px;
+		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
@@ -21,13 +20,6 @@
 		text-align: right;
 		display: flex;
 	}
-
-	/* clearfix*/
-	/*ul::after {
-		content: '';
-		display: block;
-		clear: both;
-	} */
 
 	li {
 		display: block;

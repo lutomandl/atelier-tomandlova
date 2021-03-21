@@ -1,27 +1,63 @@
 html, body {
-	background-color: #B68981;
 	margin: 0;
+	padding: 0;
 	font-family: Didot, serif;
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 1.5;
-	color: #585858;
 	scroll-behavior: smooth;
+	color: #585858;
 }
 
+/* sections */
+section {
+	background-color: #B68981;
+	padding: 70px 100px;
+	position: relative;
+	align-items: center;
+	text-align: center;
+}
+
+section.light {
+	background-color: #E5CDC6;
+}
+
+section.top {
+	margin-top: -100px;
+}
+
+/* simple tags */
 h1, h2, h3, h4, h5, h6 {
 	margin: 0 0 0.5em 0;
 	font-weight: 400;
 	line-height: 1.2;
+	z-index: 3;
+	position: relative;
 }
 
 h1 {
 	font-size: 48px;
 }
 
-a {
-	color: inherit;
+h2 {
+	font-size: 24px;
 }
 
+p, img {
+	z-index: 3;
+	position: relative;
+}
+
+img.graphics {
+	position: absolute;
+	z-index: 2;
+}
+
+a {
+	color: inherit;
+	text-decoration: underline;
+}
+
+/* buttons */
 button {
 	background-color: #B68981;
 	border: none;
@@ -35,7 +71,8 @@ button {
 	font-size: 18px;
 	font-family: Didot, sarif;
 	color: #E5E5E5;
-	z-index: 2;
+	z-index: 3;
+	position: relative;
 } 
 
 button.inverted {
@@ -48,9 +85,23 @@ button:hover {
 	cursor: pointer;
 } 
 
-
-@media (min-width: 400px) {
-	body {
-		font-size: 16px;
+/* media queries */
+@media (max-width: 1024px) {
+	h1 {
+		font-size: 38px;
 	}
-}
+
+	section {
+		padding: 70px 50px;
+	}
+} 
+
+@media (max-width: 600px) {
+	p {
+		font-size: 14px;
+	}
+
+	section {
+		padding: 70px 15px;
+	}
+} 

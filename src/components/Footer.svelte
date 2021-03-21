@@ -1,6 +1,11 @@
+<script>
+
+import Kontakt from "../routes/kontakt.svelte";
+
+</script>
 <style>
     footer {
-        background-color: #E5CDC6;
+        
         width: 100vw;
         display: flex;
         justify-content: center;
@@ -8,7 +13,7 @@
         position: relative;
     }
 
-    div.wrapper {
+    section.light {
         display: grid;
         grid-template-columns: 200px 200px;
         column-gap: 20px;
@@ -38,7 +43,7 @@
 
 
 <footer>
-    <div class="wrapper">
+    <section class="light">
         <div class="column">
             <img alt="at-logo" src="logo.png">
         </div>
@@ -49,8 +54,8 @@
             </p>
             <a href="mailto:info@ateliertomandlova.cz"><p>info@ateliertomandlova.cz</p></a>
             <p>Po - Pá:&ensp;9 - 16 hod</p>
-            <button>Kontaktujte nás</button>
+            <a href="kontakt"><button>Kontaktujte nás</button></a>
         </div>
-    </div>
+    </section>
     <img class="small-circle" alt="circle" src="transparent-small-circle.svg">
 </footer>
