@@ -2,16 +2,18 @@
     div.icons {
         display: flex;
         justify-content: space-between;
-        margin: 70px 10% 30px 10%;
+        margin: 70px 0 30px 0 ;
     }
 
     div.icon {
-        width: 30%;
+        width: 350px;
         display: block;
+        margin: 0 24px;
     }
 
     div.icon > img {
-        max-width: 200px;
+        width: 200px;
+        height: 200px;
         margin-bottom: 28px;
     }
 
@@ -19,6 +21,30 @@
         max-width: 40vw;
         left:20vw;
         bottom: -100px;
+    }
+
+    @media (max-width: 1024px) {
+        div.icons {
+            margin: 70px 0px 30px 0px;
+        }
+
+        div.icon > img {
+            width: 150px;
+            height: 150px;
+        }
+    }
+
+    @media (max-width: 750px) {
+        div.icons {
+            flex-direction: column;
+            align-items: center;
+            margin-top: 24px;
+        }
+
+        div.icon {
+            margin-top: 24px;
+            width: fit-content;
+        }
     }
 </style>
 
