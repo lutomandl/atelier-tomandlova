@@ -1,4 +1,6 @@
 <script>
+	import MobileMenu from "./MobileMenu.svelte";
+	
 	export let segment;
 </script>
 
@@ -53,6 +55,23 @@
 		display: block;
 	}
 
+	@media (max-width: 850px) {
+		ul {
+			display: none;
+		}
+
+		nav {
+			justify-content: space-between;
+			padding: 0 15px;
+		}
+	}
+
+	@media (min-width: 850px) {
+		div.mobileMenu {
+			display: none;
+		}
+	}
+
 </style>
 
 <nav>
@@ -65,5 +84,10 @@
 		<li><a aria-current="{segment === 'materialy' ? 'page' : undefined}" href="materialy">péče o materiály</a></li>
 		<li><a aria-current="{segment === 'kontakt' ? 'page' : undefined}" href="kontakt">kontakt</a></li>
 	</ul>
+	
+	<div class="mobileMenu">
+		<MobileMenu />
+	</div>
+	
 	<a href="."><img class="logo" alt="logo-at" src="logo.png"/></a>
 </nav>
