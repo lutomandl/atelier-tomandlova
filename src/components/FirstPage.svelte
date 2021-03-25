@@ -87,7 +87,9 @@
         }
 
         img.line {
-            display: none;
+            width: 300px;
+            bottom: -50px;
+            right: 0;
         }
 
         img.circle {

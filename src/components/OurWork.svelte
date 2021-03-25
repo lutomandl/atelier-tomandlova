@@ -18,9 +18,9 @@
     }
 
     img.half-circle {
-        max-width: 40vw;
-        left:20vw;
+        width: 600px;
         bottom: -100px;
+        left: 400px;
     }
 
     @media (max-width: 1024px) {
@@ -31,6 +31,11 @@
         div.icon > img {
             width: 150px;
             height: 150px;
+        }
+
+        img.half-circle {
+            left: 0
+
         }
     }
 
@@ -44,6 +49,16 @@
         div.icon {
             margin-top: 24px;
             width: fit-content;
+        }
+
+        img.half-circle {
+            width: 350px;
+        }
+    }
+
+    @media (max-width: 450px) {
+        img.half-circle {
+            width: 290px;
         }
     }
 </style>

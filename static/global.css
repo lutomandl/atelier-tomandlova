@@ -15,6 +15,7 @@ section {
 	position: relative;
 	align-items: center;
 	text-align: center;
+	overflow: visible;
 }
 
 section.light {
