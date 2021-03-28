@@ -1,23 +1,33 @@
-<script> 
-    export let compact;
+<script>
+    import posts from "data/_posts.js"
+    import Post from "../components/Post.svelte"
 
-    import dress from "images/cervene-bavlnene-saty.jpg"
+    export let compact=true;
 </script>
 
 <style>
-	img {
-		max-width: 300px;
-		margin-bottom: 24px;
-	}
+    div.container {
+        display: flex;
+        justify-content: space-around;
+        margin: 70px 0 40px 0;
+    }
+
+    @media (max-width: 1000px) {
+        div.container {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
 </style>
 
 {#if compact}
     <section id="news">
         <h1>Aktuálně</h1>
-        <img alt="Červené bavlněné šaty" src="{dress}">
-        <h2>Vzhledem k aktuálním vládním opatřením máme zavřeno a nemůžeme cokoliv plánovat.<br>
-            Až to bude jen trochu možné, dáme vám vědět.<br>
-            Pokud potřebujete individuální konzultaci, neváhejte nás <a href="kontakt">kontaktovat</a>.
-        </h2>
+        <div class="container">
+            {#each posts as post}
+                <Post {post} />
+            {/each}
+        </div>
+        <a href="aktuality"><button class="inverted">Více aktualit</button></a>
     </section>
 {/if}

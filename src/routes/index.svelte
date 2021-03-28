@@ -12,4 +12,4 @@
 
 <OurWork />
 
-<News compact={true} />
+<News />

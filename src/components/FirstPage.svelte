@@ -1,7 +1,3 @@
-<script>
-    import suit from "images/rezny_lneny_kostym.jpg"
-</script>
-
 <style>
     section {
 		min-height: calc(100vh - 140px);
@@ -107,7 +103,7 @@
 <section id="first" class="top">
 	<div class="left">
         <img class="graphics line" alt="line" src="linka.svg">
-        <img class="main-photo" alt="Režný lněný kostým" src="{suit}">
+        <img class="main-photo" alt="Režný lněný kostým" src="rezny_lneny_kostym.jpg">
     </div>
     <div class="right">
         <img class="graphics circle" alt="circle" src="circle.svg">
