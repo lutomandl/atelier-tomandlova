@@ -1,11 +1,20 @@
 <script>
+    export let full;
+
     import posts from "data/_posts.js"
     import Post from "../components/Post.svelte"
-
-    export let compact=true;
 </script>
 
 <style>
+    section.top > h1 {
+        margin-top: 40px;
+        text-align: left;
+    }
+
+    section.top > a > button {
+        display: none;
+    }
+
     div.container {
         display: flex;
         justify-content: space-around;
@@ -20,9 +29,8 @@
     }
 </style>
 
-{#if compact}
-    <section id="news">
-        <h1>Aktuálně</h1>
+    <section class={full ? "top" : undefined} id="news">
+        <h1>Aktulity</h1>
         <div class="container">
             {#each posts as post}
                 <Post {post} />
@@ -30,4 +38,5 @@
         </div>
         <a href="aktuality"><button class="inverted">Více aktualit</button></a>
     </section>
-{/if}
+
+
