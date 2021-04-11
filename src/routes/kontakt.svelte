@@ -4,37 +4,91 @@
 	let form = {
 		name: '',
 		email: '',
-		phone: '',
 		message: ''
 	}
 	let validationError = null
   	let formSuccess = false
 
-	function handleFormSubmit(event) {}
+	const EMAIL_MAX_LENGTH = 128;
+	const MESSAGE_MAX_LENGTH = 512;
+	const NAME_MAX_LENGTH = 64;
 
-	async function uploadFormData(captchaResponse) {}
+	function validateContactForm() {
+  		const { name, email, message } = form;
 
-	function clearValidationError() {}
+  		if (!name || name.length > NAME_MAX_LENGTH) {
+    	return "Vyplňte vaše jméno.";
+		}
+
+		if (!email || email.length > EMAIL_MAX_LENGTH) {
+			return "Vyplňte platný email.";
+		}
+
+		if (!message || message.length > MESSAGE_MAX_LENGTH) {
+			return "Zpráva chybí nebo je příliš dlouhá.";
+		}
+	}
+
+	function clearFeedback() {
+		validationError = null
+		formSuccess = false
+	}
+	
+	function handleFormSubmit(event) {
+		event.preventDefault()
+
+		validationError = validateContactForm()
+		if (!validationError) {
+			window.grecaptcha.execute();
+		}
+	}
+
+	async function uploadFormData(captchaResponse) {
+		try {
+			const response = await fetch('http://localhost:8001/api/contact-form', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({...form, captchaResponse})
+			})
+		 	if (response.ok) {
+				formSuccess = true
+				form.name = null
+				form.email = null
+				form.message = null
+			} else {
+				throw new Error('Request Failed.')
+			}
+		} catch {
+			alert('Zprávu se nepodařilo odeslat. Zkontrolujte prosím formulář a zkuste to znovu.')
+		}
+	}
 
 	onMount(() => {
 		window.grecaptcha.ready(() => {
 			window.grecaptcha.render('recaptcha', {
-				sitekey: '6LeYsd4ZAAAAAJl8KFvFT4ZVsobOLzV-AtcEyLNU',
+				sitekey: '6LdB4aIaAAAAAP-ZOip_05n3v1l3PzfYSps40fqd',
 				size: 'invisible',
 				callback: uploadFormData
-			});
+			})
 		})
-	});
+	})
 </script>
 
 <style> 
 	h1 {
 		margin-top: 40px;
+		margin-left: 6px;
 	}
 
 	h2 {
 		position: relative;
-		bottom: -70px;
+		bottom: -50px;
+		text-align: center;
+		font-size: 35px;
+	}
+	
+	p {
+		margin: 6px;
 	}
 
 	iframe {
@@ -52,7 +106,8 @@
 
 	div.container {
 		display: flex;
-		justify-content: flex-start;
+		justify-content: space-around;
+		align-items: center;
 	}
 
 	form {
@@ -63,12 +118,24 @@
 	}
 
 	label {
-		margin: 24px 0 12px 0 ;
+		margin: 24px 0 12px 6px ;
 		font-size: 18px;
 	}
 	
 	button {
-		margin: 24px 0 12px 0 ;
+		margin: 30px 0 12px 0 ;
+		max-width: unset;
+		width: 100%;
+	}
+
+	button:hover {
+		text-decoration: none;
+		border: 1px solid #58585880;
+	}
+
+	button:disabled {
+		background-color: #8a6862;
+		color: #999999
 	}
 
 	textarea {
@@ -77,16 +144,49 @@
 		height: 150px;
 		background-color: #B68981;
 		border: none;
-		border-radius: 2px;
+		border-radius: 5px;
 		padding: 12px;
 		color: #E5E5E5;
 		font-size: 16px;
 		resize: vertical;
 	}
 
+	textarea:focus {
+		border: 1px solid #58585880;
+		margin: -1px;
+	}
+
+	div.feedback {
+		width: 100%;
+		text-align: center;
+	}
+
+	p.validation-error {
+		color: #920000;
+		margin-top: 12px ;
+		margin-bottom: -18px;
+	}
+
+	p.success {
+		color: #024700;
+		margin-top: 12px ;
+		margin-bottom: -18px;
+	}
+
 	div.contact {
-		margin-left: 100px;
+		margin-left: 48px;
 		font-size: 20px;
+		text-align: right;
+	}
+
+	div.contact-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	div.contact-item > img {
+		margin-right: 40px;
 	}
 
 	@media (max-width: 850px) {
@@ -104,37 +204,58 @@
 	<title>Kontakt</title>
 </svelte:head>
 
-<section class="top light">
-	<h1>Chcete více informací?</h1>
+<section id="kontakt" class="top light">
 	<div class="container">
 		<div class="form">
+			<h1>Chcete více informací?</h1>
 			<p>Pokud máte dotaz ohledně našich služeb nebo potřebujete poradit, neváhejte se na nás obrátit.</p>
 			<form on:submit={handleFormSubmit}>
-				<label>Jméno</label>
-				<input bind:value={form.name} on:focus={clearValidationError}/>
+				<label for="name">Jméno</label>
+				<input name="name" bind:value={form.name} on:focus={clearFeedback}/>
 			
-				<label>Email</label>
-				<input bind:value={form.email} on:focus={clearValidationError}/>
+				<label for="email">Email</label>
+				<input name="name" bind:value={form.email} on:focus={clearFeedback}/>
 			
-				<label>Zpráva</label>
-				<textarea bind:value={form.message} on:focus={clearValidationError}></textarea>
+				<label for="message">Zpráva</label>
+				<textarea name="message" bind:value={form.message} on:focus={clearFeedback}></textarea>
 			
-				<button type="submit">
-				  Odeslat
+				<div class="feedback">
+					{#if validationError}
+						<p class="validation-error">{validationError}</p>
+					{/if}
+
+					{#if formSuccess}
+						<p class="success">Děkujeme, zpráva byla úspěšně odeslána. Brzy se ozveme zpět.</p>
+					{/if}
+				</div>
+
+				<button disabled={formSuccess} type="submit">
+				  	Odeslat
 				</button>
-			
+
 				<div
 				  id="recaptcha"
 				></div>
-			  </form>
+			</form>
 		</div>
 		<div class="contact">
-			<p>Ateliér Tomandlová<br>
-				Židovská 9<br>
-				Cheb
-			</p>
-			<a href="mailto:info@ateliertomandlova.cz"><p>info@ateliertomandlova.cz</p></a>
-			<p>Po - Pá:&ensp;9 - 16 hod</p>
+			<div class="contact-item">
+				<img alt="map-pin" src="map-pin.svg">
+				<p>
+					Židovská 9, Cheb
+				</p>
+				
+			</div>
+			<div class="contact-item">
+				<img alt="mail" src="mail.svg">
+				<a href="mailto:info@ateliertomandlova.cz"><p>info@ateliertomandlova.cz</p></a>
+				
+			</div>	
+			<div class="contact-item">
+				<img alt="clock" src="clock.svg">
+				<p>Po - Pá:&ensp;10 - 13 hod <br> 14 - 17 hod</p>
+				
+			</div>
 		</div>
 	</div>
 	<h2>Kde nás najedete:</h2>

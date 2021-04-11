@@ -1,11 +1,11 @@
 * {
-	margin: 0;
-	padding: 0;
-	font-family: Didot, serif;
+	font-family: Forum, serif;
 	color: #585858;
 }
 
 html, body {
+	margin: 0;
+	padding: 0;
 	font-size: 16px;
 	line-height: 1.5;
 	scroll-behavior: smooth;
@@ -72,17 +72,22 @@ input {
 	height: 16px;
 	background-color: #B68981;
 	border: none;
-	border-radius: 2px;
+	border-radius: 5px;
 	padding: 12px;
 	color: #E5E5E5;
 	font-size: 16px;
+}
+
+input:focus {
+	border: 1px solid #58585880;
+	margin: -1px;
 }
 
 /* buttons */
 button {
 	background-color: #B68981;
 	border: none;
-	border-radius: 2px;
+	border-radius: 5px;
 	outline: none;
 	padding-left: 20px;
 	padding-right: 20px;
