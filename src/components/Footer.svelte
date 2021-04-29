@@ -1,8 +1,3 @@
-<script>
-
-import Kontakt from "../routes/kontakt.svelte";
-
-</script>
 <style>
     section.light {
         display: flex;
@@ -68,7 +63,7 @@ import Kontakt from "../routes/kontakt.svelte";
                     Cheb
                 </p>
                 <a href="mailto:info@ateliertomandlova.cz"><p>info@ateliertomandlova.cz</p></a>
-                <p>Po - Pá:&ensp;10 - 13 hod<br> &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;14 - 17 hod</p>
+                <p>Po - Pá:&ensp;10 - 13 a 14 - 17 hod</p>
                 <a href="kontakt"><button>Kontaktujte nás</button></a>
             </div>
         </div>
