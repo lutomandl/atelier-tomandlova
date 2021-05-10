@@ -1,3 +1,11 @@
+<script>
+    import {onMount} from "svelte"
+    
+    onMount(() => {
+        console.log('Icons made by https://www.freepik.com from https://www.flaticon.com')
+    })
+</script>
+
 <style>
     div.icons {
         display: flex;
@@ -68,6 +76,7 @@
 	<div class="icons">
 		<div class="icon">
 			<img alt="design" src="design.svg">
+            
 			<h2>Jedinečný design</h2>
 			<p>Komfortní oděv vzniká promyšleným výběrem tkaniny, individuálně voleným tvarem, hrou barev a kompozicí výtvarného detailu.</p>
 		</div>

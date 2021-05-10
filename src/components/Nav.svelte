@@ -80,8 +80,8 @@
 		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
 		     the blog data when we hover over the link or tap it on a touchscreen -->
 		<li><a rel=prefetch aria-current="{segment === 'aktuality' ? 'page' : undefined}" href="aktuality">aktuality</a></li>
-		<li><a aria-current="{segment === 'sluzby' ? 'page' : undefined}" href="sluzby">služby a ceny</a></li>
-		<li><a aria-current="{segment === 'materialy' ? 'page' : undefined}" href="materialy">péče o materiály</a></li>
+		<!-- <li><a aria-current="{segment === 'sluzby' ? 'page' : undefined}" href="sluzby">služby a ceny</a></li>
+		<li><a aria-current="{segment === 'materialy' ? 'page' : undefined}" href="materialy">péče o materiály</a></li> -->
 		<li><a aria-current="{segment === 'kontakt' ? 'page' : undefined}" href="kontakt">kontakt</a></li>
 	</ul>
 	
