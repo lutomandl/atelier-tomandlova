@@ -117,8 +117,8 @@
         <!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
             the blog data when we hover over the link or tap it on a touchscreen -->
         <li><a rel=prefetch href="aktuality" on:click={toggleMenu}>aktuality</a></li>
-        <li><a href="sluzby" on:click={toggleMenu}>služby a ceny</a></li>
-        <li><a href="materialy" on:click={toggleMenu}>péče o materiály</a></li>
+        <!-- <li><a href="sluzby" on:click={toggleMenu}>služby a ceny</a></li>
+        <li><a href="materialy" on:click={toggleMenu}>péče o materiály</a></li> -->
         <li><a href="kontakt" on:click={toggleMenu}>kontakt</a></li>
     </ul>
 </div>
