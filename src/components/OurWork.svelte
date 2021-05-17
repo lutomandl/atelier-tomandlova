@@ -75,22 +75,22 @@
 	<h1>Naši práci charakterizuje...</h1>
 	<div class="icons">
 		<div class="icon">
-			<img alt="design" src="design.svg">
+			<img alt="design" src="graphics/design.svg">
             
 			<h2>Jedinečný design</h2>
 			<p>Komfortní oděv vzniká promyšleným výběrem tkaniny, individuálně voleným tvarem, hrou barev a kompozicí výtvarného detailu.</p>
 		</div>
 		<div class="icon">
-			<img alt="fabric" src="fabric.svg">
+			<img alt="fabric" src="graphics/fabric.svg">
 			<h2>Kvalitní materiály</h2>
 			<p>Podstatnou složkou je kvalitní přírodní materiál, jeho krása, jedinečnost a specifické vlastnosti, blahodárné pro lidské tělo.</p>
 		</div>
 		<div class="icon">
-			<img alt="sewing machine" src="sewing-machine.svg">
+			<img alt="sewing machine" src="graphics/sewing-machine.svg">
 			<h2>Ruční výroba</h2>
 			<p>Naše oděvy by nebyly, jaké jsou, bez mistrovského krejčovského zpracování.</p>
 		</div>
 	</div>
 	<a href="o-nas"><button>Zjistit více</button></a>
-	<img class="graphics half-circle" alt="half-circle" src="half-circle.svg">
+	<img class="graphics half-circle" alt="half-circle" src="graphics/half-circle.svg">
 </section>

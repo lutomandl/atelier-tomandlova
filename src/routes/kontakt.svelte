@@ -240,19 +240,19 @@
 		</div>
 		<div class="contact">
 			<div class="contact-item">
-				<img alt="map-pin" src="map-pin.svg">
+				<img alt="map-pin" src="graphics/map-pin.svg">
 				<p>
 					Židovská 9, Cheb
 				</p>
 				
 			</div>
 			<div class="contact-item">
-				<img alt="mail" src="mail.svg">
+				<img alt="mail" src="graphics/mail.svg">
 				<a href="mailto:info@ateliertomandlova.cz"><p>info@ateliertomandlova.cz</p></a>
 				
 			</div>	
 			<div class="contact-item">
-				<img alt="clock" src="clock.svg">
+				<img alt="clock" src="graphics/clock.svg">
 				<p>Po - Pá:&ensp;10 - 13 hod <br> 14 - 17 hod</p>
 				
 			</div>

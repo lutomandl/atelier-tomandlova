@@ -105,13 +105,13 @@
   
 <div class="burger-button" class:menuOpened on:click={toggleMenu}>
     {#if menuOpened}
-        <img src="x.svg" alt="Menu" />
+        <img src="graphics/x.svg" alt="x" />
     {:else}
-        <img src="menu.svg" alt="Menu" />
+        <img src="graphics/menu.svg" alt="Menu" />
     {/if}
 </div>
 <div class="menu-tab" class:menuOpened>
-    <a href="#first" on:click={toggleMenu}><img class="logo" class:menuOpened alt="logo-at" src="logo.png"/></a>
+    <a href="#first" on:click={toggleMenu}><img class="logo" class:menuOpened alt="logo-at" src="graphics/logo.png"/></a>
     <ul>
         <li><a href="o-nas" on:click={toggleMenu}>o nás</a></li>
         <!-- for the blog link, we're using rel=prefetch so that Sapper prefetches

@@ -89,5 +89,5 @@
 		<MobileMenu />
 	</div>
 	
-	<a href="."><img class="logo" alt="logo-at" src="logo.png"/></a>
+	<a href="."><img class="logo" alt="logo-at" src="graphics/logo.png"/></a>
 </nav>

@@ -8,31 +8,59 @@
 // underscore tells Sapper not to do that.
 
 const posts = [
-	{
-		title: 'Jaro je tu',
-		slug: 'mame-zavreno',
-		postedOn: '2021-03-28',
-		image: 'fialkove dlouhe saty.jpg',
-		html: 'Je to mega dobrý, že je teplo.'
-	},
     {
-		title: 'Zavřeno kvůli opatřením',
-		slug: 'mame-zavreno',
-		postedOn: '2021-03-15',
-		image: 'buretove saty - vlci mak.jpg',
-		html: 'Kvůli aktuálním opatřením máme zevřeno. Ze stejného důvodu není možné cokoliv plánovat. Těšíme se, že na vás snad již brzy. Mezitím můžete sledovat náš nový web, kde budeme přidávat alespoň vzpomínky na lepší časy.'
-	},
-	{
-		title: 'Spouštíme nový web',
-		slug: 'novy-web',
-		postedOn: '2021-03-01',
-		image: 'cervene-bavlnene-saty.jpg',
-		html: 'Jak můžete vidět, máme nové stránky. Postupně je budeme rozšiřovat o další části, připravujeme například část, kde se dozvíte něco více o přírodních materiálech, se kterými pracujeme. Postupně budeme také přidávat do sekce aktuality připravované akce i vzpomínky na akce minulé.'
-	}
-];
+        title: 'Spouštíme nový web',
+        slug: 'novy-web',
+        postedOn: '2021-05-31',
+        images: [
+            'cervene-saty-1.jpg',
+            'cervene-saty-2.jpg',
+            'cervene-saty-3.jpg',
+        ],
+        desc: 'Jak můžete vidět, máme nové stránky. A můžete se těšit na víc.',
+        html: 'Jak můžete vidět, máme nové stránky. Postupně je budeme rozšiřovat o další části, připravujeme například část, kde se dozvíte něco více o přírodních materiálech, se kterými pracujeme. Postupně budeme také přidávat do sekce aktuality připravované akce i vzpomínky na akce minulé.',
+    },
+    {
+        title: 'Otvíráme!',
+        slug: 'otvrirame',
+        postedOn: '2021-05-03',
+        images: ['buretove-saty.jpg'],
+        poster: null,
+        desc: 'Po dlouhé pauze otvíráme obchod a těšíme se, až se s vámi zase uvidíme.',
+        html: 'Po dlouhé pauze otvíráme obchod a těšíme se, až se s vámi zase uvidíme.',
+    },
+    {
+        title: 'Sklo od Lady Vosejpkové',
+        slug: 'sklo-lada',
+        postedOn: '2021-05-01',
+        images: [
+            'lada-1.jpg',
+            'lada-2.jpg',
+            'lada-3.jpg',
+            'lada-4.jpg',
+            'lada-5.jpg',
+            'lada-6.jpg',
+            'lada-7.jpg',
+            'lada-8.jpg',
+            'lada-9.jpg',
+        ],
+        poster: null,
+        desc: 'Podívejte se na krásnou kolekci skla od Lady Vosejpkové.',
+        html: 'Podívejte se na krásnou kolekci skla od Lady Vosejpkové. S Ladou spolupracujeme již dlouhé roky, ale její tvorba nikdy neomrzí.',
+    },
+    {
+        title: 'Létem s mákem 2020',
+        slug: 'letem-s-makem-2020',
+        postedOn: '2021-04-30',
+        images: ['fialkove_1.jpg', 'fialkove_2.jpg'],
+        poster: 'letem_s_makem.pdf',
+        desc: 'Poslední akce proběhla minulé léto v Plzni. Už brzy se ale určitě můžete těšit na další.',
+        html: 'Poslední akce proběhla minulé léto v Plzni. Už brzy se ale určitě můžete těšit na další.',
+    },
+]
 
 posts.forEach(post => {
-	post.html = post.html.replace(/^\t{3}/gm, '');
-});
+    post.html = post.html.replace(/^\t{3}/gm, '')
+})
 
-export default posts;
+export default posts

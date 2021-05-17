@@ -54,8 +54,8 @@
     <section class="light">
         <div class="container">
             <div class="column">
-                <img class="logo" alt="at-logo" src="logo.png">
-                <img class="graphics small-circle" alt="circle" src="transparent-small-circle.svg">
+                <img class="logo" alt="at-logo" src="graphics/logo.png">
+                <img class="graphics small-circle" alt="circle" src="graphics/transparent-small-circle.svg">
             </div>
             <div class="column">
                 <p>Ateliér Tomandlová<br>

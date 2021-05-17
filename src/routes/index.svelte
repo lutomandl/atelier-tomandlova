@@ -1,6 +1,6 @@
 <script>
 	import FirstPage from "../components/FirstPage.svelte"
-	import News from "../components/News.svelte"
+	import Posts from "../components/PostsSection.svelte"
 	import OurWork from "../components/OurWork.svelte"
 </script>
 
@@ -14,4 +14,4 @@
 
 <OurWork />
 
-<News full={false} />
+<Posts />
