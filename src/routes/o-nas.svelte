@@ -161,11 +161,11 @@
 		</div>
 		<div class="info">
 			<p>
-				Pravidelně pořádáme prodejní výstavy v Chebu i v Plzni a účastníme se i festivalu Chebské Dvorky. 
-				Více informací je k dispozici v sekci <a href="aktuality">Aktuality</a>.
+				Pravidelně pořádáme prodejní výstavy a přehlídky. 
+				Aktuální informace o akcích naleznete vždy v sekci <a href="aktuality">Aktuality</a>.
 			</p>
 			<p>
-				V našem ateliéru najdete, kromě naší tvorby i nádherné autorské šperky a sklo od <a href="http://www.ladavosejpkova.cz" target="_blank">Lady Vosejpkové</a>. 
+				V našem ateliéru najdete kromě naší tvorby i nádherné autorské šperky a sklo od <a href="http://www.ladavosejpkova.cz" target="_blank">Lady Vosejpkové</a>. 
 				Dlouhodobě spolupracujeme i s fotografkou <a href="http://www.foto-hajsmanova.wz.cz" target="_blank">Evou Hajšmanovou</a>. 
 			</p>
 		</div>

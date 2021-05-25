@@ -1,3 +1,7 @@
+<script>
+    import OpeningHours from './OpeningHours.svelte'
+</script>
+
 <style>
     section.light {
         display: flex;
@@ -6,15 +10,15 @@
 
     div.container {
         display: grid;
-        grid-template-columns: 200px 200px;
-        column-gap: 20px;
+        grid-template-columns: 150px 300px;
+        column-gap: 30px;
     }
 
     div.column {
         display: flex;
         flex-direction: column;
         text-align: left;
-        overflow:visible;
+        overflow: visible;
     }
 
     img.logo {
@@ -31,7 +35,7 @@
         margin-top: 0;
     }
 
-    @media (max-width: 450px) {
+    @media (max-width: 500px) {
         div.container {
             display: flex;
             flex-direction: column;
@@ -63,7 +67,7 @@
                     Cheb
                 </p>
                 <a href="mailto:info@ateliertomandlova.cz"><p>info@ateliertomandlova.cz</p></a>
-                <p>Po - Pá:&ensp;10 - 13 a 14 - 17 hod</p>
+                <OpeningHours />
                 <a href="kontakt"><button>Kontaktujte nás</button></a>
             </div>
         </div>

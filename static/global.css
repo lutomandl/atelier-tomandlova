@@ -1,133 +1,140 @@
 * {
-	font-family: Forum, serif;
-	color: #585858;
+    font-family: Forum, serif;
+    color: #585858;
 }
 
-html, body {
-	margin: 0;
-	padding: 0;
-	font-size: 16px;
-	line-height: 1.5;
-	scroll-behavior: smooth;
-	overflow-x: hidden;
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 /* sections */
 section {
-	background-color: #B68981;
-	padding: 70px 100px;
-	position: relative;
-	align-items: center;
-	text-align: center;
-	overflow: visible;
+    background-color: #b68981;
+    padding: 70px 100px;
+    position: relative;
+    align-items: center;
+    text-align: center;
+    overflow: visible;
 }
 
 section.light {
-	background-color: #E5CDC6;
+    background-color: #e5cdc6;
 }
 
 section.top {
-	margin-top: -100px;
+    margin-top: -100px;
 }
 
 /* simple tags */
-h1, h2, h3, h4, h5, h6 {
-	margin: 0 0 0.5em 0;
-	font-weight: 400;
-	line-height: 1.2;
-	z-index: 3;
-	position: relative;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0 0 0.5em 0;
+    font-weight: 400;
+    line-height: 1.2;
+    z-index: 3;
+    position: relative;
 }
 
 h1 {
-	font-size: 48px;
+    font-size: 48px;
 }
 
 h2 {
-	font-size: 24px;
+    font-size: 24px;
 }
 
-p, img {
-	z-index: 3;
-	position: relative;
+p,
+img {
+    z-index: 3;
+    position: relative;
 }
 
 img {
-	border-radius: 2px;
+    border-radius: 2px;
 }
 
 img.graphics {
-	position: absolute;
-	z-index: 2;
+    position: absolute;
+    z-index: 2;
 }
 
 a {
-	color: inherit;
-	text-decoration: underline;
+    color: inherit;
+    text-decoration: underline;
 }
 
 input {
-	outline: none;
-	width: calc(100% - 24px);
-	height: 16px;
-	background-color: #B68981;
-	border: none;
-	border-radius: 5px;
-	padding: 12px;
-	color: #E5E5E5;
-	font-size: 16px;
+    outline: none;
+    width: calc(100% - 24px);
+    height: 16px;
+    background-color: #b68981;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    color: #e5e5e5;
+    font-size: 16px;
 }
 
 input:focus {
-	border: 1px solid #58585880;
-	margin: -1px;
+    border: 1px solid #58585880;
+    margin: -1px;
 }
 
 /* buttons */
 button {
-	background-color: #B68981;
-	border: none;
-	border-radius: 5px;
-	outline: none;
-	padding-left: 20px;
-	padding-right: 20px;
-	min-width: 150px;
-	max-width: max-content;
-	height: 60px;
-	font-size: 18px;
-	font-family: Didot, sarif;
-	color: #E5E5E5;
-	z-index: 3;
-	position: relative;
-} 
+    background-color: #b68981;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    padding-left: 20px;
+    padding-right: 20px;
+    min-width: 150px;
+    max-width: max-content;
+    height: 60px;
+    font-size: 18px;
+    font-family: Didot, sarif;
+    color: #e5e5e5;
+    z-index: 3;
+    position: relative;
+}
 
 button.inverted {
-	color: #585858;
-	background-color: #E5CDC6;
+    color: #585858;
+    background-color: #e5cdc6;
 }
 
 button:hover {
-	text-decoration: underline;
-	cursor: pointer;
-} 
+    text-decoration: underline;
+    cursor: pointer;
+}
 
 /* media queries */
 @media (max-width: 1024px) {
-	h1 {
-		font-size: 38px;
-	}
+    h1 {
+        font-size: 38px;
+    }
 
-	section {
-		padding: 70px 50px;
-	}
-} 
+    section {
+        padding: 70px 50px;
+    }
+}
 
 @media (max-width: 600px) {
-	p {
-		font-size: 14px;
-	}
+    p {
+        font-size: 14px;
+    }
 
-	section {
-		padding: 70px 15px;
-	}
-} 
+    section {
+        padding: 70px 15px;
+    }
+}

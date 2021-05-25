@@ -1,5 +1,6 @@
 <script>
 	import {onMount} from "svelte";
+	import OpeningHours from "../components/OpeningHours.svelte"
 
 	let form = {
 		name: '',
@@ -186,10 +187,10 @@
 	}
 
 	div.contact-item > img {
-		margin-right: 40px;
+		margin-right: 20px;
 	}
 
-	@media (max-width: 850px) {
+	@media (max-width: 1024px) {
 		div.container {
 			flex-direction: column;
 		}
@@ -211,10 +212,10 @@
 			<p>Pokud máte dotaz ohledně našich služeb nebo potřebujete poradit, neváhejte se na nás obrátit.</p>
 			<form on:submit={handleFormSubmit}>
 				<label for="name">Jméno</label>
-				<input name="name" bind:value={form.name} on:focus={clearFeedback}/>
+				<input autocomplete="off" name="name" bind:value={form.name} on:focus={clearFeedback}/>
 			
 				<label for="email">Email</label>
-				<input name="name" bind:value={form.email} on:focus={clearFeedback}/>
+				<input autocomplete="off" name="email" bind:value={form.email} on:focus={clearFeedback}/>
 			
 				<label for="message">Zpráva</label>
 				<textarea name="message" bind:value={form.message} on:focus={clearFeedback}></textarea>
@@ -243,18 +244,15 @@
 				<img alt="map-pin" src="graphics/map-pin.svg">
 				<p>
 					Židovská 9, Cheb
-				</p>
-				
+				</p>	
 			</div>
 			<div class="contact-item">
 				<img alt="mail" src="graphics/mail.svg">
 				<a href="mailto:info@ateliertomandlova.cz"><p>info@ateliertomandlova.cz</p></a>
-				
 			</div>	
 			<div class="contact-item">
 				<img alt="clock" src="graphics/clock.svg">
-				<p>Po - Pá:&ensp;10 - 13 hod <br> 14 - 17 hod</p>
-				
+				<OpeningHours />
 			</div>
 		</div>
 	</div>
