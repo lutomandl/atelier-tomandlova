@@ -53,7 +53,7 @@ const posts = [
         slug: 'letem-s-makem-2020',
         postedOn: '2021-04-30',
         images: ['fialkove_1.jpg', 'fialkove_2.jpg'],
-        poster: 'letem_s_makem.pdf',
+        poster: 'letem_s_makem-1.png',
         desc: 'Poslední akce proběhla minulé léto v Plzni. Už brzy se ale určitě můžete těšit na další.',
         html: 'Poslední akce proběhla minulé léto v Plzni. Už brzy se ale určitě můžete těšit na další.',
     },
