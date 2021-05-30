@@ -25,4 +25,8 @@
         <td>a</td>
         <td>14:00 - 16:00</td>
     </tr>
+    <tr>
+        <td>So</td>
+        <td>po předchozí dohodě</td>
+    </tr>
 </table>
