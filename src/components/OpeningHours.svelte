@@ -1,8 +1,8 @@
 <style>
     table {
         z-index: 2;
-        margin-bottom: 12px;
-        min-width: 300px;
+        margin: 12px 0;
+        min-width: 250px;
     }
 </style>
 
