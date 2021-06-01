@@ -102,11 +102,11 @@
 
 <section id="first" class="top">
 	<div class="left">
-        <img class="graphics line" alt="line" src="graphics/linka.svg">
+        <img class="graphics line" alt="line" src="graphics/Linka.svg">
         <img class="main-photo" alt="Režný lněný kostým" src="photos/rezny_lneny_kostym.jpg">
     </div>
     <div class="right">
-        <img class="graphics circle" alt="circle" src="graphics/circle.svg">
+        <img class="graphics circle" alt="circle" src="graphics/Circle.svg">
         <h1>Ateliér Tomandlová</h1>
     </div>
 	
@@ -114,5 +114,5 @@
     <a class="more" href="#our-work"><img class="arrow" alt="arrow down" src="graphics/arrow.svg"></a>
 
     <!-- graphics -->
-	<img class="graphics small-circle" alt="small circle" src="graphics/transparent-small-circle.svg">
+	<img class="graphics small-circle" alt="small circle" src="graphics/Transparent-small-circle.svg">
 </section>
