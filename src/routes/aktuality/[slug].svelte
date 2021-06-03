@@ -24,8 +24,15 @@ import Index from "../index.svelte";
 	section {
 		display: flex;
 		flex-direction: column;
-		align-items: flex-start;
-		padding-left: 150px;
+		align-items: center;
+		padding: 100px 400px ;
+	}
+
+	div.back {
+		position: absolute;
+		left: 200px;
+		top: 100px;
+		
 	}
 	
 	h1 {
@@ -113,6 +120,7 @@ import Index from "../index.svelte";
 </svelte:head>
 
 <section class="top iverted">
+	<div class="back"><h2><a href="aktuality">Zpět</a></h2></div>
 	<h1>{post.title}</h1>
 	<p><em>Zveřejněno {post.postedOn}</em></p>
 	<div class="content">

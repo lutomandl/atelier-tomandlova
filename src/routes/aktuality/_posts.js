@@ -17,7 +17,7 @@ const posts = [
             'cervene-saty-2.jpg',
             'cervene-saty-3.jpg',
         ],
-        desc: 'Jak můžete vidět, máme nové stránky. A můžete se těšit na víc.',
+        desc: 'Jak můžete vidět, máme nové stránky. A můžete se těšit na víc. Jak můžete vidět, máme nové stránky. A můžete se těšit na víc. Jak můžete vidět, máme nové stránky. A můžete se těšit na víc. Jak můžete vidět, máme nové stránky.',
         html: 'Jak můžete vidět, máme nové stránky. Postupně je budeme rozšiřovat o další části, připravujeme například část, kde se dozvíte něco více o přírodních materiálech, se kterými pracujeme. Postupně budeme také přidávat do sekce aktuality připravované akce i vzpomínky na akce minulé.',
     },
     {
