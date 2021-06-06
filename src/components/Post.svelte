@@ -1,5 +1,9 @@
 <script>
     export let post
+
+    const postedOn = new Date (post.published_at)
+	const options = { year: 'numeric', month: 'long', day: 'numeric' }
+	const postedOnCs = postedOn.toLocaleDateString('cs', options)
 </script>
 
 <style>
@@ -63,7 +67,7 @@
         </div>
         <div class="info">
             <h2>{post.heading}</h2>
-            <h3>{post.published_at}</h3>
+            <h3>{postedOnCs}</h3>
             <div class="desc">
                 <p>{post.short_desc}</p>
             </div>

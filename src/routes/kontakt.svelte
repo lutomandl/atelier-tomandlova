@@ -46,7 +46,7 @@
 
 	async function uploadFormData(captchaResponse) {
 		try {
-			const response = await fetch('http://localhost:8001/api/contact-form', {
+			const response = await fetch('https://admin.ateliertomandlova.cz/contacts', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({...form, captchaResponse})
