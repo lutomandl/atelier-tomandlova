@@ -39,7 +39,7 @@
 	}
 
 	img {
-		width: 450px;
+		width: 400px;
 		z-index: 1;
 	}
 
@@ -145,7 +145,7 @@
 	</div>
 	<div class="photo">
 		<img class="graphics pencil" alt="graphic" src="graphics/Pencil-blue.svg">
-		<img alt="atelier" src="photos/odevni-atelier.jpeg">
+		<img alt="lenka" src="photos/lenka.jpg">
 	</div>	
 </section>
 <section>
@@ -156,7 +156,7 @@
 	</p>
 	<div class="wrapper">
 		<div class="photo">
-			<img alt="holky" src="photos/holky.jpg">
+			<img alt="atelier" src="photos/odevni-atelier.jpeg">
 			<img class="graphics splash" alt="graphics" src="graphics/Splash.svg">
 		</div>
 		<div class="info">

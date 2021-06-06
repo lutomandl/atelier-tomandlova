@@ -1,6 +1,5 @@
 <script>
     export let posts;
-
     import Post from "../components/Post.svelte"
 </script>
 
