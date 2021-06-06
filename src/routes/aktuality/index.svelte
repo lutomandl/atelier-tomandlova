@@ -1,14 +1,44 @@
 <script>
 	import Posts from "../../components/PostsViewer.svelte"
-	import posts from "./_posts.js"
+	import { onMount } from "svelte"
+
+	let posts = []
+
+	onMount( async () => {
+		const parseJSON = (resp) => (resp.json ? resp.json() : resp)
+		const checkStatus = (resp) => {
+			if (resp.status >= 200 && resp.status < 300) {
+				return resp;
+			}
+			return parseJSON(resp).then((resp) => {
+				throw resp;
+			})
+  		}
+  		const headers = {
+    		'Content-Type': 'application/json',
+  		}
+
+		try {
+			const res = await fetch("https://admin.ateliertomandlova.cz/posts?_sort=published_at:DESC", {
+		  		method: "GET",
+		  		headers: {
+		     		'Content-Type': 'application/json'
+		  		},
+			}).then(checkStatus)
+      		.then(parseJSON);
+			posts = res
+		} catch (e) {
+			error = e
+		}
+	})
 </script>
 
 <script context="module">
-	export async function preload() {
-		const response = await this.fetch(`aktuality.json`)
-		const data = await response.json()
-		return { data }
-	}
+	// export async function preload() {
+	// 	const response = await this.fetch(`aktuality.json`)
+	// 	const data = await response.json()
+	// 	return { data }
+	// }
 </script>
 
 <style>

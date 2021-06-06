@@ -2,7 +2,8 @@
     table {
         z-index: 2;
         margin: 12px 0;
-        min-width: 250px;
+        width: 200px;
+        text-align: center;
     }
 </style>
 

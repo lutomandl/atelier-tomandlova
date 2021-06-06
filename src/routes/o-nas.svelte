@@ -39,7 +39,7 @@
 	}
 
 	img {
-		width: 450px;
+		width: 400px;
 		z-index: 1;
 	}
 

@@ -59,13 +59,13 @@
 <a rel=prefetch class="wrapper" href="aktuality/{post.slug}">
     <div class="post">
         <div class="photo">
-            <img alt="{post.images[0]}" src="photos/{post.images[0]}">
+            <img alt="{post.images[0].name}" src="https://admin.ateliertomandlova.cz{post.images[0].url}">
         </div>
         <div class="info">
-            <h2>{post.title}</h2>
-            <h3>{post.postedOn}</h3>
+            <h2>{post.heading}</h2>
+            <h3>{post.published_at}</h3>
             <div class="desc">
-                <p>{post.desc}</p>
+                <p>{post.short_desc}</p>
             </div>
             <a rel=prefetch href="aktuality/{post.slug}"><p>Zobrazit více</p></a>
         </div>
