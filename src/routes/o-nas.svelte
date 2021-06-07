@@ -144,7 +144,7 @@
 		
 	</div>
 	<div class="photo">
-		<img class="graphics pencil" alt="graphic" src="graphics/Pencil-blue.svg">
+		<img class="graphics pencil" alt="graphic" src="graphics/pencil-blue.svg">
 		<img alt="lenka" src="photos/lenka.jpg">
 	</div>	
 </section>
@@ -157,7 +157,7 @@
 	<div class="wrapper">
 		<div class="photo">
 			<img alt="atelier" src="photos/odevni-atelier.jpeg">
-			<img class="graphics splash" alt="graphics" src="graphics/Splash.svg">
+			<img class="graphics splash" alt="graphics" src="graphics/splash.svg">
 		</div>
 		<div class="info">
 			<p>
