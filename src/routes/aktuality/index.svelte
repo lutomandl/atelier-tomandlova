@@ -34,11 +34,11 @@
 </script>
 
 <script context="module">
-	// export async function preload() {
-	// 	const response = await this.fetch(`aktuality.json`)
-	// 	const data = await response.json()
-	// 	return { data }
-	// }
+	export async function preload() {
+		const response = await this.fetch(`https://admin.ateliertomandlova.cz/posts?_sort=published_at:DESC`)
+		const data = await response.json()
+		return { data }
+	}
 </script>
 
 <style>
