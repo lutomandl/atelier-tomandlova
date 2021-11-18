@@ -33,7 +33,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: top center;
+        object-position: center;
         border-radius: 0;
         transition: 300ms;
     }
@@ -43,7 +43,8 @@
     }
 
     div.photo {
-        height: 250px;
+        height: 300px;
+        width: 100%;
         display: flex;
         overflow: hidden;
     }
@@ -51,7 +52,7 @@
     div.info {
         text-align: left;
         padding: 24px;
-        height: 250px;
+        height: 200px;
     }
 
     div.desc {

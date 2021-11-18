@@ -24,15 +24,15 @@
 		  		headers: {
 		     		'Content-Type': 'application/json'
 		  		},
-			}).then(checkStatus)
-      		.then(parseJSON);
-			posts = res
+			})
+			const resChecked = await checkStatus(res)
+			const resParsed = await parseJSON(resChecked)
+      		posts = await resParsed.slice(0, 3)
+			
 		} catch (e) {
 			error = e
 		}
 	})
-
-    posts = posts.slice(0, 3);
 </script>
 
 <style>
