@@ -1,7 +1,6 @@
-<script>
+<script lang="ts">
 	import MobileMenu from "./MobileMenu.svelte";
-	
-	export let segment;
+	export let segment: string;
 </script>
 
 <style>

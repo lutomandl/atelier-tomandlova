@@ -1,13 +1,13 @@
-<script>
+<script lang='ts'>
 	import {onMount} from "svelte";
-	import OpeningHours from "../components/OpeningHours.svelte"
+	import OpeningHours from "../../components/OpeningHours.svelte"
 
 	let form = {
 		name: '',
 		email: '',
 		message: ''
 	}
-	let validationError = null
+	let validationError: string | null = null
   	let formSuccess = false
 
 	const EMAIL_MAX_LENGTH = 128;

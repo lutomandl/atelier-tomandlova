@@ -1,6 +1,18 @@
+:root {
+    --bg-color-dark: #D7A69D
+    --bg-color-light: #e5cdc6
+    --text-color: #262626
+    --breakpoint-xs: 320px;
+    --breakpoint-sm: 600px;
+    --breakpoint-md: 1024px;
+    --breakpoint-lg: 1440px;
+    --breakpoint-xl: 1920px;
+}
+
 * {
     font-family: Forum, serif;
-    color: #585858;
+    line-height: 1.5;
+    color: var(--text-color);
 }
 
 html,
@@ -8,27 +20,27 @@ body {
     margin: 0;
     padding: 0;
     font-size: 16px;
-    line-height: 1.5;
     scroll-behavior: smooth;
     overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 /* sections */
 section {
-    background-color: #b68981;
+    background-color: var(--bg-color-dark);
     padding: 70px 100px;
     position: relative;
     align-items: center;
     text-align: center;
     overflow: visible;
-}
 
-section.light {
-    background-color: #e5cdc6;
-}
+    .light {
+        background-color: var(--bg-color-light);
+    }
 
-section.top {
-    margin-top: -100px;
+    .top {
+        margin-top: -100px;`
+    }
 }
 
 /* simple tags */
@@ -38,25 +50,17 @@ h3,
 h4,
 h5,
 h6 {
-    margin: 0 0 0.5em 0;
+    margin: 0 0 0.5rem 0;
     font-weight: 400;
     line-height: 1.2;
-    z-index: 3;
-    position: relative;
 }
 
-h1 {
-    font-size: 48px;
+h1 { 
+    font-size: 3rem;
 }
 
 h2 {
-    font-size: 24px;
-}
-
-p,
-img {
-    z-index: 3;
-    position: relative;
+    font-size: 1.5rem;
 }
 
 img {
@@ -77,22 +81,22 @@ input {
     outline: none;
     width: calc(100% - 24px);
     height: 16px;
-    background-color: #b68981;
+    background-color: var(--bg-color-dark);
     border: none;
     border-radius: 5px;
     padding: 12px;
-    color: #e5e5e5;
+    color: var(--text-color);
     font-size: 16px;
 }
 
 input:focus {
-    border: 1px solid #58585880;
+    border: 1px solid var(--text-color);
     margin: -1px;
 }
 
 /* buttons */
 button {
-    background-color: #b68981;
+    background-color: var(--bg-color-dark);
     border: none;
     border-radius: 5px;
     outline: none;
@@ -102,7 +106,6 @@ button {
     max-width: max-content;
     height: 60px;
     font-size: 18px;
-    font-family: Didot, sarif;
     color: #e5e5e5;
     z-index: 3;
     position: relative;
@@ -119,9 +122,9 @@ button:hover {
 }
 
 /* media queries */
-@media (max-width: 1024px) {
+@media (max-width: var(--breakpoint-md)) {
     h1 {
-        font-size: 38px;
+        font-size: 2.5rem;
     }
 
     section {

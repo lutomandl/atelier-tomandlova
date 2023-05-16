@@ -20,7 +20,7 @@
 <script>
 	import marked from 'marked'
 	import { onMount } from 'svelte'
-	import GaleryViewer from '../../components/GaleryViewer.svelte';
+	import GaleryViewer from '../../../components/GaleryViewer.svelte';
 
 	export let post
 	
