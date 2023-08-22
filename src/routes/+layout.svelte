@@ -1,20 +1,12 @@
 <script lang="ts">
-  import Nav from '../components/Nav.svelte'
-  import Footer from '../components/Footer.svelte'
-
-  export let segment: string
+  import Menu from '../components/Menu.svelte';
+  import Footer from '../components/Footer.svelte';
 </script>
 
-<Nav {segment} />
+<Menu />
 
 <main>
   <slot />
 </main>
 
 <Footer />
-
-<style>
-  main {
-    position: relative;
-  }
-</style>

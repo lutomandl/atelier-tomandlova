@@ -1,0 +1,32 @@
+@use './config';
+
+.header {
+  position: relative;
+  top: -7rem;
+  height: 100vh;
+
+  &__title {
+    position: relative;
+    width: 100%;
+    text-align: right;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  &__more {
+    display: none;
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @media (min-width: config.$breakpoint-md) {
+      display: block;
+    }
+
+    img {
+      width: 3rem;
+    }
+  }
+}

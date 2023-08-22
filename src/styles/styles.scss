@@ -1,0 +1,80 @@
+@use './config';
+
+// fonts
+@font-face {
+  font-family: 'Hatton';
+  src: url('../fonts/Hatton.otf') format('opentype');
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+}
+
+@font-face {
+  font-family: 'Ogg-Bold';
+  src: url('../fonts/Ogg-Bold.ttf') format('truetype'), url('../fonts/Ogg-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+}
+
+@font-face {
+  font-family: 'Ogg-Light';
+  src: url('../fonts/Ogg-Light.ttf') format('truetype'),
+    url('../fonts/Ogg-Light.woff') format('woff');
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+}
+
+// global styles
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  color: config.$text-color;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  background-color: config.$bg-color-dark;
+}
+
+/* simple tags */
+img {
+  border-radius: 0.125rem;
+}
+
+img.graphics {
+  position: absolute;
+  z-index: 2;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+input {
+  outline: none;
+  width: calc(100% - 2.5rem);
+  height: 16px;
+  background-color: config.$bg-color-dark;
+  border: none;
+  border-radius: 5px;
+  padding: 12px;
+  color: config.$text-color;
+  font-size: 16px;
+}
+
+input:focus {
+  border: 1px solid config.$text-color;
+  margin: -1px;
+}

@@ -1,0 +1,25 @@
+.ourWork {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+
+  &__columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 3rem;
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 30%;
+
+    & > img {
+      width: 13rem;
+      height: 13rem;
+    }
+  }
+}

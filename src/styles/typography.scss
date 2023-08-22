@@ -1,0 +1,60 @@
+@use './config';
+
+.typography {
+  &--p {
+    font-family: 'Ogg-light', serif;
+    font-size: 1.25rem;
+  }
+
+  &--header {
+    font-family: 'Ogg-Bold', serif;
+    font-size: 3rem;
+    line-height: 1.2;
+
+    @media (min-width: config.$breakpoint-sm) {
+      font-size: 5rem;
+    }
+
+    @media (min-width: config.$breakpoint-md) {
+      font-size: 7rem;
+    }
+
+    @media (min-width: config.$breakpoint-lg) {
+      font-size: 10rem;
+    }
+  }
+
+  &--nav {
+    font-family: 'Ogg-Bold', serif;
+    font-size: 1.25rem;
+  }
+
+  &--h1 {
+    font-family: 'Ogg-Bold', serif;
+    font-size: 5rem;
+    line-height: 1.2;
+  }
+
+  &--h2 {
+    font-family: 'Ogg-Bold', serif;
+    font-size: 4rem;
+    line-height: 1.2;
+  }
+
+  &--h3 {
+    font-family: 'Ogg-Bold', serif;
+    font-size: 3rem;
+    line-height: 1.2;
+  }
+
+  &--button {
+    font-family: 'Ogg-Bold', serif;
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  &--subtitle {
+    font-family: 'Ogg-light', serif;
+    font-size: 1rem;
+  }
+}

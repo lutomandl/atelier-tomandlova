@@ -1,15 +1,16 @@
 <script lang="ts">
-  import FirstPage from "../components/FirstPage.svelte"
-  import Posts from "../components/PostsSection.svelte"
-  import OurWork from "../components/OurWork.svelte"
+  import Header from '../components/Header.svelte';
+  import EventsSection from '../components/EventsSection.svelte';
+  import OurWork from '../components/OurWork.svelte';
+  import translations from '../utils/useTranslations';
 </script>
 
 <svelte:head>
-  <title>Ateliér Tomandlová</title>
+  <title>{translations.mainPage.title}</title>
 </svelte:head>
 
-<FirstPage />
+<Header />
 
 <OurWork />
 
-<Posts />
+<EventsSection />
