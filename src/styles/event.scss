@@ -38,7 +38,22 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
     gap: 1rem;
+
+    &__line {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 0.5rem;
+    }
   }
 
   &__poster {
@@ -48,7 +63,7 @@
     align-items: flex-end;
   }
 
-  &__posterContainer {
+  &__posterThumbnail {
     width: 100px;
     height: 150px;
     background-color: #d7a69d;
@@ -63,6 +78,7 @@
 
       &:hover {
         opacity: 1;
+        cursor: pointer;
       }
     }
   }

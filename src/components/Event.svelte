@@ -2,6 +2,9 @@
   import type { EventObject } from '../utils/useStrapiQuery';
 
   import Typography from './Typography.svelte';
+  import mapPin from '$lib/assets/map-pin.svg';
+  import clock from '$lib/assets/clock.svg';
+  import PosterView from './PosterView.svelte';
 
   export let event: EventObject;
   let dateFormatted: string;
@@ -10,19 +13,19 @@
   let description: string;
   let poster: any;
   let place: string;
-  let posterView: boolean = false;
+  let viewPoster: boolean = false;
 
   $: formatEventData(event);
 
   const formatEventData = (event: EventObject) => {
     const { Title, Description, Place, StartingTime, To, From, Poster } = event?.attributes || {};
 
-    const fromArray = From?.split('-') || null;
-    const toArray = To?.split('-') || null;
-    const dayFrom = fromArray?.[2] || null;
-    const monthFrom = fromArray?.[1] || null;
-    const dayTo = toArray?.[2] || null;
-    const monthTo = toArray?.[1] || null;
+    const fromDate = From ? new Date(From) : null;
+    const toDate = To ? new Date(To) : null;
+    const dayFrom = fromDate?.getDate() ?? null;
+    const monthFrom = fromDate?.getMonth() ?? null;
+    const dayTo = toDate?.getDate() ?? null;
+    const monthTo = toDate?.getMonth() ?? null;
 
     dateFormatted = `${dayFrom}${monthFrom !== monthTo ? `/${monthFrom}` : ''}${
       dayTo ? `-${dayTo}/${monthTo}` : ''
@@ -35,8 +38,12 @@
     poster = Poster || {};
   };
 
-  const showPoster = () => {
-    posterView = true;
+  const openPoster = () => {
+    viewPoster = true;
+  };
+
+  const closePoster = () => {
+    viewPoster = false;
   };
 </script>
 
@@ -47,16 +54,16 @@
   <div class="event__description">
     <Typography variant="h3" element="h3">{title}</Typography>
     {#if place && timeFormatted}
-      <div class="event__description__placeAndTime">
+      <div class="event__details">
         {#if place}
-          <div class="event__description__place">
-            <!-- <img src="/icons/place.svg" alt="place" /> -->
+          <div class="event__details__line">
+            <img src={mapPin} alt="map pin icon" />
             <Typography variant="subtitle">{place}</Typography>
           </div>
         {/if}
         {#if timeFormatted}
-          <div class="event__description__time">
-            <!-- <img src="/icons/time.svg" alt="time" /> -->
+          <div class="event__details__line">
+            <img src={clock} alt="clock icon" />
             <Typography variant="subtitle">{timeFormatted}</Typography>
           </div>
         {/if}
@@ -65,18 +72,16 @@
     <Typography>{description}</Typography>
   </div>
   <div class="event__poster">
-    <div class="event__posterContainer" on:click={showPoster} on:keydown={showPoster}>
+    <div class="event__posterThumbnail" on:click={openPoster} on:keydown={openPoster}>
       <img
         src={`http://localhost:1337${poster?.data?.attributes?.formats?.thumbnail?.url || ''}`}
-        alt="placeholder"
+        alt="event poster thumbnail"
       />
     </div>
   </div>
 </div>
 
-<!-- {#if posterView}
-  <PosterViewer />
-{/if} -->
+<PosterView poster={poster?.data?.attributes} view={viewPoster} close={closePoster} />
 
 <style lang="scss">
   @import 'src/styles/event.scss';
