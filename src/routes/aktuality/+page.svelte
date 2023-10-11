@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
   export async function preload(this: any) {
-    const response = await this.fetch(`http://localhost:1337/api/events`);
+    const response = await this.fetch(`${import.meta.env.VITE_STRAPI_URL}/api/events`);
     const data = await response.json();
 
     return { data };
@@ -25,7 +25,7 @@
     };
 
     try {
-      const res = await fetch('http://localhost:1337/api/events', {
+      const res = await fetch(`${import.meta.env.VITE_STRAPI_URL}/api/events`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -74,7 +74,9 @@
   <div class="event__poster">
     <div class="event__posterThumbnail" on:click={openPoster} on:keydown={openPoster}>
       <img
-        src={`http://localhost:1337${poster?.data?.attributes?.formats?.thumbnail?.url || ''}`}
+        src={`${import.meta.env.VITE_STRAPI_URL}${
+          poster?.data?.attributes?.formats?.thumbnail?.url || ''
+        }`}
         alt="event poster thumbnail"
       />
     </div>

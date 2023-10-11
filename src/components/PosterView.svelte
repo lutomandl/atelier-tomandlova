@@ -27,11 +27,17 @@
     <img
       loading="lazy"
       decoding="async"
-      src={`http://localhost:1337${poster?.url}`}
+      src={`${import.meta.env.VITE_STRAPI_URL}${poster?.url}`}
       alt="event poster"
-      srcset={`http://localhost:1337${poster?.formats?.small?.url} ${poster?.formats?.small?.width}w ${poster?.formats?.small?.height}h,
-                http://localhost:1337${poster?.formats?.medium?.url} ${poster?.formats?.medium?.width}w ${poster?.formats?.medium?.height}h,
-                http://localhost:1337${poster?.formats?.large?.url} ${poster?.formats?.large?.width}w ${poster?.formats?.large?.height}h,
+      srcset={`${import.meta.env.VITE_STRAPI_URL}${poster?.formats?.small?.url} ${
+        poster?.formats?.small?.width
+      }w ${poster?.formats?.small?.height}h,
+                ${import.meta.env.VITE_STRAPI_URL}${poster?.formats?.medium?.url} ${
+        poster?.formats?.medium?.width
+      }w ${poster?.formats?.medium?.height}h,
+                ${import.meta.env.VITE_STRAPI_URL}${poster?.formats?.large?.url} ${
+        poster?.formats?.large?.width
+      }w ${poster?.formats?.large?.height}h,
             `}
     />
   </div>

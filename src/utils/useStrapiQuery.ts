@@ -1,4 +1,4 @@
-import request, { gql, rawRequest } from 'graphql-request';
+import { gql, rawRequest } from 'graphql-request';
 
 export default async function getEvents(filter: string): Promise<EventObject[]> {
   const query = gql`
@@ -31,7 +31,7 @@ export default async function getEvents(filter: string): Promise<EventObject[]> 
   `;
 
   const { status, data, errors } = await rawRequest<EventsData>(
-    'http://localhost:1337/graphql',
+    `${import.meta.env.VITE_STRAPI_URL}/graphql`,
     query
   );
 
