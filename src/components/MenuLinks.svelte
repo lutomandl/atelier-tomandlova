@@ -6,7 +6,6 @@
   export let callback: (() => void) | undefined = undefined;
 
   const pathname = $page.url.pathname;
-  console.log(pathname);
 </script>
 
 <ul class="menuLinks">
@@ -17,7 +16,7 @@
   </li>
   <li class="menuLinks__link">
     <a
-      aria-current={pathname === '/aktuality' ? 'page' : undefined}
+      aria-current={pathname === '/udalosti' ? 'page' : undefined}
       href="aktuality"
       on:click={callback}
     >

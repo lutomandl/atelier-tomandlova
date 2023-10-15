@@ -57,7 +57,7 @@
     &--visible {
       transform: translate(0, 0);
       animation-name: comeToView;
-      animation-duration: 0.5s;
+      animation-duration: 0.8s;
       animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
     }
 
@@ -70,6 +70,9 @@
 
 @keyframes comeToView {
   0% {
+    transform: translate(100%, 100%) rotate(10deg);
+  }
+  20% {
     transform: translate(100%, 100%) rotate(10deg);
   }
   100% {

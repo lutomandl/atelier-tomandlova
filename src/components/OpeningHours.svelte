@@ -1,41 +1,44 @@
-<style>
-    table {
-        z-index: 2;
-        margin: 12px 0;
-        width: 200px;
-        text-align: center;
-    }
-</style>
+<script>
+  import Typography from './Typography.svelte';
+  import translations from '../utils/useTranslations';
 
-<table>
-    <tr>
-        <td>Po</td>
-        <td>11 - 13</td>
-        <td>a</td>
-        <td>14 - 17</td>
-    </tr>
-    <tr>
-        <td>Út</td>
-        <td>10 - 12</td>
-        <td>a</td>
-        <td>13 - 17</td>
-    </tr>
-    <tr>
-        <td>St</td>
-        <td>10 - 12</td>
-        <td>a</td>
-        <td>13 - 16</td>
-    </tr>
-    <tr>
-        <td>Čt</td>
-        <td>10 - 12</td>
-        <td>a</td>
-        <td>13 - 17</td>
-    </tr>
-    <tr>
-        <td>Pá</td>
-        <td>11 - 12</td>
-        <td>a</td>
-        <td>13 - 16</td>
-    </tr>
-</table>
+  const {
+    monday,
+    mondayTime,
+    tuesday,
+    tuesdayTime,
+    wednesday,
+    wednesdayTime,
+    thursday,
+    thursdayTime,
+    friday,
+    fridayTime,
+  } = translations.contact.openingHours;
+</script>
+
+<div class="openingHours">
+  <div class="openingHours__line">
+    <Typography>{monday}</Typography>
+    <Typography>{mondayTime}</Typography>
+  </div>
+  <div class="openingHours__line">
+    <Typography>{tuesday}</Typography>
+    <Typography>{tuesdayTime}</Typography>
+  </div>
+  <div class="openingHours__line">
+    <Typography>{wednesday}</Typography>
+    <Typography>{wednesdayTime}</Typography>
+  </div>
+  <div class="openingHours__line">
+    <Typography>{thursday}</Typography>
+    <Typography>{thursdayTime}</Typography>
+  </div>
+  <div class="openingHours__line">
+    <Typography>{friday}</Typography>
+    <Typography>{fridayTime}</Typography>
+  </div>
+</div>
+
+<style lang="scss">
+  @import '../styles/openingHours.scss';
+</style>

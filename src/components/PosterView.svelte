@@ -3,8 +3,8 @@
   import x from '$lib/assets/x.svg';
 
   export let poster: PosterObject | null;
-  export let view: boolean = false;
   export let close: () => void;
+  export let viewPoster: boolean = false;
 
   const closeModal = (event: Event) => {
     event.preventDefault();
@@ -14,16 +14,16 @@
   $: console.log(poster);
 </script>
 
-<div class={`posterView ${view ? 'posterView--visible' : ''}`}>
+<div class={`posterView ${viewPoster ? 'posterView--visible' : ''}`}>
   <div
-    class={`posterView__overlay ${view ? 'posterView__overlay--visible' : ''}`}
+    class={`posterView__overlay ${viewPoster ? 'posterView__overlay--visible' : ''}`}
     on:click={closeModal}
     on:keydown={closeModal}
   />
   <button class="posterView__close" on:click={closeModal} on:keydown={closeModal}>
     <img src={x} alt="close icon" />
   </button>
-  <div class={`posterView__image ${view ? 'posterView__image--visible' : ''}`}>
+  <div class={`posterView__image ${viewPoster ? 'posterView__image--visible' : ''}`}>
     <img
       loading="lazy"
       decoding="async"

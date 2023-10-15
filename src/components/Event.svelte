@@ -83,7 +83,7 @@
   </div>
 </div>
 
-<PosterView poster={poster?.data?.attributes} view={viewPoster} close={closePoster} />
+<PosterView poster={poster?.data?.attributes} close={closePoster} bind:viewPoster />
 
 <style lang="scss">
   @import 'src/styles/event.scss';

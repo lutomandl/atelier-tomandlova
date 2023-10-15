@@ -1,0 +1,10 @@
+.openingHours {
+  display: flex;
+  flex-direction: column;
+
+  &__line {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+  }
+}
