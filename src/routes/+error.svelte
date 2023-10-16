@@ -1,5 +1,6 @@
 <script lang="ts">
   import Section from '../components/Section.svelte';
+  import Typography from '../components/Typography.svelte';
   export let status: number;
   export let error: Error;
 
@@ -11,34 +12,11 @@
 </svelte:head>
 
 <Section>
-  <h1>{status}</h1>
+  <Typography variant="h1" element="h1">{status}</Typography>
 
-  <p>{error.message}</p>
+  <Typography>{error.message}</Typography>
 
   {#if dev && error.stack}
     <pre>{error.stack}</pre>
   {/if}
 </Section>
-
-<style>
-  h1,
-  p {
-    margin: 0 auto;
-  }
-
-  h1 {
-    font-size: 2.8em;
-    font-weight: 700;
-    margin: 0 0 0.5em 0;
-  }
-
-  p {
-    margin: 1em auto;
-  }
-
-  @media (min-width: 480px) {
-    h1 {
-      font-size: 4em;
-    }
-  }
-</style>
