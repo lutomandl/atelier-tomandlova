@@ -10,15 +10,21 @@
 
 <ul class="menuLinks">
   <li class="menuLinks__link">
-    <a aria-current={pathname === '/o-nas' ? 'page' : undefined} href="o-nas" on:click={callback}>
+    <a
+      aria-current={pathname === '/o-nas' ? 'page' : undefined}
+      href="o-nas"
+      on:click={callback}
+      data-sveltekit-preload-data="hover"
+    >
       <Typography variant="nav" element="span">{translations.menu.about}</Typography>
     </a>
   </li>
   <li class="menuLinks__link">
     <a
-      aria-current={pathname === '/udalosti' ? 'page' : undefined}
-      href="aktuality"
+      aria-current={pathname === '/akce' ? 'page' : undefined}
+      href="akce"
       on:click={callback}
+      data-sveltekit-preload-data="hover"
     >
       <Typography variant="nav" element="span">{translations.menu.events}</Typography>
     </a>
@@ -28,6 +34,7 @@
       aria-current={pathname === '/kontakt' ? 'page' : undefined}
       href="kontakt"
       on:click={callback}
+      data-sveltekit-preload-data="hover"
     >
       <Typography variant="nav" element="span">{translations.menu.contact}</Typography>
     </a>

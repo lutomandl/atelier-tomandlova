@@ -1,9 +1,9 @@
 import { gql, rawRequest } from 'graphql-request';
 
-export default async function getEvents(filter: string): Promise<EventObject[]> {
+export default async function getEvents(filter?: string, sort?: string): Promise<EventObject[]> {
   const query = gql`
     query Events {
-      events (${filter ? `filters: ${filter}` : ''}) {
+      events  ${filter ? `(filters: ${filter})` : ''} ${sort ? `(sort: "${sort}")` : ''} {
         data {
           id
           attributes {

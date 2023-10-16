@@ -5,12 +5,13 @@
   import Event from './Event.svelte';
   import Typography from './Typography.svelte';
 
-  export let filter: string;
+  export let filter: string | undefined = undefined;
+  export let sort: string | undefined = undefined;
 
   let events: EventObject[] = [];
 
   onMount(async () => {
-    events = await getEvents(filter);
+    events = await getEvents(filter, sort);
   });
 </script>
 

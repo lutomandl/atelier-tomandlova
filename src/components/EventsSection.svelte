@@ -20,7 +20,7 @@
     <Typography variant="h1" element="span">{translations.mainPage.followingEvents}</Typography>
     <EventsContainer {filter} />
   </div>
-  <Button text={translations.mainPage.moreEvents} href="events" />
+  <Button text={translations.mainPage.moreEvents} href="/akce" />
 </Section>
 
 <style lang="scss">

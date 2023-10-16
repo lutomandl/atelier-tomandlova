@@ -20,7 +20,7 @@
   }
 }
 
-[aria-current] {
+[aria-current='page'] {
   &::after {
     position: relative;
     content: '';
