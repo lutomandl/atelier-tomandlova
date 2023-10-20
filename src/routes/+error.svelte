@@ -41,9 +41,5 @@
       font-size: 3rem;
       margin-top: 1rem;
     }
-
-    & > p {
-      font-size: 2rem;
-    }
   }
 </style>
