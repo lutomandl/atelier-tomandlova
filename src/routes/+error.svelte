@@ -1,6 +1,4 @@
 <script lang="ts">
-  import Section from '../components/Section.svelte';
-  import Typography from '../components/Typography.svelte';
   import { page } from '$app/stores';
 
   const dev = process.env.NODE_ENV === 'development';
