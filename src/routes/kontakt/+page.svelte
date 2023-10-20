@@ -1,7 +1,6 @@
-<script lang="ts">
-  // @ts-nocheck
+<!-- <script lang="ts">
   import { onMount } from 'svelte';
-  import OpeningHours from '../OpeningHours.svelte';
+  import OpeningHours from '../../components/OpeningHours.svelte';
 
   let form = {
     name: '',
@@ -259,4 +258,6 @@
       display: none;
     }
   }
-</style>
+</style> -->
+
+<p>kontakt</p>
