@@ -1,12 +1,19 @@
 <script lang="ts">
   import Menu from '../components/Menu.svelte';
   import Footer from '../components/Footer.svelte';
+  import { page } from '$app/stores';
+
+  const hideNav = !!$page.error;
 </script>
 
-<Menu />
+{#if !hideNav}
+  <Menu />
+{/if}
 
 <main>
   <slot />
 </main>
 
-<Footer />
+{#if !hideNav}
+  <Footer />
+{/if}

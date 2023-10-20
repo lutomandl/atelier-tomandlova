@@ -4,20 +4,21 @@
   import Typography from './Typography.svelte';
   import translations from '../utils/useTranslations';
   import BackgroundGraphic from './BackgroundGraphic.svelte';
-  import yellowLine from '$lib/assets/yellow-line.svg';
-  import smallCircle from '$lib/assets/transparent-small-circle.svg';
-  import circle from '$lib/assets/circle.svg';
-
-  let y: number;
 </script>
-
-<svelte:window bind:scrollY={y} />
 
 <header class="header">
   <Section>
-    <BackgroundGraphic graphic={yellowLine} {y} top={40} left={20} width={30} />
-    <BackgroundGraphic graphic={smallCircle} {y} paralaxSpeed={5} top={5} right={5} width={15} />
-    <BackgroundGraphic graphic={circle} {y} paralaxSpeed={2} top={20} right={20} width={30} />
+    <BackgroundGraphic graphic="yellowLine" top={50} left={10} width={30} layer="front" />
+    <BackgroundGraphic graphic="transparentCircle" paralaxSpeed={5} top={10} left={75} width={15} />
+    <BackgroundGraphic graphic="circle" paralaxSpeed={2} top={25} left={60} width={30} />
+    <BackgroundGraphic
+      graphic="halfCircle"
+      paralaxSpeed={8}
+      top={105}
+      left={30}
+      width={25}
+      layer="front"
+    />
     <div class="header__title">
       <Typography variant="header" element="h1">{translations.mainPage.title}</Typography>
     </div>
