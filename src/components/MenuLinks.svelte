@@ -6,6 +6,8 @@
   export let callback: (() => void) | undefined = undefined;
 
   const pathname = $page.url.pathname;
+
+  const { about, events, contact } = translations.menu;
 </script>
 
 <ul class="menuLinks">
@@ -16,7 +18,7 @@
       on:click={callback}
       data-sveltekit-preload-data="hover"
     >
-      <Typography variant="nav" element="span">{translations.menu.about}</Typography>
+      <Typography variant="nav" element="span">{about}</Typography>
     </a>
   </li>
   <li class="menuLinks__link">
@@ -26,7 +28,7 @@
       on:click={callback}
       data-sveltekit-preload-data="hover"
     >
-      <Typography variant="nav" element="span">{translations.menu.events}</Typography>
+      <Typography variant="nav" element="span">{events}</Typography>
     </a>
   </li>
   <li class="menuLinks__link">
@@ -36,7 +38,7 @@
       on:click={callback}
       data-sveltekit-preload-data="hover"
     >
-      <Typography variant="nav" element="span">{translations.menu.contact}</Typography>
+      <Typography variant="nav" element="span">{contact}</Typography>
     </a>
   </li>
 </ul>

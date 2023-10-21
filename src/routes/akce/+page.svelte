@@ -5,15 +5,17 @@
   import translations from '../../utils/useTranslations';
 
   const sort = 'From:desc';
+
+  const { events } = translations.menu;
 </script>
 
 <svelte:head>
-  <title>{translations.menu.events}</title>
+  <title>{events}</title>
 </svelte:head>
 
 <div class="eventsPage">
   <Section>
-    <Typography variant="h1" element="h1">{translations.menu.events}</Typography>
+    <Typography variant="h1" element="h1">{events}</Typography>
     <EventsContainer {sort} />
   </Section>
 </div>

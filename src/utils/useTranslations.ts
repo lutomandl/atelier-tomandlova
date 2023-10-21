@@ -1,6 +1,14 @@
 const translations = {
-  mainPage: {
+  general: {
     title: 'Ateliér Tomandlová',
+  },
+  menu: {
+    about: 'o nás',
+    events: 'akce',
+    contact: 'kontakt',
+    gallery: 'galerie',
+  },
+  ourWork: {
     ourWork: 'Naši práci charakterizuje...',
     designHeading: 'Jedinečný design',
     designText:
@@ -11,18 +19,13 @@ const translations = {
     handmadeHeading: 'Ruční výroba',
     handmadeText: 'Naše oděvy by nebyly, jaké jsou, bez mistrovského krejčovského zpracování.',
     learnMore: 'Více o nás',
-    followingEvents: 'Následující akce',
-    moreEvents: 'Všechny akce',
   },
-  menu: {
-    about: 'o nás',
-    events: 'akce',
-    contact: 'kontakt',
-    gallery: 'galerie',
+  events: {
+    upcomingEvents: 'Nadcházející akce',
+    moreEvents: 'Všechny akce',
   },
   contact: {
     address: {
-      name: 'Ateliér Tomandlová',
       street: 'Židovská 412/9',
       city: 'Cheb, 350 02',
     },

@@ -4,6 +4,8 @@
   import Typography from './Typography.svelte';
   import translations from '../utils/useTranslations';
   import BackgroundGraphic from './BackgroundGraphic.svelte';
+
+  const { title } = translations.general;
 </script>
 
 <header class="header">
@@ -20,7 +22,7 @@
       layer="front"
     />
     <div class="header__title">
-      <Typography variant="header" element="h1">{translations.mainPage.title}</Typography>
+      <Typography variant="header" element="h1">{title}</Typography>
     </div>
     <a class="header__more" href="#our-work"><img alt="arrow down" src={arrow} /></a>
   </Section>
