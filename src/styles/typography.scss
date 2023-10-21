@@ -1,13 +1,23 @@
 @use './config';
 
+$font-fallbacks: 'Georgia', 'Times New Roman', 'Times', 'serif';
+
 .typography {
   &--p {
-    font-family: 'Ogg-Light', serif;
+    font-family: 'Ogg-Light', $font-fallbacks;
     font-size: 1.25rem;
+
+    @media (min-width: config.$breakpoint-sm) {
+      font-size: 1.375rem;
+    }
+
+    @media (min-width: config.$breakpoint-md) {
+      font-size: 1.5rem;
+    }
   }
 
   &--header {
-    font-family: 'Ogg-Bold', serif;
+    font-family: 'Ogg-Bold', $font-fallbacks;
     font-size: 3rem;
     line-height: 1.2;
 
@@ -25,36 +35,60 @@
   }
 
   &--nav {
-    font-family: 'Ogg-Bold', serif;
+    font-family: 'Ogg-Bold', $font-fallbacks;
     font-size: 1.25rem;
   }
 
   &--h1 {
-    font-family: 'Ogg-Bold', serif;
-    font-size: 5rem;
+    font-family: 'Ogg-Bold', $font-fallbacks;
+    font-size: 2.5rem;
     line-height: 1.2;
+
+    @media (min-width: config.$breakpoint-sm) {
+      font-size: 3rem;
+    }
+
+    @media (min-width: config.$breakpoint-md) {
+      font-size: 4rem;
+    }
+
+    @media (min-width: config.$breakpoint-lg) {
+      font-size: 5rem;
+    }
   }
 
   &--h2 {
-    font-family: 'Ogg-Bold', serif;
-    font-size: 4rem;
+    font-family: 'Ogg-Bold', $font-fallbacks;
+    font-size: 1.8rem;
     line-height: 1.2;
+
+    @media (min-width: config.$breakpoint-sm) {
+      font-size: 2rem;
+    }
+
+    @media (min-width: config.$breakpoint-md) {
+      font-size: 3rem;
+    }
+
+    @media (min-width: config.$breakpoint-lg) {
+      font-size: 4rem;
+    }
   }
 
   &--h3 {
-    font-family: 'Ogg-Bold', serif;
+    font-family: 'Ogg-Bold', $font-fallbacks;
     font-size: 3rem;
     line-height: 1.2;
   }
 
   &--button {
-    font-family: 'Ogg-Bold', serif;
+    font-family: 'Ogg-Bold', $font-fallbacks;
     font-size: 1.25rem;
     line-height: 1.2;
   }
 
   &--subtitle {
-    font-family: 'Ogg-Light', serif;
-    font-size: 1rem;
+    font-family: 'Ogg-Light', $font-fallbacks;
+    font-size: 1.1rem;
   }
 }
