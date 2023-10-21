@@ -1,9 +1,30 @@
 import { gql, rawRequest } from 'graphql-request';
 
-export default async function getEvents(filter?: string, sort?: string): Promise<EventObject[]> {
+export default async function getEvents(
+  filter: 'gte' | 'lt',
+  sort: 'asc' | 'desc',
+  paginationStart?: number,
+  paginationlimit?: number
+): Promise<{ events: EventObject[]; meta: StrapiMetaData } | null> {
+  const today = new Date().toISOString().split('T')[0];
+  const filterQuery = `{
+    or: [
+      {From: {${filter}: "${today}"}},
+      {To: {${filter}: "${today}"}}
+    ]
+    }`;
+  const sortQuery = `"From:${sort}"`;
+
   const query = gql`
     query Events {
-      events  ${filter ? `(filters: ${filter})` : ''} ${sort ? `(sort: "${sort}")` : ''} {
+      events  (
+        filters: ${filterQuery},
+        sort: ${sortQuery},
+        pagination: {
+          start: ${paginationStart || 0}
+          limit: ${paginationlimit || 100}
+        }
+      ) {
         data {
           id
           attributes {
@@ -26,6 +47,14 @@ export default async function getEvents(filter?: string, sort?: string): Promise
             }
           }
         }
+        meta {
+          pagination {
+            page
+            pageSize
+            pageCount
+            total
+          }
+        }
       }
     }
   `;
@@ -37,15 +66,19 @@ export default async function getEvents(filter?: string, sort?: string): Promise
 
   if (status !== 200) {
     console.error(`Error fetching events: ${JSON.stringify(errors)}`);
-    return [];
+    return null;
   }
 
-  return data.events.data;
+  return {
+    events: data.events.data,
+    meta: data.events.meta,
+  };
 }
 
 interface EventsData {
   events: {
     data: EventObject[];
+    meta: StrapiMetaData;
   };
 }
 
@@ -67,6 +100,15 @@ export interface EventObject {
         attributes?: PosterObject | null;
       } | null;
     } | null;
+  };
+}
+
+export interface StrapiMetaData {
+  pagination: {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
   };
 }
 

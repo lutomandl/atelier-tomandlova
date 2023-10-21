@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { EventObject } from '../utils/useStrapiQuery';
+  import type { EventObject, PosterObject } from '../utils/useStrapiQuery';
 
   import Typography from './Typography.svelte';
   import mapPin from '$lib/assets/map-pin.svg';
@@ -12,7 +12,7 @@
   let timeFormatted: string | null;
   let title: string;
   let description: string;
-  let poster: any;
+  let poster: PosterObject | null;
   let place: string;
   let viewPoster: boolean = false;
   let dateFromCz: string | null;
@@ -47,7 +47,7 @@
     title = Title || '';
     place = Place || '';
     description = Description || '';
-    poster = Poster || {};
+    poster = Poster?.data?.attributes || null;
   };
 
   const openPoster = () => {
@@ -85,19 +85,21 @@
     </div>
     <Typography>{description}</Typography>
   </div>
-  <div class="event__poster">
-    <div class="event__posterThumbnail" on:click={openPoster} on:keydown={openPoster}>
-      <img
-        src={`${import.meta.env.VITE_STRAPI_URL}${
-          poster?.data?.attributes?.formats?.thumbnail?.url || ''
-        }`}
-        alt="event poster thumbnail"
-      />
+  {#if poster}
+    <div class="event__poster">
+      <div class="event__posterThumbnail" on:click={openPoster} on:keydown={openPoster}>
+        <img
+          src={`${import.meta.env.VITE_STRAPI_URL}${poster?.formats?.thumbnail?.url || ''}`}
+          alt="event poster thumbnail"
+        />
+      </div>
     </div>
-  </div>
+  {/if}
 </div>
 
-<PosterView poster={poster?.data?.attributes} close={closePoster} bind:viewPoster />
+{#if poster}
+  <PosterView {poster} close={closePoster} bind:viewPoster />
+{/if}
 
 <style lang="scss">
   @import 'src/styles/event.scss';

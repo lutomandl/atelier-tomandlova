@@ -2,6 +2,10 @@ const translations = {
   general: {
     title: 'Ateliér Tomandlová',
   },
+  error: {
+    somethingWentWrong: 'Něco se pokazilo',
+    goBack: 'Obnovit',
+  },
   menu: {
     about: 'o nás',
     events: 'akce',
@@ -23,6 +27,8 @@ const translations = {
   events: {
     upcomingEvents: 'Nadcházející akce',
     moreEvents: 'Všechny akce',
+    pastEvents: 'Minulé akce',
+    noEvents: 'Další události plánujeme brzy.',
   },
   contact: {
     address: {

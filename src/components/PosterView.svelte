@@ -2,7 +2,7 @@
   import type { PosterObject } from '../utils/useStrapiQuery';
   import x from '$lib/assets/x.svg';
 
-  export let poster: PosterObject | null;
+  export let poster: PosterObject;
   export let close: () => void;
   export let viewPoster: boolean = false;
 
@@ -11,7 +11,11 @@
     close();
   };
 
-  $: console.log(poster);
+  const url = import.meta.env.VITE_STRAPI_URL;
+  const { small, medium, large } = poster?.formats || {};
+  const sourceSet = `${small ? `${url}${small.url} ${small.width}w ${small.height}h,` : ''}
+    ${medium ? `${url}${medium.url} ${medium.width}w ${medium.height}h,` : ''}
+    ${large ? `${url}${large.url} ${large.width}w ${large.height}h` : ''}`;
 </script>
 
 <div class={`posterView ${viewPoster ? 'posterView--visible' : ''}`}>
@@ -27,18 +31,9 @@
     <img
       loading="lazy"
       decoding="async"
-      src={`${import.meta.env.VITE_STRAPI_URL}${poster?.url}`}
+      src={`${url}${poster?.url}`}
       alt="event poster"
-      srcset={`${import.meta.env.VITE_STRAPI_URL}${poster?.formats?.small?.url} ${
-        poster?.formats?.small?.width
-      }w ${poster?.formats?.small?.height}h,
-                ${import.meta.env.VITE_STRAPI_URL}${poster?.formats?.medium?.url} ${
-        poster?.formats?.medium?.width
-      }w ${poster?.formats?.medium?.height}h,
-                ${import.meta.env.VITE_STRAPI_URL}${poster?.formats?.large?.url} ${
-        poster?.formats?.large?.width
-      }w ${poster?.formats?.large?.height}h,
-            `}
+      srcset={sourceSet}
     />
   </div>
 </div>

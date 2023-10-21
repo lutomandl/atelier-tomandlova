@@ -4,21 +4,28 @@
   import Typography from '../../components/Typography.svelte';
   import translations from '../../utils/useTranslations';
 
-  const sort = 'From:desc';
-
-  const { events } = translations.menu;
+  const {
+    menu: { events },
+    events: { upcomingEvents, pastEvents },
+  } = translations;
 </script>
 
 <svelte:head>
   <title>{events}</title>
 </svelte:head>
 
-<div class="eventsPage">
-  <Section>
-    <Typography variant="h1" element="h1">{events}</Typography>
-    <EventsContainer {sort} />
-  </Section>
-</div>
+<Section>
+  <div class="eventsPage">
+    <div class="eventsPage__upcoming">
+      <Typography variant="h1" element="h1">{upcomingEvents}</Typography>
+      <EventsContainer upcoming />
+    </div>
+    <div class="eventsPage__past">
+      <Typography variant="h1" element="h1">{pastEvents}</Typography>
+      <EventsContainer sortDesc withPagination />
+    </div>
+  </div>
+</Section>
 
 <style>
 </style>

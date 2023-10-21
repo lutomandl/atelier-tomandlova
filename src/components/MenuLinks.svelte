@@ -5,8 +5,10 @@
 
   export let callback: (() => void) | undefined = undefined;
 
-  const pathname = $page.url.pathname;
-
+  let pathname: string;
+  $: {
+    pathname = $page.url.pathname;
+  }
   const { about, events, contact } = translations.menu;
 </script>
 
@@ -14,7 +16,7 @@
   <li class="menuLinks__link">
     <a
       aria-current={pathname === '/o-nas' ? 'page' : undefined}
-      href="o-nas"
+      href="/o-nas"
       on:click={callback}
       data-sveltekit-preload-data="hover"
     >
@@ -24,7 +26,7 @@
   <li class="menuLinks__link">
     <a
       aria-current={pathname === '/akce' ? 'page' : undefined}
-      href="akce"
+      href="/akce"
       on:click={callback}
       data-sveltekit-preload-data="hover"
     >
@@ -34,7 +36,7 @@
   <li class="menuLinks__link">
     <a
       aria-current={pathname === '/kontakt' ? 'page' : undefined}
-      href="kontakt"
+      href="/kontakt"
       on:click={callback}
       data-sveltekit-preload-data="hover"
     >
