@@ -8,7 +8,8 @@
     | 'p'
     | 'button'
     | 'nav'
-    | 'eventDate' = 'p';
+    | 'eventDate'
+    | 'quote' = 'p';
   export let element: 'h1' | 'h2' | 'h3' | 'p' | 'span' = 'p';
 </script>
 

@@ -113,4 +113,10 @@ $font-fallbacks: 'Georgia', 'Times New Roman', 'Times', 'serif';
       font-size: 4rem;
     }
   }
+
+  &--quote {
+    font-family: 'Ogg-Bold', $font-fallbacks;
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
 }
