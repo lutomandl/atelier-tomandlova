@@ -4,6 +4,7 @@
   import Button from './Button.svelte';
   import translations from '../utils/useTranslations';
   import EventsContainer from './EventsContainer.svelte';
+  import BackgroundGraphic from './BackgroundGraphic.svelte';
 
   const today = new Date().toISOString().split('T')[0];
   const filter = `{
@@ -17,11 +18,14 @@
 </script>
 
 <Section>
+  <BackgroundGraphic graphic="pencil-blue" top={80} left={30} width={50} paralaxSpeed={8} />
   <div id="events" class="eventsSection">
     <Typography variant="h1" element="span">{upcomingEvents}</Typography>
     <EventsContainer {filter} />
+    <div class="eventsSection__button">
+      <Button text={moreEvents} href="/akce" />
+    </div>
   </div>
-  <Button text={moreEvents} href="/akce" />
 </Section>
 
 <style lang="scss">
