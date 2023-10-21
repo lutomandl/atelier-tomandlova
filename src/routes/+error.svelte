@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { env } from 'process';
   import Section from '../components/Section.svelte';
   import Typography from '../components/Typography.svelte';
   import Button from '../components/Button.svelte';

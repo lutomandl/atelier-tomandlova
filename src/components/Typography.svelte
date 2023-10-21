@@ -1,5 +1,14 @@
 <script lang="ts">
-  export let variant: 'header' | 'h1' | 'h2' | 'h3' | 'subtitle' | 'p' | 'button' | 'nav' = 'p';
+  export let variant:
+    | 'header'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'subtitle'
+    | 'p'
+    | 'button'
+    | 'nav'
+    | 'eventDate' = 'p';
   export let element: 'h1' | 'h2' | 'h3' | 'p' | 'span' = 'p';
 </script>
 

@@ -4,23 +4,32 @@
   background-color: #e5cdc6;
   border-radius: 0.625rem;
   box-shadow: config.$box-shadow;
-  width: 90%;
+  width: 100%;
   display: grid;
   grid-column-gap: 0.5rem;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: auto;
   grid-template-areas:
-    'info info info info info info'
+    'date date date date date date'
     'description description description description description description'
     'poster poster poster poster poster poster';
 
   @media (min-width: config.$breakpoint-md) {
     grid-template-columns: repeat(12, 1fr);
-    grid-template-areas: 'info info info description description description description description description description poster poster';
+    grid-template-areas: 'date date date description description description description description description description poster poster';
+    width: 90%;
   }
 
-  &__info {
-    grid-area: info;
+  @media (min-width: config.$breakpoint-lg) {
+    width: 80%;
+  }
+
+  @media (min-width: config.$breakpoint-xl) {
+    width: 70%;
+  }
+
+  &__date {
+    grid-area: date;
     display: flex;
     align-items: flex-start;
     color: config.$bg-color-dark;
