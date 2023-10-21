@@ -22,16 +22,15 @@
 
     const fromDate = From ? new Date(From) : null;
     const toDate = To ? new Date(To) : null;
-    const dayFrom = fromDate?.getDate() ?? null;
-    const monthFrom = fromDate?.getMonth() ?? null;
-    const dayTo = toDate?.getDate() ?? null;
-    const monthTo = toDate?.getMonth() ?? null;
+    const dayFrom = fromDate?.getDate() || null;
+    const monthFrom = fromDate?.getMonth() ? fromDate?.getMonth() + 1 : null;
+    const dayTo = toDate?.getDate() || null;
+    const monthTo = toDate?.getMonth() ? toDate?.getMonth() + 1 : null;
 
     dateFormatted = `${dayFrom}${monthFrom !== monthTo ? `/${monthFrom}` : ''}${
       dayTo ? `-${dayTo}/${monthTo}` : ''
     }`;
     timeFormatted = StartingTime?.slice(0, 5) || null;
-    console.log(timeFormatted);
     title = Title || '';
     place = Place || '';
     description = Description || '';

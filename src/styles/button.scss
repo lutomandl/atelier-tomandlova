@@ -7,7 +7,7 @@
   padding: 2rem 4rem 2rem 4rem;
   min-width: 10rem;
   max-width: max-content;
-  box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: config.$box-shadow;
   text-decoration: none;
   transition: box-shadow ease-in 0.1s;
 
@@ -21,6 +21,6 @@
 
   &:hover {
     cursor: pointer;
-    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0.3125rem 0.3125rem 1.25rem rgba(0, 0, 0, 0.1);
   }
 }

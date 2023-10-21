@@ -10,7 +10,6 @@
 
   &--light {
     background-color: config.$bg-color-light;
-    backdrop-filter: blur(10px);
   }
 
   @media (min-width: config.$breakpoint-sm) {

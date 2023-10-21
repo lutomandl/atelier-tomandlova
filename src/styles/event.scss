@@ -3,7 +3,7 @@
 .event {
   background-color: #e5cdc6;
   border-radius: 0.625rem;
-  box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: config.$box-shadow;
   width: 90%;
   display: grid;
   grid-column-gap: 0.5rem;
@@ -64,8 +64,8 @@
   }
 
   &__posterThumbnail {
-    width: 100px;
-    height: 150px;
+    width: 6.25rem;
+    height: 9.375rem;
     background-color: #d7a69d;
     overflow: hidden;
     margin: 1rem;
