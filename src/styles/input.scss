@@ -1,0 +1,19 @@
+@use './config';
+
+.input {
+  &__label {
+  }
+
+  &__field {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: config.$box-shadow;
+    background-color: config.$bg-color-light;
+
+    &--small {
+    }
+
+    &--big {
+    }
+  }
+}

@@ -4,12 +4,21 @@
   export let bg: 'light' | 'dark' = 'light';
   export let text: string;
   export let href: string | undefined = undefined;
+  export let disabled: boolean = false;
+  export let type: 'submit' | undefined = undefined;
   export let callback: (() => void) | undefined = undefined;
 
   const element = href ? 'a' : 'button';
 </script>
 
-<svelte:element this={element} class="button button--{bg}" {href} on:click={callback}>
+<svelte:element
+  this={element}
+  class="button button--{bg} button--{disabled ? 'disabled' : ''}"
+  {href}
+  on:click={callback}
+  {disabled}
+  {type}
+>
   <Typography variant="button">{text}</Typography>
 </svelte:element>
 

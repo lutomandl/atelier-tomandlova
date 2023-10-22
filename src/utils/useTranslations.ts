@@ -52,7 +52,6 @@ const translations = {
       city: 'Cheb, 350 02',
     },
     email: 'info@ateliertomandlova.cz',
-    contactUs: 'Kontaktujte nás',
     openingHours: {
       monday: 'Po:',
       mondayTime: '11 - 13 a 14 - 17',
@@ -64,6 +63,18 @@ const translations = {
       thursdayTime: '10 - 12 a 13 - 17',
       friday: 'Pá:',
       fridayTime: '10 - 12 a 13 - 16',
+    },
+    contactUs: 'Kontaktujte nás',
+    contactUsText:
+      'Pokud máte dotaz ohledně našich služeb nebo potřebujete poradit, neváhejte se na nás obrátit.',
+    whereToFindUs: 'Kde nás najdete',
+    form: {
+      name: 'Jméno',
+      email: 'Email',
+      message: 'Zpráva',
+      submit: 'Odeslat',
+      generalError: 'Něco se pokazilo, zkuste to prosím znovu.',
+      successMessage: 'Děkujeme, zpráva byla úspěšně odeslána. Brzy se ozveme zpět.',
     },
   },
 };
