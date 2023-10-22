@@ -31,13 +31,13 @@ const translations = {
     noEvents: 'Další události plánujeme brzy.',
   },
   about: {
-    aboutUs: 'O nás',
+    people: 'Lidé',
     aboutUsText: `Lenka Tomandlová vystudovala Libereckou textilní fakultu, oděvní tvorbě se věnuje téměř
       30 let. Ateliér sídlí v historickém centru Chebu a je dnes už neoddělitelnou součástí
       starého města.`,
-    quote1: `„Středem mého zájmu i samotnou inspirací je mi přírodní materiál, jeho krása, jedinečnost a
+    quoteLenka: `„Středem mého zájmu i samotnou inspirací je mi přírodní materiál, jeho krása, jedinečnost a
       specifické vlastnosti, blahodárné pro lidské tělo.”`,
-    quote2: `„Komfortní oděv pak vzniká promyšleným výběrem tkaniny, individuálně voleným tvarem, hrou barev,
+    quotePeople: `„Komfortní oděv vzniká promyšleným výběrem tkaniny, individuálně voleným tvarem, hrou barev,
       kompozicí výtvarného detailu a v neposlední řadě mistrovským krejčovským zpracováním Olgy
       Dražanové a Nelly Kaiseršotové.“`,
     eventsInfo: `Pravidelně pořádáme prodejní výstavy a přehlídky. Aktuální informace o akcích naleznete vždy v sekci`,

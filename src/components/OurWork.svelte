@@ -9,6 +9,8 @@
   import translations from '../utils/useTranslations';
   import BackgroundGraphic from './BackgroundGraphic.svelte';
 
+  export let withButton: boolean = false;
+
   onMount(() => {
     console.info('Icons made by https://www.freepik.com, downloaded from https://www.flaticon.com');
   });
@@ -57,9 +59,11 @@
         <Typography>{handmadeText}</Typography>
       </div>
     </div>
-    <div class="ourWork__button">
-      <Button bg="dark" href="o-nas" text={learnMore} />
-    </div>
+    {#if withButton}
+      <div class="ourWork__button">
+        <Button bg="dark" href="o-nas" text={learnMore} />
+      </div>
+    {/if}
   </div>
 </Section>
 

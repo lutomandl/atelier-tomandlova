@@ -10,7 +10,7 @@
 </script>
 
 <Section>
-  <BackgroundGraphic graphic="pencil-blue" top={80} left={30} width={50} paralaxSpeed={8} />
+  <BackgroundGraphic graphic="pencilBlue" top={80} left={30} width={50} paralaxSpeed={8} />
   <div id="events" class="eventsSection">
     <Typography variant="h1" element="span">{upcomingEvents}</Typography>
     <EventsContainer upcoming />

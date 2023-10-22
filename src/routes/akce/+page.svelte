@@ -26,6 +26,3 @@
     </div>
   </div>
 </Section>
-
-<style>
-</style>

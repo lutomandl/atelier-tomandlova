@@ -13,6 +13,6 @@
 
 <Header />
 
-<OurWork />
+<OurWork withButton />
 
 <EventsSection />

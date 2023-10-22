@@ -11,7 +11,7 @@
     | 'circle'
     | 'halfCircle'
     | 'hill'
-    | 'pencil-blue'
+    | 'pencilBlue'
     | 'splash'
     | 'transparentCircle'
     | 'yellowLine';
@@ -29,7 +29,7 @@
         return halfCircleSvg;
       case 'hill':
         return hillSvg;
-      case 'pencil-blue':
+      case 'pencilBlue':
         return pencilBlueSvg;
       case 'splash':
         return splashSvg;
