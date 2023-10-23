@@ -6,10 +6,11 @@
     | 'h3'
     | 'subtitle'
     | 'p'
-    | 'button'
+    | 'label'
     | 'nav'
     | 'eventDate'
-    | 'quote' = 'p';
+    | 'quote'
+    | 'error' = 'p';
   export let element: 'h1' | 'h2' | 'h3' | 'p' | 'span' = 'p';
 </script>
 

@@ -1,0 +1,22 @@
+@use './config';
+
+.contactForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  @media (min-width: config.$breakpoint-md) {
+    width: 70%;
+  }
+
+  @media (min-width: config.$breakpoint-lg) {
+    width: 50%;
+  }
+
+  &__feedback {
+    width: 100%;
+    height: 3rem;
+  }
+}

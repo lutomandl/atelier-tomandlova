@@ -2,7 +2,7 @@
   import Section from '../../components/Section.svelte';
   import Typography from '../../components/Typography.svelte';
   import translations from '../../utils/useTranslations';
-  import ContactForm from './ContactForm.svelte';
+  import ContactForm from '../../components/ContactForm.svelte';
 
   const {
     menu: { contact },

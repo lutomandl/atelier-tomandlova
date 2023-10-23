@@ -20,8 +20,8 @@
   }
 
   &--disabled {
-    background-color: #8f6969;
-    color: #262626;
+    background-color: config.$disabled-color;
+    color: config.$text-color;
     box-shadow: none;
   }
 

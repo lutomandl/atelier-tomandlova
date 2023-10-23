@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Typography from './Typography.svelte';
+
   export let type: 'email' | 'text' = 'text';
   export let name: string;
   export let label: string;
@@ -9,8 +11,16 @@
 </script>
 
 <div class="input">
-  <label class="input__label" for={name}>{label}</label>
-  {#if type === 'text'}
+  <label class="input__label" for={name}><Typography variant="label">{label}</Typography></label>
+  {#if size === 'big'}
+    <textarea
+      class="input__field input__field--{size}"
+      {required}
+      {name}
+      on:focus={onFocus}
+      bind:value
+    />
+  {:else if type === 'text'}
     <input
       type="text"
       class="input__field input__field--{size}"

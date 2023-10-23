@@ -75,6 +75,12 @@ const translations = {
       submit: 'Odeslat',
       generalError: 'Něco se pokazilo, zkuste to prosím znovu.',
       successMessage: 'Děkujeme, zpráva byla úspěšně odeslána. Brzy se ozveme zpět.',
+      nameMissing: 'Prosím vyplňte vaše jméno',
+      emailMissing: 'Prosím vyplňte váš email',
+      messageMissing: 'Prosím vyplňte zprávu, kterou nám chcete poslat',
+      nameTooLong: 'Jméno je příliš dlouhé',
+      emailInvalid: 'Email není ve správném formátu',
+      messageTooLong: 'Zpráva je příliš dlouhá',
     },
   },
 };

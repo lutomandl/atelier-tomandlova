@@ -93,7 +93,7 @@ $font-fallbacks: 'Georgia', 'Times New Roman', 'Times', 'serif';
     }
   }
 
-  &--button {
+  &--label {
     font-family: 'Ogg-Bold', $font-fallbacks;
     font-size: 1.25rem;
     line-height: 1.2;
@@ -118,5 +118,12 @@ $font-fallbacks: 'Georgia', 'Times New Roman', 'Times', 'serif';
     font-family: 'Ogg-LightItalic', $font-fallbacks;
     font-size: 1.5rem;
     line-height: 1.5;
+  }
+
+  &--error {
+    font-family: 'Ogg-Light', $font-fallbacks;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    color: config.$error-color;
   }
 }

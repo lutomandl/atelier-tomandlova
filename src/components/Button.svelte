@@ -19,7 +19,7 @@
   {disabled}
   {type}
 >
-  <Typography variant="button">{text}</Typography>
+  <Typography variant="label">{text}</Typography>
 </svelte:element>
 
 <style lang="scss">
