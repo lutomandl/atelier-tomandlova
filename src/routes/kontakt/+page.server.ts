@@ -34,7 +34,7 @@ export const actions = {
       return fail(400, { captchaToken, missing: true });
     }
 
-    const grecaptchaApiKey = import.meta.env.VITE_GRECAPTCHA_API_KEY;
+    const grecaptchaApiKey = import.meta.env.VITE_GRECAPTCHA_SECRET_KEY;
 
     const captchaResult = await fetch(
       `https://www.google.com/recaptcha/api/siteverify?secret=${grecaptchaApiKey}&response=${captchaToken}`,
@@ -46,7 +46,7 @@ export const actions = {
     }
 
     // const mailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    return 'hello';
+    return { message: 'Email sent.' };
 
     // const contactApi = strapi.query('contact');
     // const createEmail = await contactApi.create(email, message, name);

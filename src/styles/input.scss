@@ -34,6 +34,7 @@
     &:focus {
       outline: none;
       border-left: solid 0.1rem config.$text-color;
+      padding-left: 0.95rem;
     }
 
     &:disabled {

@@ -23,7 +23,7 @@
     messageTooLong,
   } = translations.contact.form;
 
-  const grecaptchaKey = import.meta.env.VITE_GRECAPTCHA_KEY;
+  const grecaptchaKey = import.meta.env.VITE_GRECAPTCHA_SITE_KEY;
   let formError: string | null = null;
   let formSuccess = false;
 
@@ -99,23 +99,20 @@
 
     const result: ActionResult = deserialize(await response.text());
 
-    if (result.type === 'failure') {
-      formError = generalError;
-      console.error(result.status, result.data);
+    if (result.type === 'success') {
+      formSuccess = true;
+      formValues.name = '';
+      formValues.email = '';
+      formValues.message = '';
       return;
     }
-    //       if (response.ok) {
-    //         formSuccess = true;
-    //         form.name = null;
-    //         form.email = null;
-    //         form.message = null;
-    //       } else {
-    //         throw new Error('Request Failed.');
-    //       }
 
-    formValues.name = '';
-    formValues.email = '';
-    formValues.message = '';
+    if (result.type === 'failure') {
+      console.error(result.status, result.data ? result.data : null);
+    }
+
+    formError = generalError;
+    return;
   };
 
   onMount(() => {
@@ -129,7 +126,7 @@
 </script>
 
 <svelte:head>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src={`https://www.google.com/recaptcha/api.js`} async defer></script>
 </svelte:head>
 
 <form class="contactForm" method="POST" on:submit|preventDefault={handleFormSubmit}>
