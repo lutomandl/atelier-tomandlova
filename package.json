@@ -13,8 +13,7 @@
     "graphql": "^16.7.1",
     "graphql-request": "^6.1.0",
     "marked": "^2.0.7",
-    "node-sass": "^9.0.0",
-    "svelte-pdf": "^1.0.19"
+    "node-sass": "^9.0.0"
   },
   "devDependencies": {
     "@sveltejs/adapter-node": "^1.2.4",

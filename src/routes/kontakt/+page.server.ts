@@ -45,48 +45,32 @@ export const actions = {
       return fail(400, { captchaResult, invalid: true });
     }
 
-    // const mailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const emailJsService = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const emailJsTemplate = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const emailJsUserId = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    const emailJsAccessToken = import.meta.env.VITE_EMAILJS_SECRET_KEY;
+
+    const emailJsResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        service_id: emailJsService,
+        template_id: emailJsTemplate,
+        user_id: emailJsUserId,
+        template_params: {
+          name,
+          email,
+          message,
+        },
+        accessToken: emailJsAccessToken,
+      }),
+    });
+
+    if (!emailJsResponse.ok) {
+      const emailJsResponseData = await emailJsResponse.text();
+      return fail(400, { emailJsResponseData, invalid: true });
+    }
+
     return { message: 'Email sent.' };
-
-    // const contactApi = strapi.query('contact');
-    // const createEmail = await contactApi.create(email, message, name);
-    // try {
-    //   const emailText = `New message from web form:\n\nEmail: ${email}\nName: ${name}\n\n${message}`;
-
-    //   const params = {
-    //     Destination: {
-    //       ToAddresses: ['info@ateliertomandlova.cz'],
-    //     },
-    //     Message: {
-    //       Body: {
-    //         Text: {
-    //           Charset: 'UTF-8',
-    //           Data: emailText,
-    //         },
-    //       },
-    //       Subject: {
-    //         Charset: 'UTF-8',
-    //         Data: 'Ateliertomandlova.cz: Message from form',
-    //       },
-    //     },
-    //     ReplyToAddresses: [email],
-    //     Source: 'noreply@ateliertomandlova.cz',
-    //   };
-
-    //   await AWS_SES.sendEmail(params, function (err, data) {
-    //     if (err) console.log(err, err.stack);
-    //     // an error occurred
-    //     else console.log(data); // successful response
-    //   });
-    //   createEmail;
-    //   console.log(`EMAIL: ${emailText}`);
-    //   return { message: 'Email sent.' };
-    // } catch (error) {
-    //   console.log(error);
-
-    //   return { message: 'Amazon SES error.' };
-    // }
   },
-  // };
-  //   },
 } satisfies Actions;
