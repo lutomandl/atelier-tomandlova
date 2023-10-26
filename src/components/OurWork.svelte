@@ -1,96 +1,72 @@
-<script>
-    import {onMount} from "svelte"
-    
-    onMount(() => {
-        console.log('Icons made by https://www.freepik.com from https://www.flaticon.com')
-    })
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import Section from './Section.svelte';
+  import Typography from './Typography.svelte';
+  import design from '$lib/assets/design.svg';
+  import sewingMachine from '$lib/assets/sewing-machine.svg';
+  import fabric from '$lib/assets/fabric.svg';
+  import Button from './Button.svelte';
+  import translations from '../utils/useTranslations';
+  import BackgroundGraphic from './BackgroundGraphic.svelte';
+
+  export let withButton: boolean = false;
+
+  onMount(() => {
+    console.info('Icons made by https://www.freepik.com, downloaded from https://www.flaticon.com');
+  });
+
+  const {
+    ourWork,
+    designHeading,
+    designText,
+    qualityHeading,
+    qualityText,
+    handmadeHeading,
+    handmadeText,
+    learnMore,
+  } = translations.ourWork;
 </script>
 
-<style>
-    div.icons {
-        display: flex;
-        justify-content: space-between;
-        margin: 70px 0 30px 0 ;
-    }
+<Section bg="light">
+  <BackgroundGraphic graphic="hill" top={50} left={60} width={30} />
+  <BackgroundGraphic graphic="splash" top={80} left={10} width={40} paralaxSpeed={2} />
+  <div id="our-work" class="ourWork">
+    <Typography variant="h1" element="h2">{ourWork}</Typography>
+    <div class="ourWork__columns">
+      <div class="ourWork__column">
+        <img alt="design icon" src={design} />
+        <div class="ourWork__column__title">
+          <Typography variant="h2" element="h3">{designHeading}</Typography>
+        </div>
+        <Typography>
+          {designText}
+        </Typography>
+      </div>
+      <div class="ourWork__column">
+        <img alt="fabric icon" src={fabric} />
+        <div class="ourWork__column__title">
+          <Typography variant="h2" element="h3">{qualityHeading}</Typography>
+        </div>
+        <Typography>
+          {qualityText}
+        </Typography>
+      </div>
+      <div class="ourWork__column">
+        <img alt="sewing machine icon" src={sewingMachine} />
+        <div class="ourWork__column__title">
+          <Typography variant="h2" element="h3">{handmadeHeading}</Typography>
+        </div>
+        <Typography>{handmadeText}</Typography>
+      </div>
+    </div>
+    {#if withButton}
+      <div class="ourWork__button">
+        <Button bg="dark" href="o-nas" text={learnMore} />
+      </div>
+    {/if}
+  </div>
+</Section>
 
-    div.icon {
-        width: 350px;
-        display: block;
-        margin: 0 24px;
-    }
-
-    div.icon > img {
-        width: 200px;
-        height: 200px;
-        margin-bottom: 28px;
-    }
-
-    img.half-circle {
-        width: 600px;
-        bottom: -100px;
-        left: 400px;
-    }
-
-    @media (max-width: 1024px) {
-        div.icons {
-            margin: 70px 0px 30px 0px;
-        }
-
-        div.icon > img {
-            width: 150px;
-            height: 150px;
-        }
-
-        img.half-circle {
-            left: 0
-
-        }
-    }
-
-    @media (max-width: 750px) {
-        div.icons {
-            flex-direction: column;
-            align-items: center;
-            margin-top: 24px;
-        }
-
-        div.icon {
-            margin-top: 24px;
-            width: fit-content;
-        }
-
-        img.half-circle {
-            width: 350px;
-        }
-    }
-
-    @media (max-width: 450px) {
-        img.half-circle {
-            width: 290px;
-        }
-    }
+<style lang="scss">
+  @import '../styles/ourWork.scss';
 </style>
-
-<section id="our-work" class="light">
-	<h1>Naši práci charakterizuje...</h1>
-	<div class="icons">
-		<div class="icon">
-			<img alt="design" src="graphics/design.svg">
-            
-			<h2>Jedinečný design</h2>
-			<p>Komfortní oděv vzniká promyšleným výběrem tkaniny, individuálně voleným tvarem, hrou barev a kompozicí výtvarného detailu.</p>
-		</div>
-		<div class="icon">
-			<img alt="fabric" src="graphics/fabric.svg">
-			<h2>Kvalitní materiály</h2>
-			<p>Podstatnou složkou je kvalitní přírodní materiál, jeho krása, jedinečnost a specifické vlastnosti, blahodárné pro lidské tělo.</p>
-		</div>
-		<div class="icon">
-			<img alt="sewing machine" src="graphics/sewing-machine.svg">
-			<h2>Ruční výroba</h2>
-			<p>Naše oděvy by nebyly, jaké jsou, bez mistrovského krejčovského zpracování.</p>
-		</div>
-	</div>
-	<a href="o-nas"><button>Zjistit více</button></a>
-	<img class="graphics half-circle" alt="half-circle" src="graphics/half-circle.svg">
-</section>

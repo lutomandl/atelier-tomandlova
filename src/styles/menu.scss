@@ -1,0 +1,33 @@
+@use './config';
+
+.menu {
+  padding: 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 7rem;
+  z-index: 1000;
+
+  @media (min-width: config.$breakpoint-md) {
+    justify-content: flex-end;
+    padding-right: 3rem;
+  }
+
+  &__logo {
+    width: 5rem;
+    margin-left: 3rem;
+  }
+
+  &__mobile {
+    @media (min-width: config.$breakpoint-md) {
+      display: none;
+    }
+  }
+
+  &__desktop {
+    @media (max-width: config.$breakpoint-md) {
+      display: none;
+    }
+  }
+}

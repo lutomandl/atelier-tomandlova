@@ -1,0 +1,46 @@
+@use './config';
+
+.input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  &__label {
+    margin-left: 0.2rem;
+  }
+
+  &__field {
+    width: 100%;
+    border: none;
+    border-radius: 0.2rem;
+    box-shadow: config.$box-shadow;
+    background-color: config.$bg-color-light;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-family: Ogg-Light;
+    box-sizing: border-box;
+    margin-top: 0.5rem;
+
+    &--small {
+      height: 4rem;
+    }
+
+    &--big {
+      height: 8rem;
+    }
+
+    // focus state looking like the button has a backdrop light
+    &:focus {
+      outline: none;
+      border-left: solid 0.1rem config.$text-color;
+      padding-left: 0.95rem;
+    }
+
+    &:disabled {
+      background-color: config.$disabled-color;
+      color: config.$text-color;
+      box-shadow: none;
+    }
+  }
+}

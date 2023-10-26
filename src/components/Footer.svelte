@@ -1,75 +1,45 @@
 <script>
-    import OpeningHours from './OpeningHours.svelte'
+  import OpeningHours from './OpeningHours.svelte';
+  import logo from '../lib/assets/logo.webp';
+  import Typography from './Typography.svelte';
+  import translations from '../utils/useTranslations';
+  import Button from './Button.svelte';
+  import BackgroundGraphic from './BackgroundGraphic.svelte';
+  import Section from './Section.svelte';
+
+  const {
+    general: { title },
+    contact: { address, email, contactUs },
+  } = translations;
 </script>
 
-<style>
-    section.light {
-        display: flex;
-        justify-content: center;
-    }
+<!--cool footer with logo, address, contact info, opening hours and contact button -->
+<footer class="footer">
+  <BackgroundGraphic graphic="transparentCircle" top={70} left={30} width={15} paralaxSpeed={10} />
+  <div class="footer__wrapper">
+    <div class="footer__title">
+      <img alt="aT logo" src={logo} />
+      <Typography variant="h3" element="h1">{title}</Typography>
+    </div>
 
-    div.container {
-        display: grid;
-        grid-template-columns: 150px 300px;
-        column-gap: 30px;
-    }
-
-    div.column {
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-        overflow: visible;
-    }
-
-    img.logo {
-        width: 150px;
-    }
-
-    img.small-circle {
-        width: 300px;
-        position: absolute;
-        top: -30px;
-    }
-
-    p {
-        margin-top: 0;
-    }
-
-    @media (max-width: 500px) {
-        div.container {
-            display: flex;
-            flex-direction: column;
-        }
-
-        img.logo {
-            margin-bottom: 24px;
-        }
-
-        img.small-circle{
-            width: 220px;
-            top: -40px;
-            left: 30px;
-        }
-    }
-</style>
-
-
-<footer>
-    <section class="light">
-        <div class="container">
-            <div class="column">
-                <img class="logo" alt="at-logo" src="graphics/logo.png">
-                <img class="graphics small-circle" alt="circle" src="graphics/transparent-small-circle.svg">
-            </div>
-            <div class="column">
-                <p>Ateliér Tomandlová<br>
-                    Židovská 9<br>
-                    Cheb
-                </p>
-                <a href="mailto:info@ateliertomandlova.cz"><p>info@ateliertomandlova.cz</p></a>
-                <OpeningHours />
-                <a href="kontakt"><button>Kontaktujte nás</button></a>
-            </div>
-        </div>
-    </section>
+    <div class="footer__info">
+      <div class="footer__info__address">
+        <Typography>{address.street}</Typography>
+        <Typography>{address.city}</Typography>
+      </div>
+      <div class="footer__info__contact">
+        <a href={`mailto:${email}`}>
+          <Typography>{email}</Typography>
+        </a>
+      </div>
+      <OpeningHours />
+      <div class="footer__contactButton">
+        <Button bg="dark" href="kontakt" text={contactUs} />
+      </div>
+    </div>
+  </div>
 </footer>
+
+<style lang="scss">
+  @import '../styles/footer.scss';
+</style>

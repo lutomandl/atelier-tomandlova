@@ -1,0 +1,16 @@
+input {
+  outline: none;
+  width: calc(100% - 2.5rem);
+  height: 16px;
+  background-color: config.$bg-color-dark;
+  border: none;
+  border-radius: 5px;
+  padding: 12px;
+  color: config.$text-color;
+  font-size: 16px;
+}
+
+input:focus {
+  border: 1px solid config.$text-color;
+  margin: -1px;
+}

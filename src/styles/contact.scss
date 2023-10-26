@@ -1,0 +1,24 @@
+.contactPage {
+  &__form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  &__map {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+
+    &__iframe {
+      position: relative;
+      width: 100vw;
+      height: 50vh;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
