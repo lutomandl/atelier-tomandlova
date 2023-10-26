@@ -116,8 +116,8 @@
   };
 
   onMount(() => {
-    window.grecaptcha.ready(() => {
-      window.grecaptcha.render('recaptcha', {
+    window.grecaptcha?.ready(() => {
+      window.grecaptcha?.render('recaptcha', {
         sitekey: `${grecaptchaKey}`,
         size: 'invisible',
       });
