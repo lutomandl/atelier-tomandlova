@@ -7,6 +7,7 @@
   import Button from './Button.svelte';
   import Typography from './Typography.svelte';
   import { EMAIL_REGEX, MESSAGE_MAX_LENGTH, NAME_MAX_LENGTH } from '../utils/constants';
+  import { navigating } from '$app/stores';
 
   const {
     name,
@@ -115,13 +116,19 @@
     return;
   };
 
-  onMount(() => {
-    window.grecaptcha?.ready(() => {
+  const renderCaptcha = () => {
+    window?.grecaptcha?.ready(() => {
       window.grecaptcha?.render('recaptcha', {
         sitekey: `${grecaptchaKey}`,
         size: 'invisible',
       });
     });
+  };
+
+  onMount(() => {
+    setTimeout(() => {
+      renderCaptcha();
+    }, 100);
   });
 </script>
 
