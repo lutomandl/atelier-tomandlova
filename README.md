@@ -1,6 +1,6 @@
 # Atelier Tomandlová website
 
-This project a website for ateliér Tomandlová. It's a SvelteKit app built with [Vite](https://vitejs.dev/), the events content is created in [Strapi.io](https://strapi.io/) applicatione (repo [here](https://github.com/lutomandl/atelier-tomandlova-strapi)) and consumed view GraphQL. Styling is done with SCSS.
+This project is a website for Ateliér Tomandlová from Cheb, Czechia. It's a SvelteKit app built with [Vite](https://vitejs.dev/), the events content is created in [Strapi.io](https://strapi.io/) applicatione (repo [here](https://github.com/lutomandl/atelier-tomandlova-strapi)) and consumed view GraphQL. Styling is done with SCSS.
 
 ![website](/static/screenshot.png)
 
