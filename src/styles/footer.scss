@@ -5,6 +5,7 @@
   padding: 5rem 1rem;
   background-color: config.$bg-color-light;
   position: relative;
+  overflow: hidden;
 
   @media (min-width: config.$breakpoint-sm) {
     padding: 5rem 3rem;

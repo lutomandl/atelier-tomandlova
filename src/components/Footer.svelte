@@ -13,7 +13,6 @@
   } = translations;
 </script>
 
-<!--cool footer with logo, address, contact info, opening hours and contact button -->
 <footer class="footer">
   <BackgroundGraphic graphic="transparentCircle" top={70} left={30} width={15} paralaxSpeed={10} />
   <div class="footer__wrapper">
