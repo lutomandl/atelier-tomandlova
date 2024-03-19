@@ -7,7 +7,6 @@
   import Button from './Button.svelte';
   import Typography from './Typography.svelte';
   import { EMAIL_REGEX, MESSAGE_MAX_LENGTH, NAME_MAX_LENGTH } from '../utils/constants';
-  import { navigating } from '$app/stores';
 
   const {
     name,

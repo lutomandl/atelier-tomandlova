@@ -13,6 +13,7 @@
     thursdayTime,
     friday,
     fridayTime,
+    openingHoursNote,
   } = translations.contact.openingHours;
 </script>
 
@@ -37,6 +38,7 @@
     <Typography>{friday}</Typography>
     <Typography>{fridayTime}</Typography>
   </div>
+  <Typography>{openingHoursNote}</Typography>
 </div>
 
 <style lang="scss">

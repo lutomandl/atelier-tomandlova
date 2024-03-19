@@ -46,6 +46,10 @@ const translations = {
     evaInfo: 'Dlouhodobě spolupracujeme i s fotografkou',
     evaHajsmanova: 'Evou Hajšmanovou',
   },
+  gallery: {
+    heading: 'Galerie',
+    noImages: 'Zatím zde nemáme žádné obrázky',
+  },
   contact: {
     address: {
       street: 'Židovská 412/9',
@@ -56,13 +60,14 @@ const translations = {
       monday: 'Po:',
       mondayTime: '11 - 13 a 14 - 17',
       tuesday: 'Út:',
-      tuesdayTime: '10 - 12 a 13 - 17',
+      tuesdayTime: '10 - 12 a 14 - 17',
       wednesday: 'St:',
-      wednesdayTime: '10 - 12 a 13 - 16',
+      wednesdayTime: '10 - 12 a 14 - 16',
       thursday: 'Čt:',
-      thursdayTime: '10 - 12 a 13 - 17',
+      thursdayTime: '10 - 12 a 14 - 17',
       friday: 'Pá:',
-      fridayTime: '10 - 12 a 13 - 16',
+      fridayTime: '11 - 12 a 14 - 16',
+      openingHoursNote: 'Do odvolání polední pauza denně od 12 do 14 hodin.',
     },
     contactUs: 'Kontaktujte nás',
     contactUsText:
