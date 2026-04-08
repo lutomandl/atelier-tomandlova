@@ -16,7 +16,7 @@
 </div>
 <div class="mobileMenu__tab" class:menuOpened>
   <div class="mobileMenu__tab__header">
-    <a href="." on:click={toggleMenu}>
+    <a href="/" on:click={toggleMenu}>
       <img class="mobileMenu__tab__logo" class:menuOpened alt="logo-at" src={logo} />
     </a>
     <img

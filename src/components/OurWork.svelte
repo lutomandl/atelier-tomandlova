@@ -61,7 +61,7 @@
     </div>
     {#if withButton}
       <div class="ourWork__button">
-        <Button bg="dark" href="o-nas" text={learnMore} />
+        <Button bg="dark" href="/o-nas" text={learnMore} />
       </div>
     {/if}
   </div>

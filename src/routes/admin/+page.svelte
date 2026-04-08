@@ -61,6 +61,7 @@
     {#if userEmail}
       <Typography element="p">Signed in as <strong>{userEmail}</strong></Typography>
       <div class="admin__actions">
+        <Button text="Správa akcí" href="/admin/events" />
         <Button text={loading ? '...' : 'Sign out'} callback={signOut} />
       </div>
     {:else}

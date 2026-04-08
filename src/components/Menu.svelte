@@ -12,7 +12,7 @@
     <MenuLinks />
   </div>
 
-  <a href="."><img class="menu__logo" alt="logo-at" src={logo} /></a>
+  <a href="/"><img class="menu__logo" alt="logo-at" src={logo} /></a>
 </nav>
 
 <style lang="scss">
