@@ -1,11 +1,11 @@
 <script lang="ts">
   import Typography from './Typography.svelte';
 
-  export let type: 'email' | 'text' = 'text';
+  export let type: 'email' | 'text' | 'password' = 'text';
   export let name: string;
   export let label: string;
   export let required: boolean = true;
-  export let onFocus: () => void;
+  export let onFocus: () => void = () => undefined;
   export let value: string;
   export let size: 'big' | 'small' = 'small';
 </script>
@@ -32,6 +32,15 @@
   {:else if type === 'email'}
     <input
       type="email"
+      class="input__field input__field--{size}"
+      {required}
+      {name}
+      on:focus={onFocus}
+      bind:value
+    />
+  {:else if type === 'password'}
+    <input
+      type="password"
       class="input__field input__field--{size}"
       {required}
       {name}

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import getEvents from '../utils/useStrapiQuery';
-  import type { EventObject, StrapiMetaData } from '../utils/useStrapiQuery';
+  import getEvents from '../utils/eventsApi';
+  import type { EventObject } from '../utils/eventsApi';
   import Event from './Event.svelte';
   import Typography from './Typography.svelte';
   import translations from '../utils/useTranslations';

@@ -10,10 +10,10 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.102.0",
     "graphql": "^16.7.1",
     "graphql-request": "^6.1.0",
-    "marked": "^2.0.7",
-    "node-sass": "^9.0.0"
+    "marked": "^2.0.7"
   },
   "devDependencies": {
     "@sveltejs/adapter-netlify": "^2.0.8",
