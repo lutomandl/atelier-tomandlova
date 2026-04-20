@@ -13,7 +13,8 @@
   let timeFormatted: string | null;
   let title: string;
   let description: string;
-  let posterUrl: string | null;
+  let posterPath: string | null;
+  let thumbnailUrl: string | null;
   let place: string;
   let viewPoster: boolean = false;
   let dateFromCz: string | null;
@@ -48,7 +49,8 @@
     title = Title || '';
     place = Place || '';
     description = Description || '';
-    posterUrl = getPosterPublicUrl(PosterPath);
+    posterPath = PosterPath || null;
+    thumbnailUrl = getPosterPublicUrl(posterPath) || null;
   };
 
   const openPoster = () => {
@@ -86,11 +88,11 @@
     </div>
     <Typography>{description}</Typography>
   </div>
-  {#if posterUrl}
+  {#if thumbnailUrl}
     <div class="event__poster">
       <div class="event__posterThumbnail" on:click={openPoster} on:keydown={openPoster}>
         <img
-          src={posterUrl}
+          src={thumbnailUrl}
           alt="event poster thumbnail"
         />
       </div>
@@ -98,8 +100,8 @@
   {/if}
 </div>
 
-{#if posterUrl}
-  <PosterView url={posterUrl} close={closePoster} bind:viewPoster />
+{#if posterPath}
+  <PosterView {posterPath} close={closePoster} bind:viewPoster />
 {/if}
 
 <style lang="scss">

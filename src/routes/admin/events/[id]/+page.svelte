@@ -16,8 +16,6 @@
   let loading = true;
   let saving = false;
   let error: string | null = null;
-  let isSignedIn = false;
-  let isAdmin = false;
 
   let title = '';
   let description = '';
@@ -31,18 +29,8 @@
   let posterFile: File | null = null;
   let posterNote = '';
 
-  const refreshAuth = async () => {
-    if (!supabase) return;
-    const { data } = await supabase.auth.getSession();
-    isSignedIn = !!data.session?.user;
-  };
-
-  const checkAdmin = async () => {
-    if (!supabase) return false;
-    const { data, error } = await supabase.from('admins').select('user_id').limit(1);
-    if (error) return false;
-    return (data || []).length > 0;
-  };
+  const isJwtError = (message: string | undefined) =>
+    !!message && /jwt|token.*expired/i.test(message);
 
   const load = async () => {
     if (!supabase) return;
@@ -58,6 +46,10 @@
     loading = false;
 
     if (loadError) {
+      if (isJwtError(loadError.message)) {
+        await goto('/admin');
+        return;
+      }
       error = loadError.message;
       return;
     }
@@ -72,12 +64,7 @@
     poster_path = data.poster_path || null;
   };
 
-  onMount(async () => {
-    await refreshAuth();
-    isAdmin = await checkAdmin();
-    if (isAdmin) await load();
-    loading = false;
-  });
+  onMount(load);
 
   const onPosterChange = (e: Event) => {
     const input = e.target as HTMLInputElement;
@@ -128,7 +115,12 @@
       poster_path = nextPosterPath;
       posterFile = null;
     } catch (e: any) {
-      error = e?.message || 'Něco se nepovedlo.';
+      const message = e?.message || 'Něco se nepovedlo.';
+      if (isJwtError(message)) {
+        await goto('/admin');
+        return;
+      }
+      error = message;
     } finally {
       saving = false;
     }
@@ -139,6 +131,10 @@
     if (!confirm('Opravdu smazat tuto akci?')) return;
     const { error: deleteError } = await supabase.from('events').delete().eq('id', id);
     if (deleteError) {
+      if (isJwtError(deleteError.message)) {
+        await goto('/admin');
+        return;
+      }
       error = deleteError.message;
       return;
     }
@@ -150,13 +146,7 @@
   <div class="adminEventForm">
     <Typography variant="h1" element="h1">Upravit akci</Typography>
 
-    {#if !supabase}
-      <Typography>Supabase není nastavený.</Typography>
-    {:else if !isSignedIn}
-      <Typography>Nejprve se přihlas na stránce <a href="/admin">/admin</a>.</Typography>
-    {:else if !isAdmin}
-      <Typography>Nemáš oprávnění.</Typography>
-    {:else if loading}
+    {#if loading}
       <Typography>Načítám…</Typography>
     {:else}
       <div class="adminEventForm__fields">
@@ -188,7 +178,7 @@
 
         <div class="adminEventForm__row">
           <label>
-            Vyměnit plakát (JPG, PNG nebo PDF)
+            Vyměnit plakát (JPG, PNG nebo WebP, max 10 MB)
             <input type="file" accept=".jpg,.jpeg,.png,.webp" on:change={onPosterChange} />
           </label>
           {#if posterNote}
@@ -202,7 +192,7 @@
       </div>
 
       <div class="adminEventForm__actions">
-        <Button text="Zpět" callback={() => goto('/admin/events')} />
+        <Button text="Zpět" href="/admin/events" />
         <Button disabled={saving} text={saving ? 'Ukládám…' : 'Uložit'} callback={save} />
         <Button text="Smazat" callback={deleteEvent} />
       </div>
@@ -258,4 +248,3 @@
     flex-wrap: wrap;
   }
 </style>
-

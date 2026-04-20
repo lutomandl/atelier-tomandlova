@@ -6,6 +6,9 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undef
 export const POSTERS_BUCKET =
   (import.meta.env.VITE_SUPABASE_POSTERS_BUCKET as string | undefined) || 'posters';
 
+export const IMAGE_TRANSFORMS_ENABLED =
+  (import.meta.env.VITE_SUPABASE_IMAGE_TRANSFORMS as string | undefined) === '1';
+
 let _supabase: SupabaseClient | null = null;
 
 export function getSupabase(): SupabaseClient | null {
@@ -15,10 +18,31 @@ export function getSupabase(): SupabaseClient | null {
   return _supabase;
 }
 
-export function getPosterPublicUrl(path: string | null | undefined): string | null {
+type PosterUrlOptions = { width?: number };
+
+export function getPosterPublicUrl(
+  path: string | null | undefined,
+  options: PosterUrlOptions = {}
+): string | null {
   if (!path) return null;
   const client = getSupabase();
   if (!client) return null;
-  const { data } = client.storage.from(POSTERS_BUCKET).getPublicUrl(path);
+
+  const transform =
+    IMAGE_TRANSFORMS_ENABLED && options.width
+      ? { transform: { width: options.width, resize: 'contain' as const } }
+      : undefined;
+
+  const { data } = client.storage.from(POSTERS_BUCKET).getPublicUrl(path, transform);
   return data.publicUrl || null;
+}
+
+// Relies on RLS on `admins` limiting SELECT to `auth.uid() = user_id`.
+// Non-admins see zero rows; admins see their own row.
+export async function isAdmin(): Promise<boolean> {
+  const client = getSupabase();
+  if (!client) return false;
+  const { data, error } = await client.from('admins').select('user_id').limit(1);
+  if (error) return false;
+  return (data ?? []).length > 0;
 }

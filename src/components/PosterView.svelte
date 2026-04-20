@@ -1,9 +1,13 @@
 <script lang="ts">
   import x from '$lib/assets/x.svg';
+  import { getPosterPublicUrl } from '../lib/supabaseClient';
 
-  export let url: string;
+  export let posterPath: string;
   export let close: () => void;
   export let viewPoster: boolean = false;
+
+  $: baseUrl = getPosterPublicUrl(posterPath);
+  const srcset = undefined;
 
   const closeModal = (event: Event) => {
     event.preventDefault();
@@ -24,7 +28,9 @@
     <img
       loading="lazy"
       decoding="async"
-      src={url}
+      src={baseUrl}
+      {srcset}
+      sizes="(max-width: 768px) 90vw, 1000px"
       alt="event poster"
     />
   </div>
