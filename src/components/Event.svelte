@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { EventObject, PosterObject } from '../utils/useStrapiQuery';
+  import type { EventObject } from '../utils/eventsApi';
+  import { getPosterPublicUrl } from '../lib/supabaseClient';
 
   import Typography from './Typography.svelte';
   import mapPin from '$lib/assets/map-pin.svg';
@@ -12,7 +13,8 @@
   let timeFormatted: string | null;
   let title: string;
   let description: string;
-  let poster: PosterObject | null;
+  let posterPath: string | null;
+  let thumbnailUrl: string | null;
   let place: string;
   let viewPoster: boolean = false;
   let dateFromCz: string | null;
@@ -21,7 +23,7 @@
   $: formatEventData(event);
 
   const formatEventData = (event: EventObject) => {
-    const { Title, Description, Place, StartingTime, To, From, Poster } = event?.attributes || {};
+    const { Title, Description, Place, StartingTime, To, From, PosterPath } = event?.attributes || {};
 
     const fromDate = From ? new Date(From) : null;
     const toDate = To ? new Date(To) : null;
@@ -47,7 +49,8 @@
     title = Title || '';
     place = Place || '';
     description = Description || '';
-    poster = Poster?.data?.attributes || null;
+    posterPath = PosterPath || null;
+    thumbnailUrl = getPosterPublicUrl(posterPath) || null;
   };
 
   const openPoster = () => {
@@ -85,11 +88,11 @@
     </div>
     <Typography>{description}</Typography>
   </div>
-  {#if poster}
+  {#if thumbnailUrl}
     <div class="event__poster">
       <div class="event__posterThumbnail" on:click={openPoster} on:keydown={openPoster}>
         <img
-          src={`${import.meta.env.VITE_STRAPI_URL}${poster?.formats?.thumbnail?.url || ''}`}
+          src={thumbnailUrl}
           alt="event poster thumbnail"
         />
       </div>
@@ -97,8 +100,8 @@
   {/if}
 </div>
 
-{#if poster}
-  <PosterView {poster} close={closePoster} bind:viewPoster />
+{#if posterPath}
+  <PosterView {posterPath} close={closePoster} bind:viewPoster />
 {/if}
 
 <style lang="scss">

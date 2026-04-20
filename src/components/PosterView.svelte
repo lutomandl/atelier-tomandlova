@@ -1,21 +1,18 @@
 <script lang="ts">
-  import type { PosterObject } from '../utils/useStrapiQuery';
   import x from '$lib/assets/x.svg';
+  import { getPosterPublicUrl } from '../lib/supabaseClient';
 
-  export let poster: PosterObject;
+  export let posterPath: string;
   export let close: () => void;
   export let viewPoster: boolean = false;
+
+  $: baseUrl = getPosterPublicUrl(posterPath);
+  const srcset = undefined;
 
   const closeModal = (event: Event) => {
     event.preventDefault();
     close();
   };
-
-  const url = import.meta.env.VITE_STRAPI_URL;
-  const { small, medium, large } = poster?.formats || {};
-  const sourceSet = `${small ? `${url}${small.url} ${small.width}w ${small.height}h,` : ''}
-    ${medium ? `${url}${medium.url} ${medium.width}w ${medium.height}h,` : ''}
-    ${large ? `${url}${large.url} ${large.width}w ${large.height}h` : ''}`;
 </script>
 
 <div class={`posterView ${viewPoster ? 'posterView--visible' : ''}`}>
@@ -31,9 +28,10 @@
     <img
       loading="lazy"
       decoding="async"
-      src={`${url}${poster?.url}`}
+      src={baseUrl}
+      {srcset}
+      sizes="(max-width: 768px) 90vw, 1000px"
       alt="event poster"
-      srcset={sourceSet}
     />
   </div>
 </div>

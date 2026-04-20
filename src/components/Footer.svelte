@@ -33,7 +33,7 @@
       </div>
       <OpeningHours />
       <div class="footer__contactButton">
-        <Button bg="dark" href="kontakt" text={contactUs} />
+        <Button bg="dark" href="/kontakt" text={contactUs} />
       </div>
     </div>
   </div>
