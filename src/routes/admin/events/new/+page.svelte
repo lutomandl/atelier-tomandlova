@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import { getSupabase } from '$lib/supabaseClient';
   import { uploadPoster } from '../../../../utils/posterUpload';
@@ -13,8 +12,6 @@
 
   let loading = false;
   let error: string | null = null;
-  let isSignedIn = false;
-  let isAdmin = false;
 
   let title = '';
   let description = '';
@@ -27,29 +24,14 @@
   let posterFile: File | null = null;
   let posterNote = '';
 
-  const refreshAuth = async () => {
-    if (!supabase) return;
-    const { data } = await supabase.auth.getSession();
-    isSignedIn = !!data.session?.user;
-  };
-
-  const checkAdmin = async () => {
-    if (!supabase) return false;
-    const { data, error } = await supabase.from('admins').select('user_id').limit(1);
-    if (error) return false;
-    return (data || []).length > 0;
-  };
-
-  onMount(async () => {
-    await refreshAuth();
-    isAdmin = await checkAdmin();
-  });
-
   const onPosterChange = (e: Event) => {
     const input = e.target as HTMLInputElement;
     posterFile = input.files?.[0] || null;
     posterNote = '';
   };
+
+  const isJwtError = (message: string | undefined) =>
+    !!message && /jwt|token.*expired/i.test(message);
 
   const save = async () => {
     if (!supabase) return;
@@ -67,7 +49,6 @@
     loading = true;
 
     let poster_path: string | null = null;
-    let poster_mime: string | null = null;
 
     try {
       if (posterFile) {
@@ -77,7 +58,7 @@
         posterNote = 'Plakát nahrán.';
       }
 
-      const { data, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from('events')
         .insert({
           title: title.trim(),
@@ -96,7 +77,12 @@
 
       await goto(`/admin/events`);
     } catch (e: any) {
-      error = e?.message || 'Něco se nepovedlo.';
+      const message = e?.message || 'Něco se nepovedlo.';
+      if (isJwtError(message)) {
+        await goto('/admin');
+        return;
+      }
+      error = message;
     } finally {
       loading = false;
     }
@@ -107,60 +93,52 @@
   <div class="adminEventForm">
     <Typography variant="h1" element="h1">Nová akce</Typography>
 
-    {#if !supabase}
-      <Typography>Supabase není nastavený.</Typography>
-    {:else if !isSignedIn}
-      <Typography>Nejprve se přihlas na stránce <a href="/admin">/admin</a>.</Typography>
-    {:else if !isAdmin}
-      <Typography>Nemáš oprávnění.</Typography>
-    {:else}
-      <div class="adminEventForm__fields">
-        <Input label="Název" name="title" bind:value={title} />
-        <Input label="Místo" name="place" required={false} bind:value={place} />
-        <Input label="Popis" name="description" required={false} size="big" bind:value={description} />
+    <div class="adminEventForm__fields">
+      <Input label="Název" name="title" bind:value={title} />
+      <Input label="Místo" name="place" required={false} bind:value={place} />
+      <Input label="Popis" name="description" required={false} size="big" bind:value={description} />
 
-        <div class="adminEventForm__row">
-          <div class="adminEventForm__col">
-            <label for="fromDate">Datum od</label>
-            <input id="fromDate" type="date" bind:value={fromDate} />
-          </div>
-          <div class="adminEventForm__col">
-            <label for="toDate">Datum do</label>
-            <input id="toDate" type="date" bind:value={toDate} />
-          </div>
-          <div class="adminEventForm__col">
-            <label for="startingTime">Čas</label>
-            <input id="startingTime" type="time" bind:value={startingTime} />
-          </div>
+      <div class="adminEventForm__row">
+        <div class="adminEventForm__col">
+          <label for="fromDate">Datum od</label>
+          <input id="fromDate" type="date" bind:value={fromDate} />
         </div>
-
-        <div class="adminEventForm__row">
-          <label class="adminEventForm__checkbox">
-            <input type="checkbox" bind:checked={published} />
-            <span>Publikovat hned</span>
-          </label>
+        <div class="adminEventForm__col">
+          <label for="toDate">Datum do</label>
+          <input id="toDate" type="date" bind:value={toDate} />
         </div>
-
-        <div class="adminEventForm__row">
-          <label>
-            Plakát (JPG, PNG nebo PDF)
-            <input type="file" accept=".jpg,.jpeg,.png,.webp" on:change={onPosterChange} />
-          </label>
-          {#if posterNote}
-            <Typography variant="subtitle">{posterNote}</Typography>
-          {/if}
+        <div class="adminEventForm__col">
+          <label for="startingTime">Čas</label>
+          <input id="startingTime" type="time" bind:value={startingTime} />
         </div>
+      </div>
 
-        {#if error}
-          <Typography><strong>{error}</strong></Typography>
+      <div class="adminEventForm__row">
+        <label class="adminEventForm__checkbox">
+          <input type="checkbox" bind:checked={published} />
+          <span>Publikovat hned</span>
+        </label>
+      </div>
+
+      <div class="adminEventForm__row">
+        <label>
+          Plakát (JPG, PNG nebo WebP, max 10 MB)
+          <input type="file" accept=".jpg,.jpeg,.png,.webp" on:change={onPosterChange} />
+        </label>
+        {#if posterNote}
+          <Typography variant="subtitle">{posterNote}</Typography>
         {/if}
       </div>
 
-      <div class="adminEventForm__actions">
-        <Button text="Zpět" callback={() => goto('/admin/events')} />
-        <Button disabled={loading} text={loading ? 'Ukládám…' : 'Uložit'} callback={save} />
-      </div>
-    {/if}
+      {#if error}
+        <Typography><strong>{error}</strong></Typography>
+      {/if}
+    </div>
+
+    <div class="adminEventForm__actions">
+      <Button text="Zpět" href="/admin/events" />
+      <Button disabled={loading} text={loading ? 'Ukládám…' : 'Uložit'} callback={save} />
+    </div>
   </div>
 </Section>
 

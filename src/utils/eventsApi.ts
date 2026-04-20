@@ -28,6 +28,7 @@ export default async function getEvents(
     .select('id,title,description,place,from_date,to_date,starting_time,poster_path', {
       count: 'exact',
     })
+    .eq('published', true)
     .or(dateOr)
     .order('from_date', { ascending: sort === 'asc', nullsFirst: false })
     .range(start, start + limit - 1);
