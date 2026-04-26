@@ -437,7 +437,7 @@ const localeMap: Record<Language, string> = {
   en: 'en-GB',
   de: 'de-DE',
 };
-x 
+
 export const availableLanguages: { code: Language; label: string }[] = [
   { code: 'cs', label: 'CS' },
   { code: 'en', label: 'EN' },
