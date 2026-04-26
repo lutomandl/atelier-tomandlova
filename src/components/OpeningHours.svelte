@@ -1,27 +1,13 @@
 <script>
   import Typography from './Typography.svelte';
-  import translations from '../utils/useTranslations';
+  import { t } from '../utils/useTranslations';
 
-  const {
-    monday,
-    mondayTime,
-    tuesday,
-    tuesdayTime,
-    wednesday,
-    wednesdayTime,
-    thursday,
-    thursdayTime,
-    friday,
-    fridayTime,
-    openingHoursNote,
-  } = translations.contact.openingHours;
-
-  const lines = [
-    { day: monday, time: mondayTime },
-    { day: tuesday, time: tuesdayTime },
-    { day: wednesday, time: wednesdayTime },
-    { day: thursday, time: thursdayTime },
-    { day: friday, time: fridayTime },
+  $: lines = [
+    { day: $t.contact.openingHours.monday, time: $t.contact.openingHours.mondayTime },
+    { day: $t.contact.openingHours.tuesday, time: $t.contact.openingHours.tuesdayTime },
+    { day: $t.contact.openingHours.wednesday, time: $t.contact.openingHours.wednesdayTime },
+    { day: $t.contact.openingHours.thursday, time: $t.contact.openingHours.thursdayTime },
+    { day: $t.contact.openingHours.friday, time: $t.contact.openingHours.fridayTime },
   ];
 </script>
 
@@ -32,7 +18,7 @@
       <Typography variant="subtitle" element="span">{time}</Typography>
     </div>
   {/each}
-  <Typography variant="subtitle" element="p">{openingHoursNote}</Typography>
+  <Typography variant="subtitle" element="p">{$t.contact.openingHours.openingHoursNote}</Typography>
 </div>
 
 <style lang="scss">

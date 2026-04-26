@@ -4,51 +4,35 @@
 
   import Typography from './Typography.svelte';
   import PosterView from './PosterView.svelte';
+  import { t, locale } from '../utils/useTranslations';
 
   export let event: EventObject;
-  let dayStart: number | null = null;
-  let dayEnd: number | null = null;
-  let monthShort: string = '';
-  let timeFormatted: string | null;
-  let title: string;
-  let description: string;
-  let posterPath: string | null;
-  let thumbnailUrl: string | null;
-  let place: string;
   let viewPoster: boolean = false;
-  let dateFromCz: string | null;
-  let dateToCz: string | null;
 
-  $: formatEventData(event);
+  // Re-runs whenever either the event or the active locale changes.
+  $: ({
+    Title: title = '',
+    Description: description = '',
+    Place: place = '',
+    StartingTime,
+    From,
+    To,
+    PosterPath: posterPath = null,
+  } = event?.attributes || {});
 
-  const formatEventData = (event: EventObject) => {
-    const { Title, Description, Place, StartingTime, To, From, PosterPath } = event?.attributes || {};
+  $: fromDate = From ? new Date(From) : null;
+  $: toDate = To ? new Date(To) : null;
 
-    const fromDate = From ? new Date(From) : null;
-    const toDate = To ? new Date(To) : null;
-
-    dayStart = fromDate?.getDate() ?? null;
-    dayEnd = toDate?.getDate() ?? null;
-    monthShort =
-      fromDate?.toLocaleDateString('cs-CZ', { month: 'short' }).replace('.', '') || '';
-
-    dateFromCz =
-      fromDate?.toLocaleDateString('cs-CZ', {
-        day: 'numeric',
-        month: 'long',
-      }) || null;
-    dateToCz =
-      toDate?.toLocaleDateString('cs-CZ', {
-        day: 'numeric',
-        month: 'long',
-      }) || null;
-    timeFormatted = StartingTime?.slice(0, 5) || null;
-    title = Title || '';
-    place = Place || '';
-    description = Description || '';
-    posterPath = PosterPath || null;
-    thumbnailUrl = getPosterPublicUrl(posterPath) || null;
-  };
+  $: dayStart = fromDate?.getDate() ?? null;
+  $: dayEnd = toDate?.getDate() ?? null;
+  $: monthShort =
+    fromDate?.toLocaleDateString($locale, { month: 'short' }).replace('.', '') || '';
+  $: dateFromLong =
+    fromDate?.toLocaleDateString($locale, { day: 'numeric', month: 'long' }) || null;
+  $: dateToLong =
+    toDate?.toLocaleDateString($locale, { day: 'numeric', month: 'long' }) || null;
+  $: timeFormatted = StartingTime?.slice(0, 5) || null;
+  $: thumbnailUrl = getPosterPublicUrl(posterPath) || null;
 
   const openPoster = () => {
     viewPoster = true;
@@ -73,17 +57,17 @@
     <dl class="event__details">
       {#if place}
         <div class="event__details__line">
-          <dt>Místo</dt>
+          <dt>{$t.events.fields.place}</dt>
           <dd>{place}</dd>
         </div>
       {/if}
       <div class="event__details__line">
-        <dt>Kdy</dt>
-        <dd>{dateFromCz}{dateToCz && dateFromCz !== dateToCz ? ` – ${dateToCz}` : ''}</dd>
+        <dt>{$t.events.fields.when}</dt>
+        <dd>{dateFromLong}{dateToLong && dateFromLong !== dateToLong ? ` – ${dateToLong}` : ''}</dd>
       </div>
       {#if timeFormatted}
         <div class="event__details__line">
-          <dt>Čas</dt>
+          <dt>{$t.events.fields.time}</dt>
           <dd>{timeFormatted}</dd>
         </div>
       {/if}
@@ -99,9 +83,9 @@
       type="button"
       class="event__poster"
       on:click={openPoster}
-      aria-label="Zobrazit plakát"
+      aria-label={$t.events.viewPoster}
     >
-      <img src={thumbnailUrl} alt="plakát akce {title}" loading="lazy" />
+      <img src={thumbnailUrl} alt="{$t.events.posterAltPrefix} {title}" loading="lazy" />
     </button>
   {/if}
 </article>

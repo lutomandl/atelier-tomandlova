@@ -1012,16 +1012,16 @@ var init_devalue = __esm({
 
 // node_modules/clsx/dist/clsx.mjs
 function r(e) {
-  var t, f, n = "";
+  var t2, f, n = "";
   if ("string" == typeof e || "number" == typeof e) n += e;
   else if ("object" == typeof e) if (Array.isArray(e)) {
     var o = e.length;
-    for (t = 0; t < o; t++) e[t] && (f = r(e[t])) && (n && (n += " "), n += f);
+    for (t2 = 0; t2 < o; t2++) e[t2] && (f = r(e[t2])) && (n && (n += " "), n += f);
   } else for (f in e) e[f] && (n && (n += " "), n += f);
   return n;
 }
 function clsx() {
-  for (var e, t, f = 0, n = "", o = arguments.length; f < o; f++) (e = arguments[f]) && (t = r(e)) && (n && (n += " "), n += t);
+  for (var e, t2, f = 0, n = "", o = arguments.length; f < o; f++) (e = arguments[f]) && (t2 = r(e)) && (n && (n += " "), n += t2);
   return n;
 }
 var init_clsx = __esm({
@@ -1541,6 +1541,39 @@ function writable(value, start = noop) {
     update,
     subscribe
   };
+}
+function derived$1(stores, fn, initial_value) {
+  const single = !Array.isArray(stores);
+  const stores_array = single ? [stores] : stores;
+  if (!stores_array.every(Boolean)) throw new Error("derived() expects stores as input, got a falsy value");
+  const auto = fn.length < 2;
+  return readable(initial_value, (set2, update) => {
+    let started = false;
+    const values = [];
+    let pending = 0;
+    let cleanup = noop;
+    const sync = () => {
+      if (pending) return;
+      cleanup();
+      const result = fn(single ? values[0] : values, set2, update);
+      if (auto) set2(result);
+      else cleanup = typeof result === "function" ? result : noop;
+    };
+    const unsubscribers = stores_array.map((store, i) => subscribe_to_store(store, (value) => {
+      values[i] = value;
+      pending &= ~(1 << i);
+      if (started) sync();
+    }, () => {
+      pending |= 1 << i;
+    }));
+    started = true;
+    sync();
+    return function stop() {
+      run_all(unsubscribers);
+      cleanup();
+      started = false;
+    };
+  });
 }
 function flushSync(fn) {
   var was_flushing_sync = is_flushing_sync;
@@ -2182,9 +2215,9 @@ function pause_effect(effect, callback, destroy = true) {
 function pause_children(effect, transitions, local) {
   if ((effect.f & 8192) !== 0) return;
   effect.f ^= INERT;
-  var t = effect.nodes && effect.nodes.t;
-  if (t !== null) {
-    for (const transition of t) if (transition.is_global || local) transitions.push(transition);
+  var t2 = effect.nodes && effect.nodes.t;
+  if (t2 !== null) {
+    for (const transition of t2) if (transition.is_global || local) transitions.push(transition);
   }
   var child = effect.first;
   while (child !== null) {
@@ -3011,7 +3044,7 @@ var init_dev = __esm({
       if (__privateMethod(this, _Batch_instances, is_deferred_fn).call(this) || __privateMethod(this, _Batch_instances, is_blocked_fn).call(this)) {
         __privateMethod(this, _Batch_instances, defer_effects_fn).call(this, render_effects);
         __privateMethod(this, _Batch_instances, defer_effects_fn).call(this, effects);
-        for (const [e, t] of __privateGet(this, _skipped_branches)) reset_branch(e, t);
+        for (const [e, t2] of __privateGet(this, _skipped_branches)) reset_branch(e, t2);
       } else {
         if (__privateGet(this, _pending).size === 0) batches.delete(this);
         __privateGet(this, _dirty_effects).clear();
@@ -4784,7 +4817,6 @@ function hint_for_supported_files(key2, ext = ".js") {
 var DATA_SUFFIX, HTML_DATA_SUFFIX, ROUTE_SUFFIX, noop_span, noop_span_context, internal, valid_layout_exports, valid_page_exports, valid_layout_server_exports, valid_page_server_exports, valid_server_exports, validate_layout_exports, validate_page_exports, validate_layout_server_exports, validate_page_server_exports, validate_server_exports;
 var init_exports2 = __esm({
   ".svelte-kit/output/server/chunks/exports.js"() {
-    init_dev();
     DATA_SUFFIX = "/__data.json";
     HTML_DATA_SUFFIX = ".html__data.json";
     ROUTE_SUFFIX = "/__route.js";
@@ -4863,6 +4895,13 @@ var init_exports2 = __esm({
     validate_layout_server_exports = validator(valid_layout_server_exports);
     validate_page_server_exports = validator(valid_page_server_exports);
     validate_server_exports = validator(valid_server_exports);
+  }
+});
+
+// .svelte-kit/output/server/chunks/index-server2.js
+var init_index_server2 = __esm({
+  ".svelte-kit/output/server/chunks/index-server2.js"() {
+    init_dev();
   }
 });
 
@@ -5407,7 +5446,7 @@ var init_internal2 = __esm({
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
       },
-      version_hash: "yeb1zm"
+      version_hash: "q7x03g"
     };
   }
 });
@@ -5610,6 +5649,7 @@ var init_client = __esm({
     init_environment();
     init_exports2();
     init_dev();
+    init_index_server2();
     init_internal2();
     init_internal();
     init_server();
@@ -5739,95 +5779,427 @@ var init_Button = __esm({
 });
 
 // .svelte-kit/output/server/chunks/useTranslations.js
-var translations;
+function readInitial() {
+  return "cs";
+}
+var dictionaries, localeMap, availableLanguages, language, t, locale;
 var init_useTranslations = __esm({
   ".svelte-kit/output/server/chunks/useTranslations.js"() {
-    translations = {
-      general: { title: "Ateli\xE9r Tomandlov\xE1" },
-      error: {
-        somethingWentWrong: "N\u011Bco se pokazilo",
-        goBack: "Obnovit"
-      },
-      menu: {
-        about: "o n\xE1s",
-        events: "akce",
-        contact: "kontakt",
-        gallery: "galerie"
-      },
-      ourWork: {
-        ourWork: "Na\u0161i pr\xE1ci charakterizuje...",
-        designHeading: "Jedine\u010Dn\xFD design",
-        designText: "Komfortn\xED od\u011Bv vznik\xE1 promy\u0161len\xFDm v\xFDb\u011Brem tkaniny, individu\xE1ln\u011B volen\xFDm tvarem, hrou barev a kompozic\xED v\xFDtvarn\xE9ho detailu.",
-        qualityHeading: "Kvalitn\xED materi\xE1ly",
-        qualityText: "Podstatnou slo\u017Ekou je kvalitn\xED p\u0159\xEDrodn\xED materi\xE1l, jeho kr\xE1sa, jedine\u010Dnost a specifick\xE9 vlastnosti, blahod\xE1rn\xE9 pro lidsk\xE9 t\u011Blo.",
-        handmadeHeading: "Ru\u010Dn\xED v\xFDroba",
-        handmadeText: "Na\u0161e od\u011Bvy by nebyly, jak\xE9 jsou, bez mistrovsk\xE9ho krej\u010Dovsk\xE9ho zpracov\xE1n\xED.",
-        learnMore: "V\xEDce o n\xE1s"
-      },
-      events: {
-        upcomingEvents: "Nadch\xE1zej\xEDc\xED akce",
-        moreEvents: "V\u0161echny akce",
-        pastEvents: "Minul\xE9 akce",
-        noEvents: "Dal\u0161\xED ud\xE1losti pl\xE1nujeme brzy."
-      },
-      about: {
-        people: "Lid\xE9",
-        aboutUsText: `Lenka Tomandlov\xE1 vystudovala Libereckou textiln\xED fakultu, od\u011Bvn\xED tvorb\u011B se v\u011Bnuje t\xE9m\u011B\u0159
-      30\xA0let. Ateli\xE9r s\xEDdl\xED v historick\xE9m centru Chebu a je dnes u\u017E neodd\u011Blitelnou sou\u010D\xE1st\xED
+    init_dev();
+    init_index_server2();
+    dictionaries = {
+      cs: {
+        general: { title: "Ateli\xE9r Tomandlov\xE1" },
+        error: {
+          somethingWentWrong: "N\u011Bco se pokazilo",
+          goBack: "Obnovit",
+          pageTitle: "Chyba"
+        },
+        menu: {
+          about: "o n\xE1s",
+          events: "akce",
+          contact: "kontakt",
+          gallery: "galerie",
+          home: "dom\u016F",
+          homeAria: "Ateli\xE9r Tomandlov\xE1 \u2014 dom\u016F",
+          openMenu: "Otev\u0159\xEDt menu",
+          closeMenu: "Zav\u0159\xEDt menu",
+          languageLabel: "Jazyk"
+        },
+        header: {
+          metaTagOne: "autorsk\xE9 od\u011Bvy",
+          metaTagTwo: "ru\u010Dn\xED v\xFDroba",
+          tagline: "Krej\u010Dovsk\xFD ateli\xE9r v historick\xE9m centru Chebu. Autorsk\xE9 od\u011Bvy z p\u0159\xEDrodn\xEDch materi\xE1l\u016F, \u0161it\xE9 ru\u010Dn\u011B na m\xEDru."
+        },
+        ourWork: {
+          eyebrow: "Atelier",
+          ourWork: "Na\u0161i pr\xE1ci charakterizuje...",
+          designHeading: "Jedine\u010Dn\xFD design",
+          designText: "Komfortn\xED od\u011Bv vznik\xE1 promy\u0161len\xFDm v\xFDb\u011Brem tkaniny, individu\xE1ln\u011B volen\xFDm tvarem, hrou barev a kompozic\xED v\xFDtvarn\xE9ho detailu.",
+          qualityHeading: "Kvalitn\xED materi\xE1ly",
+          qualityText: "Podstatnou slo\u017Ekou je kvalitn\xED p\u0159\xEDrodn\xED materi\xE1l, jeho kr\xE1sa, jedine\u010Dnost a specifick\xE9 vlastnosti, blahod\xE1rn\xE9 pro lidsk\xE9 t\u011Blo.",
+          handmadeHeading: "Ru\u010Dn\xED v\xFDroba",
+          handmadeText: "Na\u0161e od\u011Bvy by nebyly, jak\xE9 jsou, bez mistrovsk\xE9ho krej\u010Dovsk\xE9ho zpracov\xE1n\xED.",
+          learnMore: "V\xEDce o n\xE1s"
+        },
+        events: {
+          eyebrow: "Program",
+          upcomingEvents: "Nadch\xE1zej\xEDc\xED akce",
+          moreEvents: "V\u0161echny akce",
+          pastEvents: "Minul\xE9 akce",
+          noEvents: "Dal\u0161\xED ud\xE1losti pl\xE1nujeme brzy.",
+          loadMore: "Na\u010D\xEDst dal\u0161\xED",
+          fields: {
+            place: "M\xEDsto",
+            when: "Kdy",
+            time: "\u010Cas"
+          },
+          posterAltPrefix: "plak\xE1t akce",
+          viewPoster: "Zobrazit plak\xE1t",
+          closePoster: "Zav\u0159\xEDt plak\xE1t",
+          eyebrowAkce: "Akce"
+        },
+        about: {
+          eyebrow: "O n\xE1s",
+          peopleEyebrow: "Lid\xE9 v ateli\xE9ru",
+          eventsEyebrow: "Akce",
+          people: "Lid\xE9",
+          introLede: "Autorsk\xE9 od\u011Bvy z p\u0159\xEDrodn\xEDch materi\xE1l\u016F, \u0161it\xE9 ru\u010Dn\u011B na m\xEDru v historick\xE9m centru Chebu.",
+          aboutUsText: `Lenka Tomandlov\xE1 vystudovala Libereckou textiln\xED fakultu, od\u011Bvn\xED tvorb\u011B se v\u011Bnuje t\xE9m\u011B\u0159
+      30 let. Ateli\xE9r s\xEDdl\xED v historick\xE9m centru Chebu a je dnes u\u017E neodd\u011Blitelnou sou\u010D\xE1st\xED
       star\xE9ho m\u011Bsta.`,
-        quoteLenka: `\u201ESt\u0159edem m\xE9ho z\xE1jmu i samotnou inspirac\xED je mi p\u0159\xEDrodn\xED materi\xE1l, jeho kr\xE1sa, jedine\u010Dnost a
+          quoteLenka: `\u201ESt\u0159edem m\xE9ho z\xE1jmu i samotnou inspirac\xED je mi p\u0159\xEDrodn\xED materi\xE1l, jeho kr\xE1sa, jedine\u010Dnost a
       specifick\xE9 vlastnosti, blahod\xE1rn\xE9 pro lidsk\xE9 t\u011Blo.\u201D`,
-        quotePeople: `\u201EKomfortn\xED od\u011Bv vznik\xE1 promy\u0161len\xFDm v\xFDb\u011Brem tkaniny, individu\xE1ln\u011B volen\xFDm tvarem, hrou barev,
-      kompozic\xED v\xFDtvarn\xE9ho detailu a v\xA0neposledn\xED \u0159ad\u011B mistrovsk\xFDm krej\u010Dovsk\xFDm zpracov\xE1n\xEDm Olgy
+          founderAttribution: "\u2014 Lenka Tomandlov\xE1, zakladatelka",
+          quotePeople: `\u201EKomfortn\xED od\u011Bv vznik\xE1 promy\u0161len\xFDm v\xFDb\u011Brem tkaniny, individu\xE1ln\u011B volen\xFDm tvarem, hrou barev,
+      kompozic\xED v\xFDtvarn\xE9ho detailu a v neposledn\xED \u0159ad\u011B mistrovsk\xFDm krej\u010Dovsk\xFDm zpracov\xE1n\xEDm Olgy
       Dra\u017Eanov\xE9 a Nelly Kaiser\u0161otov\xE9.\u201C`,
-        eventsInfo: `Pravideln\u011B po\u0159\xE1d\xE1me prodejn\xED v\xFDstavy a p\u0159ehl\xEDdky. Aktu\xE1ln\xED informace o akc\xEDch naleznete v\u017Edy v sekci`,
-        ladaInfo: "V na\u0161em ateli\xE9ru najdete krom\u011B na\u0161\xED tvorby i n\xE1dhern\xE9 autorsk\xE9 \u0161perky a sklo od",
-        ladaVosejpkova: "Lady Vosejpkov\xE9",
-        evaInfo: "Dlouhodob\u011B spolupracujeme i s fotografkou",
-        evaHajsmanova: "Evou Haj\u0161manovou"
-      },
-      gallery: {
-        heading: "Galerie",
-        noImages: "Zat\xEDm zde nem\xE1me \u017E\xE1dn\xE9 obr\xE1zky"
-      },
-      contact: {
-        address: {
-          street: "\u017Didovsk\xE1 412/9",
-          city: "Cheb, 350 02"
+          eventsInfo: `Pravideln\u011B po\u0159\xE1d\xE1me prodejn\xED v\xFDstavy a p\u0159ehl\xEDdky. Aktu\xE1ln\xED informace o akc\xEDch naleznete v\u017Edy v sekci`,
+          eventsCta: "Aktu\xE1ln\xED akce",
+          ladaInfo: "V na\u0161em ateli\xE9ru najdete krom\u011B na\u0161\xED tvorby i n\xE1dhern\xE9 autorsk\xE9 \u0161perky a sklo od",
+          ladaVosejpkova: "Lady Vosejpkov\xE9",
+          evaInfo: "Dlouhodob\u011B spolupracujeme i s fotografkou",
+          evaHajsmanova: "Evou Haj\u0161manovou",
+          atelierImageAlt: "Ateli\xE9r Tomandlov\xE1 \u2014 interi\xE9r krej\u010Dovsk\xE9 d\xEDlny v Chebu",
+          atelierImageCaption: "Ateli\xE9r v \u017Didovsk\xE9 ulici, Cheb",
+          peopleImageAlt: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 a Eva Haj\u0161manov\xE1",
+          peopleImageCaption: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 a Eva Haj\u0161manov\xE1",
+          roles: {
+            tailoring: "Krej\u010Dovsk\xE9 zpracov\xE1n\xED",
+            jewelry: "Autorsk\xE9 \u0161perky & sklo",
+            photography: "Fotografie"
+          },
+          tailorsName: "Olga Dra\u017Eanov\xE1 & Nelly Kaiser\u0161otov\xE1",
+          tailorsText: "Mistrovsk\xE9 krej\u010Dovstv\xED, kter\xE9 stoj\xED za ka\u017Ed\xFDm kouskem, jen\u017E z ateli\xE9ru odch\xE1z\xED."
         },
-        email: "info@ateliertomandlova.cz",
-        openingHours: {
-          monday: "Po:",
-          mondayTime: "11 - 13 a 14 - 17",
-          tuesday: "\xDAt:",
-          tuesdayTime: "10 - 12 a 14 - 17",
-          wednesday: "St:",
-          wednesdayTime: "10 - 12 a 14 - 16",
-          thursday: "\u010Ct:",
-          thursdayTime: "10 - 12 a 14 - 17",
-          friday: "P\xE1:",
-          fridayTime: "11 - 12 a 14 - 16",
-          openingHoursNote: "Do odvol\xE1n\xED poledn\xED pauza denn\u011B od 12 do 14 hodin."
+        gallery: {
+          heading: "Galerie",
+          noImages: "Zat\xEDm zde nem\xE1me \u017E\xE1dn\xE9 obr\xE1zky"
         },
-        contactUs: "Kontaktujte n\xE1s",
-        contactUsText: "Pokud m\xE1te dotaz ohledn\u011B na\u0161ich slu\u017Eeb nebo pot\u0159ebujete poradit, nev\xE1hejte se na n\xE1s obr\xE1tit.",
-        whereToFindUs: "Kde n\xE1s najdete",
-        form: {
-          name: "Jm\xE9no",
-          email: "Email",
-          message: "Zpr\xE1va",
-          submit: "Odeslat",
-          generalError: "N\u011Bco se pokazilo, zkuste to pros\xEDm znovu.",
-          successMessage: "D\u011Bkujeme, zpr\xE1va byla \xFAsp\u011B\u0161n\u011B odesl\xE1na. Brzy se ozveme zp\u011Bt.",
-          nameMissing: "Pros\xEDm vypl\u0148te va\u0161e jm\xE9no",
-          emailMissing: "Pros\xEDm vypl\u0148te v\xE1\u0161 email",
-          messageMissing: "Pros\xEDm vypl\u0148te zpr\xE1vu, kterou n\xE1m chcete poslat",
-          nameTooLong: "Jm\xE9no je p\u0159\xEDli\u0161 dlouh\xE9",
-          emailInvalid: "Email nen\xED ve spr\xE1vn\xE9m form\xE1tu",
-          messageTooLong: "Zpr\xE1va je p\u0159\xEDli\u0161 dlouh\xE1"
+        contact: {
+          eyebrow: "Kontakt",
+          placeEyebrow: "M\xEDsto",
+          mapTitle: "Ateli\xE9r Tomandlov\xE1 na map\u011B",
+          address: {
+            street: "\u017Didovsk\xE1 412/9",
+            city: "Cheb, 350 02"
+          },
+          email: "info@ateliertomandlova.cz",
+          openingHours: {
+            monday: "Po:",
+            mondayTime: "11 - 13 a 14 - 17",
+            tuesday: "\xDAt:",
+            tuesdayTime: "10 - 12 a 14 - 17",
+            wednesday: "St:",
+            wednesdayTime: "10 - 12 a 14 - 16",
+            thursday: "\u010Ct:",
+            thursdayTime: "10 - 12 a 14 - 17",
+            friday: "P\xE1:",
+            fridayTime: "11 - 12 a 14 - 16",
+            openingHoursNote: "Do odvol\xE1n\xED poledn\xED pauza denn\u011B od 12 do 14 hodin."
+          },
+          contactUs: "Kontaktujte n\xE1s",
+          contactUsText: "Pokud m\xE1te dotaz ohledn\u011B na\u0161ich slu\u017Eeb nebo pot\u0159ebujete poradit, nev\xE1hejte se na n\xE1s obr\xE1tit.",
+          whereToFindUs: "Kde n\xE1s najdete",
+          form: {
+            name: "Jm\xE9no",
+            email: "Email",
+            message: "Zpr\xE1va",
+            submit: "Odeslat",
+            generalError: "N\u011Bco se pokazilo, zkuste to pros\xEDm znovu.",
+            successMessage: "D\u011Bkujeme, zpr\xE1va byla \xFAsp\u011B\u0161n\u011B odesl\xE1na. Brzy se ozveme zp\u011Bt.",
+            nameMissing: "Pros\xEDm vypl\u0148te va\u0161e jm\xE9no",
+            emailMissing: "Pros\xEDm vypl\u0148te v\xE1\u0161 email",
+            messageMissing: "Pros\xEDm vypl\u0148te zpr\xE1vu, kterou n\xE1m chcete poslat",
+            nameTooLong: "Jm\xE9no je p\u0159\xEDli\u0161 dlouh\xE9",
+            emailInvalid: "Email nen\xED ve spr\xE1vn\xE9m form\xE1tu",
+            messageTooLong: "Zpr\xE1va je p\u0159\xEDli\u0161 dlouh\xE1"
+          }
+        },
+        footer: {
+          subtitle: "Krej\u010Dovsk\xFD ateli\xE9r \xB7 Cheb",
+          addressLine: "\u017Didovsk\xE1 412/9 \xB7 Cheb"
+        }
+      },
+      en: {
+        general: { title: "Ateli\xE9r Tomandlov\xE1" },
+        error: {
+          somethingWentWrong: "Something went wrong",
+          goBack: "Reload",
+          pageTitle: "Error"
+        },
+        menu: {
+          about: "about",
+          events: "events",
+          contact: "contact",
+          gallery: "gallery",
+          home: "home",
+          homeAria: "Ateli\xE9r Tomandlov\xE1 \u2014 home",
+          openMenu: "Open menu",
+          closeMenu: "Close menu",
+          languageLabel: "Language"
+        },
+        header: {
+          metaTagOne: "original clothing",
+          metaTagTwo: "handmade",
+          tagline: "A tailor\u2019s atelier in the historic centre of Cheb. Original clothing made by hand from natural materials."
+        },
+        ourWork: {
+          eyebrow: "Atelier",
+          ourWork: "Our work is shaped by\u2026",
+          designHeading: "Distinctive design",
+          designText: "A comfortable garment grows from a thoughtful choice of fabric, individually shaped silhouette, play of colours and a careful composition of detail.",
+          qualityHeading: "Quality materials",
+          qualityText: "A core ingredient is fine natural fabric \u2014 its beauty, singularity and specific properties, kind to the human body.",
+          handmadeHeading: "Handmade",
+          handmadeText: "Our garments would not be what they are without masterful tailoring.",
+          learnMore: "More about us"
+        },
+        events: {
+          eyebrow: "Programme",
+          upcomingEvents: "Upcoming events",
+          moreEvents: "All events",
+          pastEvents: "Past events",
+          noEvents: "More events are coming soon.",
+          loadMore: "Load more",
+          fields: {
+            place: "Where",
+            when: "When",
+            time: "Time"
+          },
+          posterAltPrefix: "event poster",
+          viewPoster: "View poster",
+          closePoster: "Close poster",
+          eyebrowAkce: "Events"
+        },
+        about: {
+          eyebrow: "About us",
+          peopleEyebrow: "People in the atelier",
+          eventsEyebrow: "Events",
+          people: "People",
+          introLede: "Original clothing from natural materials, hand-tailored in the historic centre of Cheb.",
+          aboutUsText: `Lenka Tomandlov\xE1 graduated from the Liberec textile faculty and has been making clothing for almost 30 years. The atelier sits in the historic centre of Cheb and is by now an inseparable part of the old town.`,
+          quoteLenka: `\u201EAt the centre of my interest, and the source of my inspiration, are natural materials \u2014 their beauty, their singularity, and the specific qualities they offer the human body.\u201D`,
+          founderAttribution: "\u2014 Lenka Tomandlov\xE1, founder",
+          quotePeople: `\u201EA comfortable garment grows from a thoughtful choice of fabric, an individually shaped silhouette, play of colours, careful detail and \u2014 not least \u2014 the masterful tailoring of Olga Dra\u017Eanov\xE1 and Nelly Kaiser\u0161otov\xE1.\u201C`,
+          eventsInfo: `We regularly host trunk shows and exhibitions. You can always find the latest news in the section`,
+          eventsCta: "Current events",
+          ladaInfo: "Beyond our own work, in the atelier you will also find beautiful original jewellery and glass by",
+          ladaVosejpkova: "Lada Vosejpkov\xE1",
+          evaInfo: "We have a long-standing collaboration with the photographer",
+          evaHajsmanova: "Eva Haj\u0161manov\xE1",
+          atelierImageAlt: "Ateli\xE9r Tomandlov\xE1 \u2014 interior of the tailor\u2019s atelier in Cheb",
+          atelierImageCaption: "The atelier on \u017Didovsk\xE1 street, Cheb",
+          peopleImageAlt: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 and Eva Haj\u0161manov\xE1",
+          peopleImageCaption: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 and Eva Haj\u0161manov\xE1",
+          roles: {
+            tailoring: "Tailoring",
+            jewelry: "Original jewellery & glass",
+            photography: "Photography"
+          },
+          tailorsName: "Olga Dra\u017Eanov\xE1 & Nelly Kaiser\u0161otov\xE1",
+          tailorsText: "The masterful tailoring behind every piece that leaves the atelier."
+        },
+        gallery: {
+          heading: "Gallery",
+          noImages: "No images here yet"
+        },
+        contact: {
+          eyebrow: "Contact",
+          placeEyebrow: "Where",
+          mapTitle: "Ateli\xE9r Tomandlov\xE1 on the map",
+          address: {
+            street: "\u017Didovsk\xE1 412/9",
+            city: "Cheb, 350 02"
+          },
+          email: "info@ateliertomandlova.cz",
+          openingHours: {
+            monday: "Mon:",
+            mondayTime: "11 \u2013 13 and 14 \u2013 17",
+            tuesday: "Tue:",
+            tuesdayTime: "10 \u2013 12 and 14 \u2013 17",
+            wednesday: "Wed:",
+            wednesdayTime: "10 \u2013 12 and 14 \u2013 16",
+            thursday: "Thu:",
+            thursdayTime: "10 \u2013 12 and 14 \u2013 17",
+            friday: "Fri:",
+            fridayTime: "11 \u2013 12 and 14 \u2013 16",
+            openingHoursNote: "Until further notice, lunch break daily from 12 to 14."
+          },
+          contactUs: "Contact us",
+          contactUsText: "If you have a question about our work or want to ask for advice, please get in touch.",
+          whereToFindUs: "Where to find us",
+          form: {
+            name: "Name",
+            email: "Email",
+            message: "Message",
+            submit: "Send",
+            generalError: "Something went wrong, please try again.",
+            successMessage: "Thank you, your message was sent. We will be in touch soon.",
+            nameMissing: "Please enter your name",
+            emailMissing: "Please enter your email",
+            messageMissing: "Please enter the message you want to send us",
+            nameTooLong: "The name is too long",
+            emailInvalid: "The email is not in a valid format",
+            messageTooLong: "The message is too long"
+          }
+        },
+        footer: {
+          subtitle: "Tailor\u2019s atelier \xB7 Cheb",
+          addressLine: "\u017Didovsk\xE1 412/9 \xB7 Cheb"
+        }
+      },
+      de: {
+        general: { title: "Ateli\xE9r Tomandlov\xE1" },
+        error: {
+          somethingWentWrong: "Etwas ist schiefgelaufen",
+          goBack: "Neu laden",
+          pageTitle: "Fehler"
+        },
+        menu: {
+          about: "\xFCber uns",
+          events: "termine",
+          contact: "kontakt",
+          gallery: "galerie",
+          home: "start",
+          homeAria: "Ateli\xE9r Tomandlov\xE1 \u2014 Startseite",
+          openMenu: "Men\xFC \xF6ffnen",
+          closeMenu: "Men\xFC schlie\xDFen",
+          languageLabel: "Sprache"
+        },
+        header: {
+          metaTagOne: "Autorenmode",
+          metaTagTwo: "handgefertigt",
+          tagline: "Schneideratelier im historischen Stadtkern von Eger (Cheb). Autorenmode aus Naturmaterialien, von Hand ma\xDFgefertigt."
+        },
+        ourWork: {
+          eyebrow: "Atelier",
+          ourWork: "Unsere Arbeit zeichnet aus\u2026",
+          designHeading: "Eigenst\xE4ndiges Design",
+          designText: "Ein bequemes Kleidungsst\xFCck entsteht aus der durchdachten Wahl des Stoffes, der individuell gew\xE4hlten Silhouette, dem Spiel mit Farben und einer feinen Komposition der Details.",
+          qualityHeading: "Hochwertige Materialien",
+          qualityText: "Wesentlicher Bestandteil ist hochwertiges Naturmaterial \u2014 seine Sch\xF6nheit, Einzigartigkeit und seine besonderen, dem K\xF6rper zutr\xE4glichen Eigenschaften.",
+          handmadeHeading: "Handarbeit",
+          handmadeText: "Unsere Mode w\xE4re nicht, was sie ist, ohne meisterhafte Schneiderarbeit.",
+          learnMore: "Mehr \xFCber uns"
+        },
+        events: {
+          eyebrow: "Programm",
+          upcomingEvents: "Kommende Termine",
+          moreEvents: "Alle Termine",
+          pastEvents: "Vergangene Termine",
+          noEvents: "Weitere Termine folgen in K\xFCrze.",
+          loadMore: "Mehr laden",
+          fields: {
+            place: "Ort",
+            when: "Wann",
+            time: "Uhrzeit"
+          },
+          posterAltPrefix: "Plakat zur Veranstaltung",
+          viewPoster: "Plakat anzeigen",
+          closePoster: "Plakat schlie\xDFen",
+          eyebrowAkce: "Termine"
+        },
+        about: {
+          eyebrow: "\xDCber uns",
+          peopleEyebrow: "Menschen im Atelier",
+          eventsEyebrow: "Termine",
+          people: "Menschen",
+          introLede: "Autorenmode aus Naturmaterialien, von Hand gefertigt im historischen Stadtkern von Eger (Cheb).",
+          aboutUsText: `Lenka Tomandlov\xE1 absolvierte die Textilfakult\xE4t in Liberec und entwirft seit fast 30 Jahren Mode. Das Atelier befindet sich im historischen Stadtkern von Eger (Cheb) und ist heute ein fester Bestandteil der Altstadt.`,
+          quoteLenka: `\u201EIm Mittelpunkt meines Interesses und meiner Inspiration steht das Naturmaterial \u2014 seine Sch\xF6nheit, seine Einzigartigkeit und seine besonderen, dem menschlichen K\xF6rper zutr\xE4glichen Eigenschaften.\u201D`,
+          founderAttribution: "\u2014 Lenka Tomandlov\xE1, Gr\xFCnderin",
+          quotePeople: `\u201EEin bequemes Kleidungsst\xFCck entsteht aus der durchdachten Wahl des Stoffes, der individuell gew\xE4hlten Silhouette, dem Spiel mit Farben, der Komposition der Details und nicht zuletzt der meisterhaften Schneiderarbeit von Olga Dra\u017Eanov\xE1 und Nelly Kaiser\u0161otov\xE1.\u201C`,
+          eventsInfo: `Regelm\xE4\xDFig veranstalten wir Verkaufsausstellungen und Modenschauen. Aktuelle Informationen finden Sie stets im Bereich`,
+          eventsCta: "Aktuelle Termine",
+          ladaInfo: "Neben unseren eigenen Arbeiten finden Sie im Atelier auch wundersch\xF6nen Autorenschmuck und Glas von",
+          ladaVosejpkova: "Lada Vosejpkov\xE1",
+          evaInfo: "Wir arbeiten langfristig auch mit der Fotografin",
+          evaHajsmanova: "Eva Haj\u0161manov\xE1",
+          atelierImageAlt: "Ateli\xE9r Tomandlov\xE1 \u2014 Innenraum des Schneideateliers in Eger",
+          atelierImageCaption: "Das Atelier in der \u017Didovsk\xE1-Stra\xDFe, Eger",
+          peopleImageAlt: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 und Eva Haj\u0161manov\xE1",
+          peopleImageCaption: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 und Eva Haj\u0161manov\xE1",
+          roles: {
+            tailoring: "Schneiderarbeit",
+            jewelry: "Autorenschmuck & Glas",
+            photography: "Fotografie"
+          },
+          tailorsName: "Olga Dra\u017Eanov\xE1 & Nelly Kaiser\u0161otov\xE1",
+          tailorsText: "Die meisterhafte Schneiderarbeit hinter jedem St\xFCck, das das Atelier verl\xE4sst."
+        },
+        gallery: {
+          heading: "Galerie",
+          noImages: "Hier sind noch keine Bilder"
+        },
+        contact: {
+          eyebrow: "Kontakt",
+          placeEyebrow: "Wo",
+          mapTitle: "Ateli\xE9r Tomandlov\xE1 auf der Karte",
+          address: {
+            street: "\u017Didovsk\xE1 412/9",
+            city: "Cheb (Eger), 350 02"
+          },
+          email: "info@ateliertomandlova.cz",
+          openingHours: {
+            monday: "Mo:",
+            mondayTime: "11 \u2013 13 und 14 \u2013 17",
+            tuesday: "Di:",
+            tuesdayTime: "10 \u2013 12 und 14 \u2013 17",
+            wednesday: "Mi:",
+            wednesdayTime: "10 \u2013 12 und 14 \u2013 16",
+            thursday: "Do:",
+            thursdayTime: "10 \u2013 12 und 14 \u2013 17",
+            friday: "Fr:",
+            fridayTime: "11 \u2013 12 und 14 \u2013 16",
+            openingHoursNote: "Bis auf Weiteres t\xE4glich Mittagspause von 12 bis 14 Uhr."
+          },
+          contactUs: "Kontaktieren Sie uns",
+          contactUsText: "Wenn Sie eine Frage zu unseren Leistungen haben oder Beratung w\xFCnschen, schreiben Sie uns gern.",
+          whereToFindUs: "So finden Sie uns",
+          form: {
+            name: "Name",
+            email: "E-Mail",
+            message: "Nachricht",
+            submit: "Senden",
+            generalError: "Etwas ist schiefgelaufen, bitte versuchen Sie es erneut.",
+            successMessage: "Vielen Dank, Ihre Nachricht wurde gesendet. Wir melden uns bald.",
+            nameMissing: "Bitte tragen Sie Ihren Namen ein",
+            emailMissing: "Bitte tragen Sie Ihre E-Mail-Adresse ein",
+            messageMissing: "Bitte schreiben Sie uns Ihre Nachricht",
+            nameTooLong: "Der Name ist zu lang",
+            emailInvalid: "Die E-Mail-Adresse ist nicht im richtigen Format",
+            messageTooLong: "Die Nachricht ist zu lang"
+          }
+        },
+        footer: {
+          subtitle: "Schneideratelier \xB7 Eger",
+          addressLine: "\u017Didovsk\xE1 412/9 \xB7 Eger"
         }
       }
     };
+    localeMap = {
+      cs: "cs-CZ",
+      en: "en-GB",
+      de: "de-DE"
+    };
+    availableLanguages = [
+      {
+        code: "cs",
+        label: "CS"
+      },
+      {
+        code: "en",
+        label: "EN"
+      },
+      {
+        code: "de",
+        label: "DE"
+      }
+    ];
+    language = writable(readInitial());
+    t = derived$1(language, ($lang) => dictionaries[$lang]);
+    locale = derived$1(language, ($lang) => localeMap[$lang]);
   }
 });
 
@@ -5854,16 +6226,15 @@ __export(layout_svelte_exports, {
 function MenuLinks($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
-    let callback = fallback($$props["callback"], void 0);
     let pathname;
-    const { about, events, contact } = translations.menu;
+    let callback = fallback($$props["callback"], void 0);
     $: pathname = store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).url.pathname;
     $$renderer2.push(`<ul class="menuLinks svelte-uhi6x0"><li class="menuLinks__link svelte-uhi6x0"><a${attr("aria-current", pathname === "/o-nas" ? "page" : void 0)} href="/o-nas" class="svelte-uhi6x0">`);
     Typography($$renderer2, {
       variant: "nav",
       element: "span",
       children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(about)}`);
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.about)}`);
       },
       $$slots: { default: true }
     });
@@ -5872,7 +6243,7 @@ function MenuLinks($$renderer, $$props) {
       variant: "nav",
       element: "span",
       children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(events)}`);
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.events)}`);
       },
       $$slots: { default: true }
     });
@@ -5881,7 +6252,7 @@ function MenuLinks($$renderer, $$props) {
       variant: "nav",
       element: "span",
       children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(contact)}`);
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.contact)}`);
       },
       $$slots: { default: true }
     });
@@ -5890,46 +6261,73 @@ function MenuLinks($$renderer, $$props) {
     bind_props($$props, { callback });
   });
 }
-function MobileMenu($$renderer) {
-  let menuOpened = false;
-  function toggleMenu() {
-    menuOpened = !menuOpened;
-  }
-  const { contact: { address, email } } = translations;
-  $$renderer.push(`<button type="button"${attr_class("mobileMenu__button svelte-2pdber", void 0, { "menuOpened": menuOpened })} aria-label="Otev\u0159\xEDt menu"${attr("aria-expanded", menuOpened)}><img${attr("src", menu_default)} alt="" class="svelte-2pdber"/></button> <div${attr_class("mobileMenu__tab svelte-2pdber", void 0, { "menuOpened": menuOpened })} role="dialog" aria-modal="true"${attr("aria-hidden", !menuOpened)}><div class="mobileMenu__tab__header svelte-2pdber"><a href="/" aria-label="Dom\u016F"><img class="mobileMenu__tab__logo svelte-2pdber" alt=""${attr("src", logo_default)}/></a> <button type="button" class="mobileMenu__tab__x svelte-2pdber" aria-label="Zav\u0159\xEDt menu"><img${attr("src", x_default)} alt="" class="svelte-2pdber"/></button></div> <nav class="mobileMenu__tab__nav svelte-2pdber">`);
-  MenuLinks($$renderer, { callback: toggleMenu });
-  $$renderer.push(`<!----></nav> <div class="mobileMenu__tab__footer svelte-2pdber"><span>${escape_html(address.street)}, ${escape_html(address.city)}</span> <a${attr("href", `mailto:${email}`)} class="svelte-2pdber">${escape_html(email)}</a></div></div>`);
+function LanguageSwitcher($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let variant = fallback($$props["variant"], "desktop");
+    $$renderer2.push(`<div${attr_class(`languageSwitcher languageSwitcher--${stringify2(variant)}`, "svelte-1njmqi3")} role="group"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.languageLabel)}><!--[-->`);
+    const each_array = ensure_array_like(availableLanguages);
+    for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+      let { code, label } = each_array[$$index];
+      $$renderer2.push(`<button type="button"${attr_class("languageSwitcher__btn svelte-1njmqi3", void 0, { "active": store_get($$store_subs ?? ($$store_subs = {}), "$language", language) === code })}${attr("aria-pressed", store_get($$store_subs ?? ($$store_subs = {}), "$language", language) === code)}>${escape_html(label)}</button>`);
+    }
+    $$renderer2.push(`<!--]--></div>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+    bind_props($$props, { variant });
+  });
 }
-function Menu($$renderer) {
-  $$renderer.push(`<nav class="menu svelte-1qo109d"><a class="menu__home" href="/" aria-label="Ateli\xE9r Tomandlov\xE1 \u2014 dom\u016F"><img class="menu__logo svelte-1qo109d" alt=""${attr("src", logo_default)}/></a> <div class="menu__desktop svelte-1qo109d">`);
-  MenuLinks($$renderer, {});
-  $$renderer.push(`<!----></div> <div class="menu__mobile svelte-1qo109d">`);
-  MobileMenu($$renderer, {});
-  $$renderer.push(`<!----></div></nav>`);
+function MobileMenu($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let menuOpened = false;
+    function toggleMenu() {
+      menuOpened = !menuOpened;
+    }
+    $$renderer2.push(`<button type="button"${attr_class("mobileMenu__button svelte-2pdber", void 0, { "menuOpened": menuOpened })}${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.openMenu)}${attr("aria-expanded", menuOpened)}><img${attr("src", menu_default)} alt="" class="svelte-2pdber"/></button> <div${attr_class("mobileMenu__tab svelte-2pdber", void 0, { "menuOpened": menuOpened })} role="dialog" aria-modal="true"${attr("aria-hidden", !menuOpened)}><div class="mobileMenu__tab__header svelte-2pdber"><a href="/"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.home)}><img class="mobileMenu__tab__logo svelte-2pdber" alt=""${attr("src", logo_default)}/></a> <button type="button" class="mobileMenu__tab__x svelte-2pdber"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.closeMenu)}><img${attr("src", x_default)} alt="" class="svelte-2pdber"/></button></div> <nav class="mobileMenu__tab__nav svelte-2pdber">`);
+    MenuLinks($$renderer2, { callback: toggleMenu });
+    $$renderer2.push(`<!----></nav> <div class="mobileMenu__tab__footer svelte-2pdber">`);
+    LanguageSwitcher($$renderer2, { variant: "mobile" });
+    $$renderer2.push(`<!----> <span>${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.street)}, ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.city)}</span> <a${attr("href", `mailto:${store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email}`)} class="svelte-2pdber">${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email)}</a></div></div>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+  });
+}
+function Menu($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    $$renderer2.push(`<nav class="menu svelte-1qo109d"><a class="menu__home" href="/"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.homeAria)}><img class="menu__logo svelte-1qo109d" alt=""${attr("src", logo_default)}/></a> <div class="menu__desktop svelte-1qo109d">`);
+    MenuLinks($$renderer2, {});
+    $$renderer2.push(`<!----> `);
+    LanguageSwitcher($$renderer2, {});
+    $$renderer2.push(`<!----></div> <div class="menu__mobile svelte-1qo109d">`);
+    MobileMenu($$renderer2, {});
+    $$renderer2.push(`<!----></div></nav>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+  });
 }
 function OpeningHours($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
-    const { monday, mondayTime, tuesday, tuesdayTime, wednesday, wednesdayTime, thursday, thursdayTime, friday, fridayTime, openingHoursNote } = translations.contact.openingHours;
-    const lines = [
+    var $$store_subs;
+    let lines;
+    $: lines = [
       {
-        day: monday,
-        time: mondayTime
+        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.monday,
+        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.mondayTime
       },
       {
-        day: tuesday,
-        time: tuesdayTime
+        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.tuesday,
+        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.tuesdayTime
       },
       {
-        day: wednesday,
-        time: wednesdayTime
+        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.wednesday,
+        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.wednesdayTime
       },
       {
-        day: thursday,
-        time: thursdayTime
+        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.thursday,
+        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.thursdayTime
       },
       {
-        day: friday,
-        time: fridayTime
+        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.friday,
+        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.fridayTime
       }
     ];
     $$renderer2.push(`<div class="openingHours svelte-1qpxkpp"><!--[-->`);
@@ -5961,23 +6359,24 @@ function OpeningHours($$renderer, $$props) {
       variant: "subtitle",
       element: "p",
       children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(openingHoursNote)}`);
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.openingHoursNote)}`);
       },
       $$slots: { default: true }
     });
     $$renderer2.push(`<!----></div>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
 function Footer($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
-    const { general: { title }, contact: { address, email, contactUs } } = translations;
+    var $$store_subs;
     const year = (/* @__PURE__ */ new Date()).getFullYear();
     $$renderer2.push(`<footer class="footer svelte-1sr6y3t"><div class="footer__wrapper svelte-1sr6y3t"><div class="footer__title svelte-1sr6y3t"><img alt=""${attr("src", logo_default)} class="svelte-1sr6y3t"/> `);
     Typography($$renderer2, {
       variant: "h2",
       element: "p",
       children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(title)}`);
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).general.title)}`);
       },
       $$slots: { default: true }
     });
@@ -5986,7 +6385,7 @@ function Footer($$renderer, $$props) {
       variant: "subtitle",
       element: "p",
       children: ($$renderer3) => {
-        $$renderer3.push(`<!---->Krej\u010Dovsk\xFD ateli\xE9r \xB7 Cheb`);
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).footer.subtitle)}`);
       },
       $$slots: { default: true }
     });
@@ -5994,7 +6393,7 @@ function Footer($$renderer, $$props) {
     Typography($$renderer2, {
       variant: "subtitle",
       children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(address.street)}`);
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.street)}`);
       },
       $$slots: { default: true }
     });
@@ -6002,15 +6401,15 @@ function Footer($$renderer, $$props) {
     Typography($$renderer2, {
       variant: "subtitle",
       children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(address.city)}`);
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.city)}`);
       },
       $$slots: { default: true }
     });
-    $$renderer2.push(`<!----></div> <div class="footer__info__contact svelte-1sr6y3t"><a${attr("href", `mailto:${email}`)} class="svelte-1sr6y3t">`);
+    $$renderer2.push(`<!----></div> <div class="footer__info__contact svelte-1sr6y3t"><a${attr("href", `mailto:${store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email}`)} class="svelte-1sr6y3t">`);
     Typography($$renderer2, {
       variant: "subtitle",
       children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(email)}`);
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email)}`);
       },
       $$slots: { default: true }
     });
@@ -6020,9 +6419,10 @@ function Footer($$renderer, $$props) {
     Button($$renderer2, {
       bg: "dark",
       href: "/kontakt",
-      text: contactUs
+      text: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.contactUs
     });
-    $$renderer2.push(`<!----></div></div> <div class="footer__bottom svelte-1sr6y3t"><span>\xA9 ${escape_html(year)} \xB7 ${escape_html(title)}</span> <span>\u017Didovsk\xE1 412/9 \xB7 Cheb</span></div></div></footer>`);
+    $$renderer2.push(`<!----></div></div> <div class="footer__bottom svelte-1sr6y3t"><span>\xA9 ${escape_html(year)} \xB7 ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).general.title)}</span> <span>${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).footer.addressLine)}</span></div></div></footer>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
 function _layout($$renderer, $$props) {
@@ -6086,8 +6486,8 @@ var init__ = __esm({
     index = 0;
     component = async () => component_cache ?? (component_cache = (await Promise.resolve().then(() => (init_layout_svelte(), layout_svelte_exports))).default);
     universal_id = "src/routes/+layout.ts";
-    imports = ["_app/immutable/nodes/0.DWmHJN52.js", "_app/immutable/chunks/CBhNYNvz.js", "_app/immutable/chunks/H7ira_Aq.js", "_app/immutable/chunks/ByN4eOrf.js", "_app/immutable/chunks/BlI-KWLL.js", "_app/immutable/chunks/I8rQr1kY.js", "_app/immutable/chunks/u0Pb4Cfp.js", "_app/immutable/chunks/Ch5Unmks.js", "_app/immutable/chunks/DHJHbF4D.js"];
-    stylesheets = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/0.CywNs74H.css"];
+    imports = ["_app/immutable/nodes/0.C7NNHT3S.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/km5OAbuW.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/xN0GZF8s.js", "_app/immutable/chunks/C5_wVbaj.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/tpq3dAIO.js", "_app/immutable/chunks/C0-cVTkD.js"];
+    stylesheets = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/0.C9D1Osj7.css"];
     fonts = ["_app/immutable/assets/Ogg-Bold.BpT5MOp0.ttf", "_app/immutable/assets/Ogg-Bold.BHYZ1nQZ.woff", "_app/immutable/assets/Ogg-Light.CJx7NBpI.ttf", "_app/immutable/assets/Ogg-Light.BmIZt__l.woff"];
   }
 });
@@ -6116,10 +6516,9 @@ function _error($$renderer, $$props) {
     var $$store_subs;
     const dev = true;
     const url = void 0;
-    const { error: { somethingWentWrong, goBack } } = translations;
     head("1j96wlh", $$renderer2, ($$renderer3) => {
       $$renderer3.title(($$renderer4) => {
-        $$renderer4.push(`<title>Error</title>`);
+        $$renderer4.push(`<title>${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).error.pageTitle)}</title>`);
       });
     });
     Section($$renderer2, {
@@ -6128,7 +6527,7 @@ function _error($$renderer, $$props) {
         Typography($$renderer3, {
           variant: "h1",
           children: ($$renderer4) => {
-            $$renderer4.push(`<!---->${escape_html(somethingWentWrong)}`);
+            $$renderer4.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).error.somethingWentWrong)}`);
           },
           $$slots: { default: true }
         });
@@ -6143,7 +6542,7 @@ function _error($$renderer, $$props) {
         $$renderer3.push(`<!----> `);
         Button($$renderer3, {
           href: url,
-          text: goBack
+          text: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).error.goBack
         });
         $$renderer3.push(`<!----> `);
         if (dev) {
@@ -6181,7 +6580,7 @@ var init__2 = __esm({
   ".svelte-kit/output/server/nodes/1.js"() {
     index2 = 1;
     component2 = async () => component_cache2 ?? (component_cache2 = (await Promise.resolve().then(() => (init_error_svelte(), error_svelte_exports))).default);
-    imports2 = ["_app/immutable/nodes/1.CAsYf91e.js", "_app/immutable/chunks/CBhNYNvz.js", "_app/immutable/chunks/BlI-KWLL.js", "_app/immutable/chunks/H7ira_Aq.js", "_app/immutable/chunks/I8rQr1kY.js", "_app/immutable/chunks/u0Pb4Cfp.js", "_app/immutable/chunks/BD7kaxQH.js", "_app/immutable/chunks/DHJHbF4D.js"];
+    imports2 = ["_app/immutable/nodes/1.CaZ2r7p1.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/C5_wVbaj.js", "_app/immutable/chunks/km5OAbuW.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/CCk-jJvr.js", "_app/immutable/chunks/C0-cVTkD.js"];
     stylesheets2 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/1.ClQFIecB.css"];
     fonts2 = [];
   }
@@ -6189,15 +6588,15 @@ var init__2 = __esm({
 
 // node_modules/tslib/tslib.es6.mjs
 function __rest(s2, e) {
-  var t = {};
+  var t2 = {};
   for (var p in s2) if (Object.prototype.hasOwnProperty.call(s2, p) && e.indexOf(p) < 0)
-    t[p] = s2[p];
+    t2[p] = s2[p];
   if (s2 != null && typeof Object.getOwnPropertySymbols === "function")
     for (var i = 0, p = Object.getOwnPropertySymbols(s2); i < p.length; i++) {
       if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s2, p[i]))
-        t[p[i]] = s2[p[i]];
+        t2[p[i]] = s2[p[i]];
     }
-  return t;
+  return t2;
 }
 function __awaiter(thisArg, _arguments, P, generator) {
   function adopt(value) {
@@ -6611,45 +7010,45 @@ function _typeof(o) {
     return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
   }, _typeof(o);
 }
-function toPrimitive(t, r2) {
-  if ("object" != _typeof(t) || !t) return t;
-  var e = t[Symbol.toPrimitive];
+function toPrimitive(t2, r2) {
+  if ("object" != _typeof(t2) || !t2) return t2;
+  var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
-    var i = e.call(t, r2 || "default");
+    var i = e.call(t2, r2 || "default");
     if ("object" != _typeof(i)) return i;
     throw new TypeError("@@toPrimitive must return a primitive value.");
   }
-  return ("string" === r2 ? String : Number)(t);
+  return ("string" === r2 ? String : Number)(t2);
 }
-function toPropertyKey(t) {
-  var i = toPrimitive(t, "string");
+function toPropertyKey(t2) {
+  var i = toPrimitive(t2, "string");
   return "symbol" == _typeof(i) ? i : i + "";
 }
-function _defineProperty(e, r2, t) {
+function _defineProperty(e, r2, t2) {
   return (r2 = toPropertyKey(r2)) in e ? Object.defineProperty(e, r2, {
-    value: t,
+    value: t2,
     enumerable: true,
     configurable: true,
     writable: true
-  }) : e[r2] = t, e;
+  }) : e[r2] = t2, e;
 }
 function ownKeys(e, r2) {
-  var t = Object.keys(e);
+  var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
     r2 && (o = o.filter(function(r$1) {
       return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
-    })), t.push.apply(t, o);
+    })), t2.push.apply(t2, o);
   }
-  return t;
+  return t2;
 }
 function _objectSpread2(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
-    var t = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys(Object(t), true).forEach(function(r$1) {
-      _defineProperty(e, r$1, t[r$1]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r$1) {
-      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
+    var t2 = null != arguments[r2] ? arguments[r2] : {};
+    r2 % 2 ? ownKeys(Object(t2), true).forEach(function(r$1) {
+      _defineProperty(e, r$1, t2[r$1]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys(Object(t2)).forEach(function(r$1) {
+      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t2, r$1));
     });
   }
   return e;
@@ -15910,45 +16309,45 @@ function _typeof2(o) {
     return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
   }, _typeof2(o);
 }
-function toPrimitive2(t, r2) {
-  if ("object" != _typeof2(t) || !t) return t;
-  var e = t[Symbol.toPrimitive];
+function toPrimitive2(t2, r2) {
+  if ("object" != _typeof2(t2) || !t2) return t2;
+  var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
-    var i = e.call(t, r2 || "default");
+    var i = e.call(t2, r2 || "default");
     if ("object" != _typeof2(i)) return i;
     throw new TypeError("@@toPrimitive must return a primitive value.");
   }
-  return ("string" === r2 ? String : Number)(t);
+  return ("string" === r2 ? String : Number)(t2);
 }
-function toPropertyKey2(t) {
-  var i = toPrimitive2(t, "string");
+function toPropertyKey2(t2) {
+  var i = toPrimitive2(t2, "string");
   return "symbol" == _typeof2(i) ? i : i + "";
 }
-function _defineProperty2(e, r2, t) {
+function _defineProperty2(e, r2, t2) {
   return (r2 = toPropertyKey2(r2)) in e ? Object.defineProperty(e, r2, {
-    value: t,
+    value: t2,
     enumerable: true,
     configurable: true,
     writable: true
-  }) : e[r2] = t, e;
+  }) : e[r2] = t2, e;
 }
 function ownKeys2(e, r2) {
-  var t = Object.keys(e);
+  var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
     r2 && (o = o.filter(function(r$1) {
       return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
-    })), t.push.apply(t, o);
+    })), t2.push.apply(t2, o);
   }
-  return t;
+  return t2;
 }
 function _objectSpread22(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
-    var t = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys2(Object(t), true).forEach(function(r$1) {
-      _defineProperty2(e, r$1, t[r$1]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys2(Object(t)).forEach(function(r$1) {
-      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
+    var t2 = null != arguments[r2] ? arguments[r2] : {};
+    r2 % 2 ? ownKeys2(Object(t2), true).forEach(function(r$1) {
+      _defineProperty2(e, r$1, t2[r$1]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys2(Object(t2)).forEach(function(r$1) {
+      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t2, r$1));
     });
   }
   return e;
@@ -25843,45 +26242,45 @@ function _typeof3(o) {
     return o$1 && "function" == typeof Symbol && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
   }, _typeof3(o);
 }
-function toPrimitive3(t, r2) {
-  if ("object" != _typeof3(t) || !t) return t;
-  var e = t[Symbol.toPrimitive];
+function toPrimitive3(t2, r2) {
+  if ("object" != _typeof3(t2) || !t2) return t2;
+  var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
-    var i = e.call(t, r2 || "default");
+    var i = e.call(t2, r2 || "default");
     if ("object" != _typeof3(i)) return i;
     throw new TypeError("@@toPrimitive must return a primitive value.");
   }
-  return ("string" === r2 ? String : Number)(t);
+  return ("string" === r2 ? String : Number)(t2);
 }
-function toPropertyKey3(t) {
-  var i = toPrimitive3(t, "string");
+function toPropertyKey3(t2) {
+  var i = toPrimitive3(t2, "string");
   return "symbol" == _typeof3(i) ? i : i + "";
 }
-function _defineProperty3(e, r2, t) {
+function _defineProperty3(e, r2, t2) {
   return (r2 = toPropertyKey3(r2)) in e ? Object.defineProperty(e, r2, {
-    value: t,
+    value: t2,
     enumerable: true,
     configurable: true,
     writable: true
-  }) : e[r2] = t, e;
+  }) : e[r2] = t2, e;
 }
 function ownKeys3(e, r2) {
-  var t = Object.keys(e);
+  var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
     r2 && (o = o.filter(function(r$1) {
       return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
-    })), t.push.apply(t, o);
+    })), t2.push.apply(t2, o);
   }
-  return t;
+  return t2;
 }
 function _objectSpread23(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
-    var t = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys3(Object(t), true).forEach(function(r$1) {
-      _defineProperty3(e, r$1, t[r$1]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys3(Object(t)).forEach(function(r$1) {
-      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
+    var t2 = null != arguments[r2] ? arguments[r2] : {};
+    r2 % 2 ? ownKeys3(Object(t2), true).forEach(function(r$1) {
+      _defineProperty3(e, r$1, t2[r$1]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys3(Object(t2)).forEach(function(r$1) {
+      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t2, r$1));
     });
   }
   return e;
@@ -26711,7 +27110,7 @@ var init__3 = __esm({
       "ssr": false
     };
     universal_id2 = "src/routes/admin/+layout.ts";
-    imports3 = ["_app/immutable/nodes/2.BeNIvrDl.js", "_app/immutable/chunks/CBhNYNvz.js", "_app/immutable/chunks/DaFVN1ez.js", "_app/immutable/chunks/BlI-KWLL.js", "_app/immutable/chunks/H7ira_Aq.js", "_app/immutable/chunks/I8rQr1kY.js", "_app/immutable/chunks/u0Pb4Cfp.js", "_app/immutable/chunks/DLCZRXW5.js", "_app/immutable/chunks/BD7kaxQH.js"];
+    imports3 = ["_app/immutable/nodes/2.DzczQs90.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/C5_wVbaj.js", "_app/immutable/chunks/km5OAbuW.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/BY0Lw52_.js", "_app/immutable/chunks/CCk-jJvr.js"];
     stylesheets3 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/2.eR4sTe5M.css"];
     fonts3 = [];
   }
@@ -26785,7 +27184,7 @@ var init__4 = __esm({
   ".svelte-kit/output/server/nodes/4.js"() {
     index4 = 4;
     component4 = async () => component_cache4 ?? (component_cache4 = (await Promise.resolve().then(() => (init_page_svelte(), page_svelte_exports))).default);
-    imports4 = ["_app/immutable/nodes/4.D7nR56Og.js", "_app/immutable/chunks/CBhNYNvz.js", "_app/immutable/chunks/DaFVN1ez.js", "_app/immutable/chunks/I8rQr1kY.js", "_app/immutable/chunks/u0Pb4Cfp.js", "_app/immutable/chunks/BD7kaxQH.js"];
+    imports4 = ["_app/immutable/nodes/4.CSrQYBLS.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/CCk-jJvr.js"];
     stylesheets4 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/4.ex_2d-5Q.css"];
     fonts4 = [];
   }
@@ -26972,7 +27371,7 @@ var init__5 = __esm({
   ".svelte-kit/output/server/nodes/5.js"() {
     index5 = 5;
     component5 = async () => component_cache5 ?? (component_cache5 = (await Promise.resolve().then(() => (init_page_svelte2(), page_svelte_exports2))).default);
-    imports5 = ["_app/immutable/nodes/5.C2BwJrAk.js", "_app/immutable/chunks/CBhNYNvz.js", "_app/immutable/chunks/DaFVN1ez.js", "_app/immutable/chunks/ByN4eOrf.js", "_app/immutable/chunks/H7ira_Aq.js", "_app/immutable/chunks/I8rQr1kY.js", "_app/immutable/chunks/u0Pb4Cfp.js", "_app/immutable/chunks/BD7kaxQH.js"];
+    imports5 = ["_app/immutable/nodes/5.CYNJTaVS.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/xN0GZF8s.js", "_app/immutable/chunks/km5OAbuW.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/CCk-jJvr.js"];
     stylesheets5 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/5.nFnmK94E.css"];
     fonts5 = [];
   }
@@ -27062,7 +27461,7 @@ var init__6 = __esm({
   ".svelte-kit/output/server/nodes/6.js"() {
     index6 = 6;
     component6 = async () => component_cache6 ?? (component_cache6 = (await Promise.resolve().then(() => (init_page_svelte3(), page_svelte_exports3))).default);
-    imports6 = ["_app/immutable/nodes/6.BU55dMde.js", "_app/immutable/chunks/CBhNYNvz.js", "_app/immutable/chunks/H7ira_Aq.js", "_app/immutable/chunks/DaFVN1ez.js", "_app/immutable/chunks/ByN4eOrf.js", "_app/immutable/chunks/BlI-KWLL.js", "_app/immutable/chunks/I8rQr1kY.js", "_app/immutable/chunks/u0Pb4Cfp.js", "_app/immutable/chunks/DLCZRXW5.js", "_app/immutable/chunks/BD7kaxQH.js", "_app/immutable/chunks/BBlH1A-k.js"];
+    imports6 = ["_app/immutable/nodes/6.CoWn37WD.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/km5OAbuW.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/xN0GZF8s.js", "_app/immutable/chunks/C5_wVbaj.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/BY0Lw52_.js", "_app/immutable/chunks/CCk-jJvr.js", "_app/immutable/chunks/BXeY2-Ui.js"];
     stylesheets6 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/6.C5hKHldS.css"];
     fonts6 = [];
   }
@@ -27208,7 +27607,7 @@ var init__7 = __esm({
   ".svelte-kit/output/server/nodes/7.js"() {
     index7 = 7;
     component7 = async () => component_cache7 ?? (component_cache7 = (await Promise.resolve().then(() => (init_page_svelte4(), page_svelte_exports4))).default);
-    imports7 = ["_app/immutable/nodes/7.BtxRmkwu.js", "_app/immutable/chunks/CBhNYNvz.js", "_app/immutable/chunks/H7ira_Aq.js", "_app/immutable/chunks/DaFVN1ez.js", "_app/immutable/chunks/ByN4eOrf.js", "_app/immutable/chunks/I8rQr1kY.js", "_app/immutable/chunks/u0Pb4Cfp.js", "_app/immutable/chunks/DLCZRXW5.js", "_app/immutable/chunks/BD7kaxQH.js", "_app/immutable/chunks/BBlH1A-k.js"];
+    imports7 = ["_app/immutable/nodes/7.DnzuSLF4.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/km5OAbuW.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/xN0GZF8s.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/BY0Lw52_.js", "_app/immutable/chunks/CCk-jJvr.js", "_app/immutable/chunks/BXeY2-Ui.js"];
     stylesheets7 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/7.BVssn5KX.css"];
     fonts7 = [];
   }
@@ -27294,7 +27693,7 @@ var init__8 = __esm({
   ".svelte-kit/output/server/nodes/8.js"() {
     index8 = 8;
     component8 = async () => component_cache8 ?? (component_cache8 = (await Promise.resolve().then(() => (init_page_svelte5(), page_svelte_exports5))).default);
-    imports8 = ["_app/immutable/nodes/8.BrTv1Lvg.js", "_app/immutable/chunks/CBhNYNvz.js", "_app/immutable/chunks/H7ira_Aq.js", "_app/immutable/chunks/DaFVN1ez.js", "_app/immutable/chunks/ByN4eOrf.js", "_app/immutable/chunks/I8rQr1kY.js", "_app/immutable/chunks/u0Pb4Cfp.js", "_app/immutable/chunks/DLCZRXW5.js", "_app/immutable/chunks/BD7kaxQH.js"];
+    imports8 = ["_app/immutable/nodes/8.BswhaRxL.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/km5OAbuW.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/xN0GZF8s.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/BY0Lw52_.js", "_app/immutable/chunks/CCk-jJvr.js"];
     stylesheets8 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/8.D8smtPme.css"];
     fonts8 = [];
   }
@@ -27390,7 +27789,7 @@ __export(page_svelte_exports6, {
 });
 function ContactForm($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
-    const { name, email, message, submit, generalError, successMessage, nameMissing, emailMissing, messageMissing, nameTooLong, emailInvalid, messageTooLong } = translations.contact.form;
+    var $$store_subs;
     let formError = null;
     let formSuccess = false;
     const formValues = {
@@ -27412,7 +27811,7 @@ function ContactForm($$renderer, $$props) {
       $$renderer3.push(`<form class="contactForm svelte-pzu9qq" method="POST">`);
       Input($$renderer3, {
         name: "name",
-        label: name,
+        label: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.form.name,
         onFocus: clearFeedback,
         get value() {
           return formValues.name;
@@ -27426,7 +27825,7 @@ function ContactForm($$renderer, $$props) {
       Input($$renderer3, {
         type: "email",
         name: "email",
-        label: email,
+        label: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.form.email,
         onFocus: clearFeedback,
         get value() {
           return formValues.email;
@@ -27439,7 +27838,7 @@ function ContactForm($$renderer, $$props) {
       $$renderer3.push(`<!----> `);
       Input($$renderer3, {
         name: "message",
-        label: message,
+        label: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.form.message,
         onFocus: clearFeedback,
         size: "big",
         get value() {
@@ -27467,7 +27866,7 @@ function ContactForm($$renderer, $$props) {
         Typography($$renderer3, {
           variant: "subtitle",
           children: ($$renderer4) => {
-            $$renderer4.push(`<!---->${escape_html(successMessage)}`);
+            $$renderer4.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.form.successMessage)}`);
           },
           $$slots: { default: true }
         });
@@ -27476,7 +27875,7 @@ function ContactForm($$renderer, $$props) {
       Button($$renderer3, {
         disabled: formSuccess,
         type: "submit",
-        text: submit
+        text: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.form.submit
       });
       $$renderer3.push(`<!----> <div id="recaptcha"></div></form>`);
     }
@@ -27486,61 +27885,65 @@ function ContactForm($$renderer, $$props) {
       $$render_inner($$inner_renderer);
     } while (!$$settled);
     $$renderer2.subsume($$inner_renderer);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
-function _page6($$renderer) {
-  const { menu: { contact }, contact: { contactUs, contactUsText, whereToFindUs } } = translations;
-  const MAP_SRC = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d352.6625814339094!2d12.368239292743317!3d50.079088328849885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a0f6985b12dd77%3A0xbb8a067ac58ed0fd!2zQXRlbGnDqXIgVG9tYW5kbG92w6E!5e0!3m2!1scs!2scz!4v1776887304590!5m2!1scs!2scz";
-  head("wkxllv", $$renderer, ($$renderer2) => {
-    $$renderer2.title(($$renderer3) => {
-      $$renderer3.push(`<title>${escape_html(contact)}</title>`);
+function _page6($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    const MAP_SRC = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d352.6625814339094!2d12.368239292743317!3d50.079088328849885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a0f6985b12dd77%3A0xbb8a067ac58ed0fd!2zQXRlbGnDqXIgVG9tYW5kbG92w6E!5e0!3m2!1scs!2scz!4v1776887304590!5m2!1scs!2scz";
+    head("wkxllv", $$renderer2, ($$renderer3) => {
+      $$renderer3.title(($$renderer4) => {
+        $$renderer4.push(`<title>${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.contact)} \xB7 ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).general.title)}</title>`);
+      });
+      $$renderer3.push(`<script src="https://www.google.com/recaptcha/api.js" async="" defer=""><\/script>`);
+      $$renderer3.push(`<!---->`);
     });
-    $$renderer2.push(`<script src="https://www.google.com/recaptcha/api.js" async="" defer=""><\/script>`);
-    $$renderer2.push(`<!---->`);
+    $$renderer2.push(`<div class="contactPage">`);
+    Section($$renderer2, {
+      children: ($$renderer3) => {
+        $$renderer3.push(`<div class="contactPage__form svelte-wkxllv"><span class="contactPage__eyebrow svelte-wkxllv">\u2014\xA0 ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.eyebrow)}</span> `);
+        Typography($$renderer3, {
+          variant: "h1",
+          element: "h1",
+          children: ($$renderer4) => {
+            $$renderer4.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.contactUs)}`);
+          },
+          $$slots: { default: true }
+        });
+        $$renderer3.push(`<!----> `);
+        Typography($$renderer3, {
+          children: ($$renderer4) => {
+            $$renderer4.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.contactUsText)}`);
+          },
+          $$slots: { default: true }
+        });
+        $$renderer3.push(`<!----> `);
+        ContactForm($$renderer3, {});
+        $$renderer3.push(`<!----></div>`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----> `);
+    Section($$renderer2, {
+      bg: "light",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<div class="contactPage__map svelte-wkxllv"><span class="contactPage__eyebrow svelte-wkxllv">\u2014\xA0 ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.placeEyebrow)}</span> `);
+        Typography($$renderer3, {
+          variant: "h1",
+          element: "h2",
+          children: ($$renderer4) => {
+            $$renderer4.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.whereToFindUs)}`);
+          },
+          $$slots: { default: true }
+        });
+        $$renderer3.push(`<!----> <div class="contactPage__map__iframe svelte-wkxllv"><iframe${attr("title", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.mapTitle)}${attr("src", MAP_SRC)} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen="" class="svelte-wkxllv"></iframe></div></div>`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----></div>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
   });
-  $$renderer.push(`<div class="contactPage">`);
-  Section($$renderer, {
-    children: ($$renderer2) => {
-      $$renderer2.push(`<div class="contactPage__form svelte-wkxllv"><span class="contactPage__eyebrow svelte-wkxllv">\u2014\xA0 Kontakt</span> `);
-      Typography($$renderer2, {
-        variant: "h1",
-        element: "h1",
-        children: ($$renderer3) => {
-          $$renderer3.push(`<!---->${escape_html(contactUs)}`);
-        },
-        $$slots: { default: true }
-      });
-      $$renderer2.push(`<!----> `);
-      Typography($$renderer2, {
-        children: ($$renderer3) => {
-          $$renderer3.push(`<!---->${escape_html(contactUsText)}`);
-        },
-        $$slots: { default: true }
-      });
-      $$renderer2.push(`<!----> `);
-      ContactForm($$renderer2, {});
-      $$renderer2.push(`<!----></div>`);
-    },
-    $$slots: { default: true }
-  });
-  $$renderer.push(`<!----> `);
-  Section($$renderer, {
-    bg: "light",
-    children: ($$renderer2) => {
-      $$renderer2.push(`<div class="contactPage__map svelte-wkxllv"><span class="contactPage__eyebrow svelte-wkxllv">\u2014\xA0 M\xEDsto</span> `);
-      Typography($$renderer2, {
-        variant: "h1",
-        element: "h2",
-        children: ($$renderer3) => {
-          $$renderer3.push(`<!---->${escape_html(whereToFindUs)}`);
-        },
-        $$slots: { default: true }
-      });
-      $$renderer2.push(`<!----> <div class="contactPage__map__iframe svelte-wkxllv"><iframe title="Ateli\xE9r Tomandlov\xE1 na map\u011B"${attr("src", MAP_SRC)} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen="" class="svelte-wkxllv"></iframe></div></div>`);
-    },
-    $$slots: { default: true }
-  });
-  $$renderer.push(`<!----></div>`);
 }
 var init_page_svelte6 = __esm({
   ".svelte-kit/output/server/entries/pages/kontakt/_page.svelte.js"() {
@@ -27573,7 +27976,7 @@ var init__9 = __esm({
     index9 = 10;
     component9 = async () => component_cache9 ?? (component_cache9 = (await Promise.resolve().then(() => (init_page_svelte6(), page_svelte_exports6))).default);
     server_id = "src/routes/kontakt/+page.server.ts";
-    imports9 = ["_app/immutable/nodes/10.CRmasI4t.js", "_app/immutable/chunks/CBhNYNvz.js", "_app/immutable/chunks/H7ira_Aq.js", "_app/immutable/chunks/ByN4eOrf.js", "_app/immutable/chunks/I8rQr1kY.js", "_app/immutable/chunks/u0Pb4Cfp.js", "_app/immutable/chunks/DLCZRXW5.js", "_app/immutable/chunks/BD7kaxQH.js", "_app/immutable/chunks/DHJHbF4D.js"];
+    imports9 = ["_app/immutable/nodes/10.hEJFxquO.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/km5OAbuW.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/xN0GZF8s.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/BY0Lw52_.js", "_app/immutable/chunks/CCk-jJvr.js", "_app/immutable/chunks/C0-cVTkD.js"];
     stylesheets9 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/10.DjfAKFnT.css"];
     fonts9 = [];
   }
@@ -28012,6 +28415,7 @@ function get_node_type(node_id) {
 // .svelte-kit/output/server/index.js
 init_exports2();
 init_dev();
+init_index_server2();
 init_internal2();
 
 // .svelte-kit/output/server/chunks/app.js
@@ -31051,7 +31455,7 @@ var manifest = (() => {
     assets: /* @__PURE__ */ new Set(["favicon.png", "manifest.json", "robots.txt", "screenshot.png"]),
     mimeTypes: { ".png": "image/png", ".json": "application/json", ".txt": "text/plain", ".ttf": "font/ttf", ".woff": "font/woff" },
     _: {
-      client: { start: "_app/immutable/entry/start.VqPW1fXH.js", app: "_app/immutable/entry/app.WOI0t8UE.js", imports: ["_app/immutable/entry/start.VqPW1fXH.js", "_app/immutable/chunks/H7ira_Aq.js", "_app/immutable/chunks/CBhNYNvz.js", "_app/immutable/entry/app.WOI0t8UE.js", "_app/immutable/chunks/CBhNYNvz.js", "_app/immutable/chunks/BFYQcBYR.js", "_app/immutable/chunks/I8rQr1kY.js"], stylesheets: [], fonts: [], uses_env_dynamic_public: false },
+      client: { start: "_app/immutable/entry/start.WPYE48Zn.js", app: "_app/immutable/entry/app.BseXqx01.js", imports: ["_app/immutable/entry/start.WPYE48Zn.js", "_app/immutable/chunks/km5OAbuW.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/entry/app.BseXqx01.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/O6-aNYLC.js", "_app/immutable/chunks/CP97kCR3.js"], stylesheets: [], fonts: [], uses_env_dynamic_public: false },
       nodes: [
         __memo(() => Promise.resolve().then(() => (init__(), __exports))),
         __memo(() => Promise.resolve().then(() => (init__2(), __exports2))),

@@ -1,13 +1,8 @@
 <script lang="ts">
   import Section from '../../components/Section.svelte';
   import Typography from '../../components/Typography.svelte';
-  import translations from '../../utils/useTranslations';
+  import { t } from '../../utils/useTranslations';
   import ContactForm from '../../components/ContactForm.svelte';
-
-  const {
-    menu: { contact },
-    contact: { contactUs, contactUsText, whereToFindUs },
-  } = translations;
 
   // Google Maps embed — links to the Ateliér Tomandlová business listing
   // (hours, phone, reviews, Navigovat). To refresh, open Google Maps →
@@ -21,27 +16,27 @@
 </script>
 
 <svelte:head>
-  <title>{contact}</title>
+  <title>{$t.menu.contact} · {$t.general.title}</title>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </svelte:head>
 
 <div class="contactPage">
   <Section>
     <div class="contactPage__form">
-      <span class="contactPage__eyebrow">—&nbsp; Kontakt</span>
-      <Typography variant="h1" element="h1">{contactUs}</Typography>
-      <Typography>{contactUsText}</Typography>
+      <span class="contactPage__eyebrow">—&nbsp; {$t.contact.eyebrow}</span>
+      <Typography variant="h1" element="h1">{$t.contact.contactUs}</Typography>
+      <Typography>{$t.contact.contactUsText}</Typography>
       <ContactForm />
     </div>
   </Section>
 
   <Section bg="light">
     <div class="contactPage__map">
-      <span class="contactPage__eyebrow">—&nbsp; Místo</span>
-      <Typography variant="h1" element="h2">{whereToFindUs}</Typography>
+      <span class="contactPage__eyebrow">—&nbsp; {$t.contact.placeEyebrow}</span>
+      <Typography variant="h1" element="h2">{$t.contact.whereToFindUs}</Typography>
       <div class="contactPage__map__iframe">
         <iframe
-          title="Ateliér Tomandlová na mapě"
+          title={$t.contact.mapTitle}
           src={MAP_SRC}
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"

@@ -54,12 +54,16 @@
     }
 
     &--right {
-      justify-self: end;
-      position: absolute;
-      top: 7rem;
-      right: 1.25rem;
+      // Hidden on small screens — the address row already occupies the top
+      // band and the right tag chips would overlap. Reappears once there's
+      // horizontal room for both rows.
+      display: none;
 
       @media (min-width: config.$breakpoint-sm) {
+        display: flex;
+        justify-self: end;
+        position: absolute;
+        top: 7rem;
         right: 3rem;
       }
 

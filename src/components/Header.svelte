@@ -1,21 +1,16 @@
 <script lang="ts">
-  import translations from '../utils/useTranslations';
-
-  const { title } = translations.general;
-  const {
-    contact: { address },
-  } = translations;
+  import { t } from '../utils/useTranslations';
 </script>
 
 <header class="header">
   <div class="header__inner">
     <div class="header__meta header__meta--top">
-      <span>{address.street}</span>
-      <span>{address.city}</span>
+      <span>{$t.contact.address.street}</span>
+      <span>{$t.contact.address.city}</span>
     </div>
     <div class="header__meta header__meta--right">
-      <span>autorské oděvy</span>
-      <span>ruční výroba</span>
+      <span>{$t.header.metaTagOne}</span>
+      <span>{$t.header.metaTagTwo}</span>
     </div>
 
     <h1 class="header__title">
@@ -23,10 +18,7 @@
       <span class="header__title__line--contrast">Tomandlová</span>
     </h1>
 
-    <p class="header__tagline">
-      Krejčovský ateliér v historickém centru Chebu. Autorské oděvy z přírodních
-      materiálů, šité ručně na míru.
-    </p>
+    <p class="header__tagline">{$t.header.tagline}</p>
 
     <svg
       class="header__motif"

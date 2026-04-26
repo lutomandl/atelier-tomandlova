@@ -2,27 +2,16 @@
   import Section from './Section.svelte';
   import Typography from './Typography.svelte';
   import Button from './Button.svelte';
-  import translations from '../utils/useTranslations';
+  import { t } from '../utils/useTranslations';
 
   export let withButton: boolean = false;
-
-  const {
-    ourWork,
-    designHeading,
-    designText,
-    qualityHeading,
-    qualityText,
-    handmadeHeading,
-    handmadeText,
-    learnMore,
-  } = translations.ourWork;
 </script>
 
 <Section bg="light">
   <div id="our-work" class="ourWork">
     <header class="ourWork__head">
-      <span class="ourWork__eyebrow">—&nbsp; Atelier</span>
-      <Typography variant="h1" element="h2">{ourWork}</Typography>
+      <span class="ourWork__eyebrow">—&nbsp; {$t.ourWork.eyebrow}</span>
+      <Typography variant="h1" element="h2">{$t.ourWork.ourWork}</Typography>
     </header>
 
     <div class="ourWork__columns">
@@ -37,8 +26,8 @@
           </svg>
         </div>
         <div class="ourWork__card__body">
-          <Typography variant="h3" element="h3">{designHeading}</Typography>
-          <Typography>{designText}</Typography>
+          <Typography variant="h3" element="h3">{$t.ourWork.designHeading}</Typography>
+          <Typography>{$t.ourWork.designText}</Typography>
         </div>
       </article>
 
@@ -53,8 +42,8 @@
           </svg>
         </div>
         <div class="ourWork__card__body">
-          <Typography variant="h3" element="h3">{qualityHeading}</Typography>
-          <Typography>{qualityText}</Typography>
+          <Typography variant="h3" element="h3">{$t.ourWork.qualityHeading}</Typography>
+          <Typography>{$t.ourWork.qualityText}</Typography>
         </div>
       </article>
 
@@ -71,15 +60,15 @@
           </svg>
         </div>
         <div class="ourWork__card__body">
-          <Typography variant="h3" element="h3">{handmadeHeading}</Typography>
-          <Typography>{handmadeText}</Typography>
+          <Typography variant="h3" element="h3">{$t.ourWork.handmadeHeading}</Typography>
+          <Typography>{$t.ourWork.handmadeText}</Typography>
         </div>
       </article>
     </div>
 
     {#if withButton}
       <div class="ourWork__button">
-        <Button bg="dark" href="/o-nas" text={learnMore} />
+        <Button bg="dark" href="/o-nas" text={$t.ourWork.learnMore} />
       </div>
     {/if}
   </div>

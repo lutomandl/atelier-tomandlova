@@ -2,13 +2,11 @@
   import Header from '../components/Header.svelte';
   import EventsSection from '../components/EventsSection.svelte';
   import OurWork from '../components/OurWork.svelte';
-  import translations from '../utils/useTranslations';
-
-  const { title } = translations.general;
+  import { t } from '../utils/useTranslations';
 </script>
 
 <svelte:head>
-  <title>{title}</title>
+  <title>{$t.general.title}</title>
 </svelte:head>
 
 <Header />

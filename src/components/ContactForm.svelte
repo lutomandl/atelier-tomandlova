@@ -1,27 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { deserialize } from '$app/forms';
-  import translations from '../utils/useTranslations';
+  import { t, getTranslations } from '../utils/useTranslations';
   import type { ActionResult } from '@sveltejs/kit';
   import Input from './Input.svelte';
   import Button from './Button.svelte';
   import Typography from './Typography.svelte';
   import { EMAIL_REGEX, MESSAGE_MAX_LENGTH, NAME_MAX_LENGTH } from '../utils/constants';
-
-  const {
-    name,
-    email,
-    message,
-    submit,
-    generalError,
-    successMessage,
-    nameMissing,
-    emailMissing,
-    messageMissing,
-    nameTooLong,
-    emailInvalid,
-    messageTooLong,
-  } = translations.contact.form;
 
   const grecaptchaKey = import.meta.env.VITE_GRECAPTCHA_SITE_KEY;
   let formError: string | null = null;
@@ -38,34 +23,38 @@
     formSuccess = false;
   };
 
+  // Validation messages must be looked up at validation time so they reflect
+  // the active language even if the user changes it after the form rendered.
   const validateForm = () => {
+    const form = getTranslations().contact.form;
+
     if (!formValues.name) {
-      formError = nameMissing;
+      formError = form.nameMissing;
       return false;
     }
 
     if (!formValues.email) {
-      formError = emailMissing;
+      formError = form.emailMissing;
       return false;
     }
 
     if (!formValues.message) {
-      formError = messageMissing;
+      formError = form.messageMissing;
       return false;
     }
 
     if (formValues.name.length > NAME_MAX_LENGTH) {
-      formError = nameTooLong;
+      formError = form.nameTooLong;
       return false;
     }
 
     if (EMAIL_REGEX.test(formValues.email) === false) {
-      formError = emailInvalid;
+      formError = form.emailInvalid;
       return false;
     }
 
     if (formValues.message.length > MESSAGE_MAX_LENGTH) {
-      formError = messageTooLong;
+      formError = form.messageTooLong;
       return false;
     }
 
@@ -83,7 +72,7 @@
     const captchaToken = await window.grecaptcha.execute();
 
     if (!captchaToken) {
-      formError = generalError;
+      formError = getTranslations().contact.form.generalError;
       return;
     }
 
@@ -111,7 +100,7 @@
       console.error(result.status, result.data ? result.data : null);
     }
 
-    formError = generalError;
+    formError = getTranslations().contact.form.generalError;
     return;
   };
 
@@ -136,17 +125,17 @@
 </svelte:head>
 
 <form class="contactForm" method="POST" on:submit|preventDefault={handleFormSubmit}>
-  <Input name="name" label={name} onFocus={clearFeedback} bind:value={formValues.name} />
+  <Input name="name" label={$t.contact.form.name} onFocus={clearFeedback} bind:value={formValues.name} />
   <Input
     type="email"
     name="email"
-    label={email}
+    label={$t.contact.form.email}
     onFocus={clearFeedback}
     bind:value={formValues.email}
   />
   <Input
     name="message"
-    label={message}
+    label={$t.contact.form.message}
     onFocus={clearFeedback}
     bind:value={formValues.message}
     size="big"
@@ -158,11 +147,11 @@
     {/if}
 
     {#if formSuccess}
-      <Typography variant="subtitle">{successMessage}</Typography>
+      <Typography variant="subtitle">{$t.contact.form.successMessage}</Typography>
     {/if}
   </div>
 
-  <Button disabled={formSuccess} type="submit" text={submit} />
+  <Button disabled={formSuccess} type="submit" text={$t.contact.form.submit} />
 
   <div id="recaptcha" />
 </form>

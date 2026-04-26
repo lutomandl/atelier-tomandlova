@@ -36,7 +36,9 @@
     inset: 0;
     width: 100%;
     height: 100svh;
-    background-color: rgba(215, 166, 157, 0.92);
+    // Butter cream from the current palette (--color-bg #f4e6d3) at high alpha,
+    // with the warm body gradient blurring through underneath.
+    background-color: rgba(244, 230, 211, 0.92);
     backdrop-filter: blur(20px);
     transform: translateX(-100%);
     transition: transform var(--dur-med) var(--ease-out);

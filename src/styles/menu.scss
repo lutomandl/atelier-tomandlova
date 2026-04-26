@@ -51,6 +51,8 @@
 
     @media (min-width: config.$breakpoint-md) {
       display: flex;
+      align-items: center;
+      gap: 2.5rem;
     }
   }
 }

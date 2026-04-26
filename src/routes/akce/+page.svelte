@@ -3,16 +3,11 @@
   import EventsContainer from '../../components/EventsContainer.svelte';
   import Section from '../../components/Section.svelte';
   import Typography from '../../components/Typography.svelte';
-  import translations from '../../utils/useTranslations';
-
-  const {
-    menu: { events },
-    events: { upcomingEvents, pastEvents },
-  } = translations;
+  import { t } from '../../utils/useTranslations';
 </script>
 
 <svelte:head>
-  <title>{events}</title>
+  <title>{$t.menu.events} · {$t.general.title}</title>
 </svelte:head>
 
 <Section>
@@ -20,12 +15,12 @@
   <BackgroundGraphic graphic="hill" top={85} left={-5} width={35} paralaxSpeed={3} />
   <div class="eventsPage">
     <div class="eventsPage__upcoming">
-      <span class="eventsPage__eyebrow">—&nbsp; Akce</span>
-      <Typography variant="h1" element="h1">{upcomingEvents}</Typography>
+      <span class="eventsPage__eyebrow">—&nbsp; {$t.events.eyebrowAkce}</span>
+      <Typography variant="h1" element="h1">{$t.events.upcomingEvents}</Typography>
       <EventsContainer upcoming />
     </div>
     <div class="eventsPage__past">
-      <Typography variant="h2" element="h2">{pastEvents}</Typography>
+      <Typography variant="h2" element="h2">{$t.events.pastEvents}</Typography>
       <EventsContainer sortDesc withPagination />
     </div>
   </div>

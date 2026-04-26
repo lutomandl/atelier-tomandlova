@@ -4,7 +4,7 @@
   import type { EventObject } from '../utils/eventsApi';
   import Event from './Event.svelte';
   import Typography from './Typography.svelte';
-  import translations from '../utils/useTranslations';
+  import { t } from '../utils/useTranslations';
   import Button from './Button.svelte';
 
   export let upcoming: boolean = false;
@@ -33,20 +33,18 @@
   };
 
   onMount(loadEvents);
-
-  const { noEvents } = translations.events;
 </script>
 
 <div class="eventsContainer">
   {#if events.length === 0}
-    <Typography element="span">{noEvents}</Typography>
+    <Typography element="span">{$t.events.noEvents}</Typography>
   {:else}
     {#each events as event}
       <Event {event} />
     {/each}
   {/if}
   {#if withPagination && totalCount > paginationStart}
-    <Button callback={loadEvents} text="Načíst další" />
+    <Button callback={loadEvents} text={$t.events.loadMore} />
   {/if}
 </div>
 
