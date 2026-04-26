@@ -4,19 +4,11 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-
-  @media (min-width: config.$breakpoint-md) {
-    width: 70%;
-  }
-
-  @media (min-width: config.$breakpoint-lg) {
-    width: 50%;
-  }
+  align-items: stretch;
+  gap: 1.25rem;
 
   &__feedback {
     width: 100%;
-    height: 3rem;
+    min-height: 2rem;
   }
 }

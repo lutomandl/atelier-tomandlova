@@ -15,30 +15,24 @@
     fridayTime,
     openingHoursNote,
   } = translations.contact.openingHours;
+
+  const lines = [
+    { day: monday, time: mondayTime },
+    { day: tuesday, time: tuesdayTime },
+    { day: wednesday, time: wednesdayTime },
+    { day: thursday, time: thursdayTime },
+    { day: friday, time: fridayTime },
+  ];
 </script>
 
 <div class="openingHours">
-  <div class="openingHours__line">
-    <Typography>{monday}</Typography>
-    <Typography>{mondayTime}</Typography>
-  </div>
-  <div class="openingHours__line">
-    <Typography>{tuesday}</Typography>
-    <Typography>{tuesdayTime}</Typography>
-  </div>
-  <div class="openingHours__line">
-    <Typography>{wednesday}</Typography>
-    <Typography>{wednesdayTime}</Typography>
-  </div>
-  <div class="openingHours__line">
-    <Typography>{thursday}</Typography>
-    <Typography>{thursdayTime}</Typography>
-  </div>
-  <div class="openingHours__line">
-    <Typography>{friday}</Typography>
-    <Typography>{fridayTime}</Typography>
-  </div>
-  <Typography>{openingHoursNote}</Typography>
+  {#each lines as { day, time }}
+    <div class="openingHours__line">
+      <Typography variant="subtitle" element="span">{day}</Typography>
+      <Typography variant="subtitle" element="span">{time}</Typography>
+    </div>
+  {/each}
+  <Typography variant="subtitle" element="p">{openingHoursNote}</Typography>
 </div>
 
 <style lang="scss">

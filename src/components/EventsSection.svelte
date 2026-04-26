@@ -4,15 +4,16 @@
   import Button from './Button.svelte';
   import translations from '../utils/useTranslations';
   import EventsContainer from './EventsContainer.svelte';
-  import BackgroundGraphic from './BackgroundGraphic.svelte';
 
   const { upcomingEvents, moreEvents } = translations.events;
 </script>
 
 <Section>
-  <BackgroundGraphic graphic="pencilBlue" top={80} left={30} width={50} paralaxSpeed={8} />
   <div id="events" class="eventsSection">
-    <Typography variant="h1" element="span">{upcomingEvents}</Typography>
+    <header class="eventsSection__head">
+      <span class="eventsSection__eyebrow">—&nbsp; Program</span>
+      <Typography variant="h1" element="h2">{upcomingEvents}</Typography>
+    </header>
     <EventsContainer upcoming />
     <div class="eventsSection__button">
       <Button text={moreEvents} href="/akce" />

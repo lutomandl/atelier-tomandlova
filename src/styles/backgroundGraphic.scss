@@ -1,8 +1,14 @@
 .backgroundGraphic {
   position: absolute;
+  pointer-events: none;
+  opacity: 0.75;
+  mix-blend-mode: multiply;
+  transition: opacity var(--dur-slow) var(--ease-out);
 
-  & > img {
+  img {
     width: 100%;
     height: auto;
+    display: block;
+    border-radius: 0;
   }
 }

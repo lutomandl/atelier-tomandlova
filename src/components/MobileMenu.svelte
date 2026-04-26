@@ -3,34 +3,54 @@
   import logo from '$lib/assets/logo.webp';
   import menuIcon from '$lib/assets/menu.svg';
   import xIcon from '$lib/assets/x.svg';
+  import translations from '../utils/useTranslations';
 
   let menuOpened = false;
 
   function toggleMenu() {
     menuOpened = !menuOpened;
   }
+
+  const {
+    contact: { address, email },
+  } = translations;
 </script>
 
-<div class="mobileMenu__button" class:menuOpened on:click={toggleMenu} on:keydown={toggleMenu}>
-  <img src={menuIcon} alt="Menu" />
-</div>
-<div class="mobileMenu__tab" class:menuOpened>
-  <div class="mobileMenu__tab__header">
-    <a href="/" on:click={toggleMenu}>
-      <img class="mobileMenu__tab__logo" class:menuOpened alt="logo-at" src={logo} />
-    </a>
-    <img
-      class="mobileMenu__tab__x"
-      src={xIcon}
-      alt="x"
-      on:click={toggleMenu}
-      on:keydown={toggleMenu}
-    />
-  </div>
-  <MenuLinks callback={toggleMenu} />
-</div>
+<button
+  type="button"
+  class="mobileMenu__button"
+  class:menuOpened
+  on:click={toggleMenu}
+  aria-label="Otevřít menu"
+  aria-expanded={menuOpened}
+>
+  <img src={menuIcon} alt="" />
+</button>
 
-<div class="mobileMenu__backdrop" class:menuOpened on:click={toggleMenu} on:keydown={toggleMenu} />
+<div class="mobileMenu__tab" class:menuOpened role="dialog" aria-modal="true" aria-hidden={!menuOpened}>
+  <div class="mobileMenu__tab__header">
+    <a href="/" on:click={toggleMenu} aria-label="Domů">
+      <img class="mobileMenu__tab__logo" alt="" src={logo} />
+    </a>
+    <button
+      type="button"
+      class="mobileMenu__tab__x"
+      on:click={toggleMenu}
+      aria-label="Zavřít menu"
+    >
+      <img src={xIcon} alt="" />
+    </button>
+  </div>
+
+  <nav class="mobileMenu__tab__nav">
+    <MenuLinks callback={toggleMenu} />
+  </nav>
+
+  <div class="mobileMenu__tab__footer">
+    <span>{address.street}, {address.city}</span>
+    <a href={`mailto:${email}`}>{email}</a>
+  </div>
+</div>
 
 <style lang="scss">
   @import '../styles/mobileMenu.scss';

@@ -3,19 +3,14 @@
 .openingHours {
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
+  color: var(--color-ink-muted);
 
   &__line {
-    display: flex;
-    gap: 2rem;
-    text-align: right;
-    width: 60%;
-
-    @media (min-width: config.$breakpoint-sm) {
-      width: 70%;
-    }
-
-    @media (min-width: config.$breakpoint-md) {
-      width: 80%;
-    }
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    max-width: 22rem;
   }
 }

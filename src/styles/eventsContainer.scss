@@ -1,7 +1,11 @@
 .eventsContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 3rem 0;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
 }
