@@ -5,14 +5,15 @@
 </script>
 
 <nav class="menu">
-  <div class="menu__mobile">
-    <MobileMenu />
-  </div>
+  <a class="menu__home" href="/" aria-label="Ateliér Tomandlová — domů">
+    <img class="menu__logo" alt="" src={logo} />
+  </a>
   <div class="menu__desktop">
     <MenuLinks />
   </div>
-
-  <a href="/"><img class="menu__logo" alt="logo-at" src={logo} /></a>
+  <div class="menu__mobile">
+    <MobileMenu />
+  </div>
 </nav>
 
 <style lang="scss">

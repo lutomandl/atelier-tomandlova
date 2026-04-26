@@ -1,24 +1,23 @@
 @use './config';
 
 .section {
-  padding: 4.5rem 1rem;
-  height: 100%;
-  min-height: 60vh;
   position: relative;
-  text-align: center;
+  padding: 5rem 1.25rem;
+  min-height: 60vh;
   overflow: visible;
 
-  &--light {
-    background-color: config.$bg-color-light;
-  }
-
   @media (min-width: config.$breakpoint-sm) {
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding: 6rem 3rem;
   }
 
   @media (min-width: config.$breakpoint-md) {
-    padding-left: 6.25rem;
-    padding-right: 6.25rem;
+    padding: 8rem 6.25rem;
+  }
+
+  // Both default and `--light` now sit transparent on the global warm
+  // gradient — content blocks (cards, callouts) carry their own backgrounds
+  // for legibility, sections themselves don't.
+  &--light {
+    background-color: transparent;
   }
 }

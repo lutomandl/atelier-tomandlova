@@ -1,32 +1,72 @@
 @use './config';
 
 .button {
-  border: none;
-  border-radius: 0.2rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
   outline: none;
-  padding: 2rem 4rem 2rem 4rem;
+  padding: 1rem 2.25rem;
   min-width: 10rem;
   max-width: max-content;
-  box-shadow: config.$box-shadow;
   text-decoration: none;
-  transition: box-shadow ease-in 0.1s;
+  cursor: pointer;
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-med) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+
+  :global(.typography--label) {
+    color: inherit;
+  }
 
   &--dark {
-    background-color: config.$bg-color-dark;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+
+    &:hover {
+      background-color: var(--color-ink);
+    }
   }
 
   &--light {
-    background-color: config.$bg-color-light;
+    background-color: transparent;
+    color: var(--color-ink);
+    border-color: var(--color-ink);
+
+    &:hover {
+      background-color: var(--color-ink);
+      color: var(--color-bg);
+    }
   }
 
   &--disabled {
-    background-color: config.$disabled-color;
-    color: config.$text-color;
+    background-color: var(--color-surface);
+    color: var(--color-ink-muted);
+    border-color: var(--color-line);
     box-shadow: none;
+    cursor: not-allowed;
   }
 
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0.3125rem 0.3125rem 1.25rem rgba(0, 0, 0, 0.1);
+  &:hover:not(&--disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:active:not(&--disabled) {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
   }
 }

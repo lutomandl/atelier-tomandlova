@@ -1,81 +1,91 @@
 @use './config';
 
 .posterView {
-  visibility: hidden;
   position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  opacity: 0;
+  inset: 0;
+  display: grid;
+  place-items: center;
   z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity var(--dur-med) var(--ease-out),
+    visibility 0s linear var(--dur-med);
 
   &--visible {
-    opacity: 1;
     visibility: visible;
+    opacity: 1;
+    transition:
+      opacity var(--dur-med) var(--ease-out),
+      visibility 0s linear 0s;
   }
 
   &__overlay {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: config.$bg-color-dark;
+    inset: 0;
+    background-color: rgba(31, 26, 24, 0.72);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
     opacity: 0;
-    transition: opacity 0.3s ease-out;
+    transition: opacity var(--dur-med) var(--ease-out);
 
     &--visible {
-      opacity: 0.8;
+      opacity: 1;
     }
   }
 
   &__close {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 2rem;
-    background-color: transparent;
-    border: none;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-pill);
     cursor: pointer;
-    width: 2.5rem;
-    height: 2.5rem;
+    box-shadow: var(--shadow-md);
+    transition: transform var(--dur-fast) var(--ease-out);
+    z-index: 2;
 
-    & > img {
-      height: 100%;
-      width: 100%;
+    &:hover {
+      transform: rotate(90deg);
+    }
+
+    img {
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 0;
     }
   }
 
   &__image {
-    position: absolute;
-    width: 100%;
-    height: 80%;
-    transform: translate(100%, 100%);
+    position: relative;
+    max-width: min(90vw, 44rem);
+    max-height: 85vh;
+    transform: scale(0.92);
+    opacity: 0;
+    transition:
+      transform var(--dur-slow) var(--ease-spring),
+      opacity var(--dur-med) var(--ease-out);
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-md);
+    overflow: hidden;
 
     &--visible {
-      transform: translate(0, 0);
-      animation-name: comeToView;
-      animation-duration: 0.8s;
-      animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+      transform: scale(1);
+      opacity: 1;
     }
 
-    & > img {
-      max-height: 100%;
+    img {
+      display: block;
       max-width: 100%;
+      max-height: 85vh;
+      width: auto;
+      height: auto;
+      border-radius: 0;
     }
-  }
-}
-
-@keyframes comeToView {
-  0% {
-    transform: translate(100%, 100%) rotate(10deg);
-  }
-  20% {
-    transform: translate(100%, 100%) rotate(10deg);
-  }
-  100% {
-    transform: translate(0, 0) rotate(0deg);
   }
 }

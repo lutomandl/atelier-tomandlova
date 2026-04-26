@@ -1,25 +1,52 @@
 <script lang="ts">
-  import Section from './Section.svelte';
-  import arrow from '$lib/assets/arrow.svg';
-  import Typography from './Typography.svelte';
   import translations from '../utils/useTranslations';
-  import BackgroundGraphic from './BackgroundGraphic.svelte';
 
   const { title } = translations.general;
+  const {
+    contact: { address },
+  } = translations;
 </script>
 
 <header class="header">
-  <Section>
-    <BackgroundGraphic graphic="yellowLine" top={50} left={10} width={30} layer="front" />
-    <BackgroundGraphic graphic="transparentCircle" paralaxSpeed={5} top={10} left={75} width={15} />
-    <BackgroundGraphic graphic="circle" paralaxSpeed={2} top={25} left={60} width={30} />
-    <div class="header__title">
-      <Typography variant="header" element="h1">{title}</Typography>
+  <div class="header__inner">
+    <div class="header__meta header__meta--top">
+      <span>{address.street}</span>
+      <span>{address.city}</span>
     </div>
-    <a class="header__more" href="#our-work"><img alt="arrow down" src={arrow} /></a>
-  </Section>
+    <div class="header__meta header__meta--right">
+      <span>autorské oděvy</span>
+      <span>ruční výroba</span>
+    </div>
+
+    <h1 class="header__title">
+      <span class="header__title__line">Ateliér</span>
+      <span class="header__title__line--contrast">Tomandlová</span>
+    </h1>
+
+    <p class="header__tagline">
+      Krejčovský ateliér v historickém centru Chebu. Autorské oděvy z přírodních
+      materiálů, šité ručně na míru.
+    </p>
+
+    <svg
+      class="header__motif"
+      viewBox="0 0 800 120"
+      fill="none"
+      aria-hidden="true"
+      preserveAspectRatio="none"
+    >
+      <path
+        class="header__motif__path"
+        d="M4 76 C 80 18, 170 10, 260 52 S 440 112, 540 70 S 740 16, 796 60"
+        stroke="var(--color-accent)"
+        stroke-width="10"
+        stroke-linecap="round"
+        pathLength="1"
+      />
+    </svg>
+  </div>
 </header>
 
 <style lang="scss">
-  @import 'src/styles/header.scss';
+  @import '../styles/header.scss';
 </style>

@@ -1,22 +1,43 @@
 @use './config';
 
 .menu {
-  padding: 1rem;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 7rem;
+  padding: 1rem 1.25rem;
+  height: 5rem;
   z-index: 1000;
+  background-color: transparent;
+  transition: background-color var(--dur-med) var(--ease-out),
+    backdrop-filter var(--dur-med) var(--ease-out),
+    border-color var(--dur-med) var(--ease-out);
+  border-bottom: 1px solid transparent;
 
   @media (min-width: config.$breakpoint-md) {
-    justify-content: flex-end;
-    padding-right: 3rem;
+    padding: 1.25rem 2.5rem;
+    height: 5.5rem;
+  }
+
+  // Subtle frost after any scroll — handled via `:has()` on body? Use scroll-timeline instead.
+  @supports (animation-timeline: scroll()) {
+    animation: menu-frost linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 80px;
   }
 
   &__logo {
-    width: 5rem;
-    margin-left: 3rem;
+    display: block;
+    height: 2.75rem;
+    width: auto;
+    border-radius: 0;
+
+    @media (min-width: config.$breakpoint-md) {
+      height: 3rem;
+    }
   }
 
   &__mobile {
@@ -26,8 +47,18 @@
   }
 
   &__desktop {
-    @media (max-width: config.$breakpoint-md) {
-      display: none;
+    display: none;
+
+    @media (min-width: config.$breakpoint-md) {
+      display: flex;
     }
+  }
+}
+
+@keyframes menu-frost {
+  to {
+    background-color: rgba(247, 239, 233, 0.85);
+    backdrop-filter: blur(14px);
+    border-bottom-color: var(--color-line);
   }
 }

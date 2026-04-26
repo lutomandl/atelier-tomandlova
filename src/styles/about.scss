@@ -1,115 +1,399 @@
 @use './config';
 
 .about {
-  &__lenka {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 5rem;
-    align-items: flex-start;
-    text-align: left;
+  &__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
 
-    &__top {
-      display: flex;
-      flex-direction: column;
-      gap: 3rem;
-      align-items: flex-start;
-      width: 100%;
+  // --- Intro ---
+  &__intro {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
 
-      @media (min-width: config.$breakpoint-lg) {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
+    @media (min-width: config.$breakpoint-md) {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 5rem;
+      align-items: center;
     }
 
     &__text {
       display: flex;
       flex-direction: column;
-      gap: 3rem;
-      align-items: flex-start;
-      justify-content: space-between;
-      width: 100%;
+      gap: 1.5rem;
+      max-width: 36rem;
+    }
 
-      @media (min-width: config.$breakpoint-lg) {
-        width: 70%;
+    &__title {
+      font-family: 'Ogg-Bold', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(3rem, 6vw, 6rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--color-ink);
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding-right: 0.15em;
+
+      &__contrast {
+        font-family: 'Ogg-Bold', Georgia, serif;
+        font-weight: 700;
+        color: var(--color-accent);
+        padding-left: 0.15em;
       }
+    }
+
+    &__lede {
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: clamp(1.05rem, 0.4vw + 0.95rem, 1.25rem);
+      line-height: 1.55;
+      color: var(--color-ink);
+      max-width: 36ch;
+    }
+
+    &__body {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--color-ink-muted);
     }
 
     &__image {
+      position: relative;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+      justify-self: center;
       width: 100%;
-      align-self: flex-end;
-
-      @media (min-width: config.$breakpoint-sm) {
-        width: 70%;
-      }
 
       @media (min-width: config.$breakpoint-md) {
-        width: 50%;
+        justify-self: end;
       }
 
-      @media (min-width: config.$breakpoint-lg) {
-        width: 30%;
-      }
-
-      & > img {
+      img {
         width: 100%;
         height: auto;
-      }
-    }
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        transform: rotate(-1.5deg);
+        transform-origin: center;
+        transition: transform var(--dur-slow) var(--ease-out);
 
-    &__quote {
-      margin-left: 1rem;
-      margin-right: 1rem;
+        @media (min-width: config.$breakpoint-md) {
+          max-height: 38rem;
+          aspect-ratio: 3 / 4;
+          transform: rotate(1.5deg);
+        }
+      }
+
+      &:hover img {
+        transform: rotate(0deg);
+      }
+
+      figcaption {
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-ink-muted);
+        padding-left: 0.25rem;
+      }
     }
   }
 
-  &__people {
+  // --- Pull quote ---
+  &__pullquote {
     position: relative;
+    margin: 3rem 0 0;
+    padding-top: 3rem;
+    max-width: 54rem;
+    border-top: 1px solid var(--color-line);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 1.5rem;
+    row-gap: 1.25rem;
+    align-items: start;
+
+    @media (min-width: config.$breakpoint-md) {
+      margin: 3rem 0 0;
+      column-gap: 2.5rem;
+    }
+
+    &__mark {
+      grid-row: 1;
+      grid-column: 1;
+      font-family: 'Ogg-Bold', Georgia, serif;
+      font-size: clamp(5rem, 9vw, 8rem);
+      line-height: 0.75;
+      color: var(--color-accent);
+      user-select: none;
+      pointer-events: none;
+      opacity: 0.9;
+      align-self: start;
+      // Pull the mark's baseline up a bit so it sits alongside the first line.
+      margin-top: -0.1em;
+    }
+
+    blockquote {
+      grid-row: 1;
+      grid-column: 2;
+      font-family: 'Ogg-Light', 'Ogg', Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(1.375rem, 1.4vw + 1rem, 2.25rem);
+      line-height: 1.35;
+      color: var(--color-ink);
+      margin: 0;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+    }
+
+    figcaption {
+      grid-row: 2;
+      grid-column: 2;
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+    }
+  }
+
+  // --- People section ---
+  &__people {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    gap: 3rem;
-    text-align: right;
+    gap: 4rem;
 
+    // Two-column hero-style layout for header + group photo, mirroring the
+    // intro section. Stacks on mobile.
     &__top {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr;
       gap: 3rem;
-      align-items: flex-end;
+      align-items: start;
 
-      @media (min-width: config.$breakpoint-lg) {
-        margin-right: 10%;
+      @media (min-width: config.$breakpoint-md) {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+        gap: 5rem;
+        align-items: center;
       }
     }
 
-    &__bottom {
+    &__head {
       display: flex;
       flex-direction: column;
-      gap: 3rem;
-      align-items: flex-end;
+      gap: 1rem;
+      max-width: 36rem;
+    }
+
+    &__lead {
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: clamp(1.05rem, 0.4vw + 0.95rem, 1.25rem);
+      line-height: 1.55;
+      color: var(--color-ink);
+      margin: 0;
+      text-wrap: balance;
+    }
+
+    &__image {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
       width: 100%;
 
-      @media (min-width: config.$breakpoint-lg) {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+      @media (min-width: config.$breakpoint-md) {
+        justify-self: end;
       }
+
+      img {
+        width: 100%;
+        height: auto;
+        // No aspect-ratio / object-fit: cover — let the photo show its full
+        // frame so faces are not cropped.
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        transform: rotate(-1deg);
+        transform-origin: center;
+        transition: transform var(--dur-slow) var(--ease-out);
+        display: block;
+
+        @media (min-width: config.$breakpoint-md) {
+          transform: rotate(1deg);
+        }
+      }
+
+      &:hover img {
+        transform: rotate(0deg);
+      }
+
+      figcaption {
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-ink-muted);
+        padding-left: 0.25rem;
+      }
+    }
+
+    &__grid {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+
+      @media (min-width: config.$breakpoint-sm) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (min-width: config.$breakpoint-md) {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.75rem;
+      }
+    }
+  }
+
+  // --- Person card ---
+  &__person {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 2rem;
+    background-color: var(--color-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform var(--dur-med) var(--ease-out),
+      box-shadow var(--dur-med) var(--ease-out);
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    &__role {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+    }
+
+    &__name {
+      font-family: 'Ogg-Bold', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(1.375rem, 0.5vw + 1.2rem, 1.75rem);
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+      color: var(--color-ink);
+      margin: 0;
+    }
+
+    &__text {
+      font-family: var(--font-sans);
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      color: var(--color-ink-muted);
+      margin: 0;
+    }
+
+    &__link {
+      // Inline link — sits within the description sentence, not as a footer.
+      font-weight: 600;
+      color: var(--color-accent);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-decoration-color: rgba(180, 69, 42, 0.4);
+      text-underline-offset: 3px;
+      transition:
+        color var(--dur-fast) var(--ease-out),
+        text-decoration-color var(--dur-fast) var(--ease-out);
+
+      &:hover {
+        color: var(--color-accent-soft);
+        text-decoration-color: currentColor;
+      }
+    }
+  }
+
+  // --- Events CTA ---
+  &__events {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 2.5rem 2rem;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-line);
+
+    @media (min-width: config.$breakpoint-md) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2.5rem 3rem;
+      gap: 3rem;
     }
 
     &__text {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      align-items: flex-end;
+      gap: 0.5rem;
+      max-width: 42rem;
+
+      p {
+        font-family: var(--font-sans);
+        font-size: 1rem;
+        line-height: 1.5;
+        color: var(--color-ink);
+        margin: 0;
+      }
     }
 
-    &__image {
-      width: 100%;
+    &__cta {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.75rem;
+      border-radius: var(--radius-pill);
+      background-color: var(--color-accent);
+      color: var(--color-bg);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition:
+        transform var(--dur-fast) var(--ease-out),
+        box-shadow var(--dur-med) var(--ease-out),
+        background-color var(--dur-fast) var(--ease-out);
 
-      & > img {
-        width: 100%;
-        height: auto;
+      &:hover {
+        background-color: var(--color-ink);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
       }
     }
   }

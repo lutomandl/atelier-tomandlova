@@ -5,42 +5,59 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 0.5rem;
 
   &__label {
-    margin-left: 0.2rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    padding-left: 0.25rem;
   }
 
   &__field {
     width: 100%;
-    border: none;
-    border-radius: 0.2rem;
-    box-shadow: config.$box-shadow;
-    background-color: config.$bg-color-light;
-    padding: 1rem;
-    font-size: 1.2rem;
-    font-family: Ogg-Light;
-    box-sizing: border-box;
-    margin-top: 0.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+    padding: 1rem 1.125rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--color-ink);
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
+    box-shadow: var(--shadow-sm);
 
     &--small {
-      height: 4rem;
+      height: 3.25rem;
     }
 
     &--big {
-      height: 8rem;
+      height: 9rem;
+      resize: vertical;
+      min-height: 6rem;
     }
 
-    // focus state looking like the button has a backdrop light
+    &::placeholder {
+      color: var(--color-ink-muted);
+      opacity: 0.7;
+    }
+
     &:focus {
       outline: none;
-      border-left: solid 0.1rem config.$text-color;
-      padding-left: 0.95rem;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(138, 42, 42, 0.12);
     }
 
     &:disabled {
-      background-color: config.$disabled-color;
-      color: config.$text-color;
+      background-color: var(--color-surface);
+      color: var(--color-ink-muted);
       box-shadow: none;
+      cursor: not-allowed;
     }
   }
 }

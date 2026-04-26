@@ -3,13 +3,12 @@
   import { getPosterPublicUrl } from '../lib/supabaseClient';
 
   import Typography from './Typography.svelte';
-  import mapPin from '$lib/assets/map-pin.svg';
-  import clock from '$lib/assets/clock.svg';
-  import calendar from '$lib/assets/calendar.svg';
   import PosterView from './PosterView.svelte';
 
   export let event: EventObject;
-  let dateFormatted: string;
+  let dayStart: number | null = null;
+  let dayEnd: number | null = null;
+  let monthShort: string = '';
   let timeFormatted: string | null;
   let title: string;
   let description: string;
@@ -27,18 +26,16 @@
 
     const fromDate = From ? new Date(From) : null;
     const toDate = To ? new Date(To) : null;
-    const dayFrom = fromDate?.getDate() || null;
-    const monthFrom = fromDate?.getMonth() ? fromDate?.getMonth() + 1 : null;
-    const dayTo = toDate?.getDate() || null;
-    const monthTo = toDate?.getMonth() ? toDate?.getMonth() + 1 : null;
 
-    dateFormatted = `${dayFrom}${monthFrom !== monthTo ? `/${monthFrom}` : ''}${
-      dayTo ? `-${dayTo}/${monthTo}` : ''
-    }`;
+    dayStart = fromDate?.getDate() ?? null;
+    dayEnd = toDate?.getDate() ?? null;
+    monthShort =
+      fromDate?.toLocaleDateString('cs-CZ', { month: 'short' }).replace('.', '') || '';
+
     dateFromCz =
       fromDate?.toLocaleDateString('cs-CZ', {
         day: 'numeric',
-        month: monthFrom !== monthTo ? 'long' : undefined,
+        month: 'long',
       }) || null;
     dateToCz =
       toDate?.toLocaleDateString('cs-CZ', {
@@ -62,43 +59,52 @@
   };
 </script>
 
-<div class="event">
-  <div class="event__date">
-    <Typography variant="eventDate" element="span">{dateFormatted}</Typography>
+<article class="event fx-rise">
+  <div class="event__date" aria-hidden="true">
+    <span class="event__date__day">
+      {dayStart}{#if dayEnd && dayEnd !== dayStart}<span class="event__date__sep">–</span>{dayEnd}{/if}
+    </span>
+    <span class="event__date__month">{monthShort}</span>
   </div>
-  <div class="event__description">
+
+  <div class="event__body">
     <Typography variant="h3" element="h3">{title}</Typography>
-    <div class="event__details">
+
+    <dl class="event__details">
       {#if place}
         <div class="event__details__line">
-          <img src={mapPin} alt="map pin icon" />
-          <Typography variant="subtitle">{place}</Typography>
+          <dt>Místo</dt>
+          <dd>{place}</dd>
         </div>
       {/if}
       <div class="event__details__line">
-        <img src={calendar} alt="calendar icon" />
-        <Typography variant="subtitle">{dateFromCz}{dateToCz ? ` - ${dateToCz}` : ''}</Typography>
+        <dt>Kdy</dt>
+        <dd>{dateFromCz}{dateToCz && dateFromCz !== dateToCz ? ` – ${dateToCz}` : ''}</dd>
       </div>
       {#if timeFormatted}
         <div class="event__details__line">
-          <img src={clock} alt="clock icon" />
-          <Typography variant="subtitle">{timeFormatted}</Typography>
+          <dt>Čas</dt>
+          <dd>{timeFormatted}</dd>
         </div>
       {/if}
-    </div>
-    <Typography>{description}</Typography>
+    </dl>
+
+    {#if description}
+      <Typography>{description}</Typography>
+    {/if}
   </div>
+
   {#if thumbnailUrl}
-    <div class="event__poster">
-      <div class="event__posterThumbnail" on:click={openPoster} on:keydown={openPoster}>
-        <img
-          src={thumbnailUrl}
-          alt="event poster thumbnail"
-        />
-      </div>
-    </div>
+    <button
+      type="button"
+      class="event__poster"
+      on:click={openPoster}
+      aria-label="Zobrazit plakát"
+    >
+      <img src={thumbnailUrl} alt="plakát akce {title}" loading="lazy" />
+    </button>
   {/if}
-</div>
+</article>
 
 {#if posterPath}
   <PosterView {posterPath} close={closePoster} bind:viewPoster />

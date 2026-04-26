@@ -11,10 +11,10 @@
     | 'eventDate'
     | 'quote'
     | 'error' = 'p';
-  export let element: 'h1' | 'h2' | 'h3' | 'p' | 'span' = 'p';
+  export let element: 'h1' | 'h2' | 'h3' | 'p' | 'span' | 'div' = 'p';
 </script>
 
-<svlete:element this={element} class="typography typography--{variant}"><slot /></svlete:element>
+<svelte:element this={element} class="typography typography--{variant}"><slot /></svelte:element>
 
 <style lang="scss">
   @import '../styles/typography.scss';
