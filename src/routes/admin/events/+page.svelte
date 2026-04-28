@@ -85,6 +85,7 @@
 
     <div class="adminEvents__actions">
       <Button text="Přidat novou akci" href="/admin/events/new" />
+      <Button text="Zpět" href="/admin" />
     </div>
 
     {#if error}

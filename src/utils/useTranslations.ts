@@ -101,6 +101,10 @@ const cs = {
   gallery: {
     heading: 'Galerie',
     noImages: 'Zatím zde nemáme žádné obrázky',
+    viewImage: 'Zobrazit obrázek',
+    closeImage: 'Zavřít obrázek',
+    previousImage: 'Předchozí obrázek',
+    nextImage: 'Další obrázek',
   },
   contact: {
     eyebrow: 'Kontakt',
@@ -242,6 +246,10 @@ const en: Translations = {
   gallery: {
     heading: 'Gallery',
     noImages: 'No images here yet',
+    viewImage: 'View image',
+    closeImage: 'Close image',
+    previousImage: 'Previous image',
+    nextImage: 'Next image',
   },
   contact: {
     eyebrow: 'Contact',
@@ -381,6 +389,10 @@ const de: Translations = {
   gallery: {
     heading: 'Galerie',
     noImages: 'Hier sind noch keine Bilder',
+    viewImage: 'Bild anzeigen',
+    closeImage: 'Bild schließen',
+    previousImage: 'Vorheriges Bild',
+    nextImage: 'Nächstes Bild',
   },
   contact: {
     eyebrow: 'Kontakt',
