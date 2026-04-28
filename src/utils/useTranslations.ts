@@ -30,7 +30,7 @@ const cs = {
     metaTagOne: 'autorské oděvy',
     metaTagTwo: 'ruční výroba',
     tagline:
-      'Krejčovský ateliér v historickém centru Chebu. Autorské oděvy z přírodních materiálů, šité ručně na míru.',
+      'Oděvní ateliér v historickém centru Chebu. Autorské oděvy z přírodních materiálů, šité ručně na míru.',
   },
   ourWork: {
     eyebrow: 'Atelier',
@@ -85,7 +85,7 @@ const cs = {
     ladaVosejpkova: 'Lady Vosejpkové',
     evaInfo: 'Dlouhodobě spolupracujeme i s fotografkou',
     evaHajsmanova: 'Evou Hajšmanovou',
-    atelierImageAlt: 'Ateliér Tomandlová — interiér krejčovské dílny v Chebu',
+    atelierImageAlt: 'Ateliér Tomandlová — interiér oděvního ateliéru v Chebu',
     atelierImageCaption: 'Ateliér v Židovské ulici, Cheb',
     peopleImageAlt: 'Lada Vosejpková, Lenka Tomandlová a Eva Hajšmanová',
     peopleImageCaption: 'Lada Vosejpková, Lenka Tomandlová a Eva Hajšmanová',
@@ -148,7 +148,7 @@ const cs = {
     },
   },
   footer: {
-    subtitle: 'Krejčovský ateliér · Cheb',
+    subtitle: 'Oděvní ateliér · Cheb',
     addressLine: 'Židovská 412/9 · Cheb',
   },
 };
@@ -180,7 +180,7 @@ const en: Translations = {
     metaTagOne: 'original clothing',
     metaTagTwo: 'handmade',
     tagline:
-      'A tailor’s atelier in the historic centre of Cheb. Original clothing made by hand from natural materials.',
+      'A clothing atelier in the historic centre of Cheb. Original clothing made by hand from natural materials.',
   },
   ourWork: {
     eyebrow: 'Atelier',
@@ -230,7 +230,7 @@ const en: Translations = {
     ladaVosejpkova: 'Lada Vosejpková',
     evaInfo: 'We have a long-standing collaboration with the photographer',
     evaHajsmanova: 'Eva Hajšmanová',
-    atelierImageAlt: 'Ateliér Tomandlová — interior of the tailor’s atelier in Cheb',
+    atelierImageAlt: 'Ateliér Tomandlová — interior of the clothing atelier in Cheb',
     atelierImageCaption: 'The atelier on Židovská street, Cheb',
     peopleImageAlt: 'Lada Vosejpková, Lenka Tomandlová and Eva Hajšmanová',
     peopleImageCaption: 'Lada Vosejpková, Lenka Tomandlová and Eva Hajšmanová',
@@ -293,7 +293,7 @@ const en: Translations = {
     },
   },
   footer: {
-    subtitle: 'Tailor’s atelier · Cheb',
+    subtitle: 'Clothing atelier · Cheb',
     addressLine: 'Židovská 412/9 · Cheb',
   },
 };
@@ -323,7 +323,7 @@ const de: Translations = {
     metaTagOne: 'Autorenmode',
     metaTagTwo: 'handgefertigt',
     tagline:
-      'Schneideratelier im historischen Stadtkern von Eger (Cheb). Autorenmode aus Naturmaterialien, von Hand maßgefertigt.',
+      'Kleidungsatelier im historischen Stadtkern von Eger (Cheb). Autorenmode aus Naturmaterialien, von Hand maßgefertigt.',
   },
   ourWork: {
     eyebrow: 'Atelier',
@@ -373,7 +373,7 @@ const de: Translations = {
     ladaVosejpkova: 'Lada Vosejpková',
     evaInfo: 'Wir arbeiten langfristig auch mit der Fotografin',
     evaHajsmanova: 'Eva Hajšmanová',
-    atelierImageAlt: 'Ateliér Tomandlová — Innenraum des Schneideateliers in Eger',
+    atelierImageAlt: 'Ateliér Tomandlová — Innenraum des Kleidungsateliers in Eger',
     atelierImageCaption: 'Das Atelier in der Židovská-Straße, Eger',
     peopleImageAlt: 'Lada Vosejpková, Lenka Tomandlová und Eva Hajšmanová',
     peopleImageCaption: 'Lada Vosejpková, Lenka Tomandlová und Eva Hajšmanová',
@@ -436,7 +436,7 @@ const de: Translations = {
     },
   },
   footer: {
-    subtitle: 'Schneideratelier · Eger',
+    subtitle: 'Kleidungsatelier · Eger',
     addressLine: 'Židovská 412/9 · Eger',
   },
 };
