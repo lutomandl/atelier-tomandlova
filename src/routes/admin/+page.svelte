@@ -35,6 +35,7 @@
 
     <div class="admin__actions">
       <Button text="Správa akcí" href="/admin/events" />
+      <Button text="Správa galerie" href="/admin/gallery" />
       <Button text={loading ? '…' : 'Odhlásit se'} callback={signOut} />
     </div>
   </div>

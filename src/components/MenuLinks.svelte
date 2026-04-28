@@ -21,6 +21,15 @@
   </li>
   <li class="menuLinks__link">
     <a
+      aria-current={pathname === '/galerie' ? 'page' : undefined}
+      href="/galerie"
+      on:click={callback}
+    >
+      <Typography variant="nav" element="span">{$t.menu.gallery}</Typography>
+    </a>
+  </li>
+  <li class="menuLinks__link">
+    <a
       aria-current={pathname === '/kontakt' ? 'page' : undefined}
       href="/kontakt"
       on:click={callback}
