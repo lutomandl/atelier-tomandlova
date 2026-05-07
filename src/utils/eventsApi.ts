@@ -25,7 +25,7 @@ export default async function getEvents(
 
   const { data, error, count } = await supabase
     .from('events')
-    .select('id,title,description,place,from_date,to_date,starting_time,poster_path', {
+    .select('id,title,description,place,from_date,to_date,poster_path', {
       count: 'exact',
     })
     .eq('published', true)
@@ -52,7 +52,6 @@ export default async function getEvents(
         Place: row.place ?? null,
         From: row.from_date ?? null,
         To: row.to_date ?? null,
-        StartingTime: row.starting_time ?? null,
         PosterPath: row.poster_path ?? null,
       },
     })),
@@ -75,7 +74,6 @@ export interface EventObject {
     Place: string | null;
     From: string | null;
     To: string | null;
-    StartingTime: string | null;
     PosterPath: string | null;
   };
 }

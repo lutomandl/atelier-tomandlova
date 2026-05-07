@@ -13,7 +13,7 @@
     "@supabase/supabase-js": "^2.102.0",
     "graphql": "^16.7.1",
     "graphql-request": "^6.1.0",
-    "marked": "^18.0.2"
+    "pdfjs-dist": "^5.7.284"
   },
   "devDependencies": {
     "@sveltejs/adapter-netlify": "^6.0.4",

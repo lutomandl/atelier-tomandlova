@@ -98,16 +98,12 @@ export function buildLocalBusinessSchema(dict: Translations) {
  * Single `Event` schema for one upcoming event. Returns `null` if the event
  * lacks the minimum required fields (`name` and `startDate`) — those are the
  * fields Google demands for event rich results.
- *
- * `startDate` is built from the `From` date plus optional `StartingTime`
- * (HH:MM). No timezone is appended — Google tolerates timezone-less ISO 8601
- * and will fall back to the country implied by the location.
  */
 export function buildEventSchema(event: EventObject) {
   const a = event.attributes;
   if (!a.Title || !a.From) return null;
 
-  const startDate = a.StartingTime ? `${a.From}T${a.StartingTime}:00` : a.From;
+  const startDate = a.From;
   const endDate = a.To ? `${a.To}T23:59:59` : undefined;
   const posterUrl = a.PosterPath ? getPosterPublicUrl(a.PosterPath) : null;
 

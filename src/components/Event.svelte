@@ -14,7 +14,6 @@
     Title: title = '',
     Description: description = '',
     Place: place = '',
-    StartingTime,
     From,
     To,
     PosterPath: posterPath = null,
@@ -31,7 +30,6 @@
     fromDate?.toLocaleDateString($locale, { day: 'numeric', month: 'long' }) || null;
   $: dateToLong =
     toDate?.toLocaleDateString($locale, { day: 'numeric', month: 'long' }) || null;
-  $: timeFormatted = StartingTime?.slice(0, 5) || null;
   $: thumbnailUrl = getPosterPublicUrl(posterPath) || null;
 
   const openPoster = () => {
@@ -65,12 +63,6 @@
         <dt>{$t.events.fields.when}</dt>
         <dd>{dateFromLong}{dateToLong && dateFromLong !== dateToLong ? ` – ${dateToLong}` : ''}</dd>
       </div>
-      {#if timeFormatted}
-        <div class="event__details__line">
-          <dt>{$t.events.fields.time}</dt>
-          <dd>{timeFormatted}</dd>
-        </div>
-      {/if}
     </dl>
 
     {#if description}
