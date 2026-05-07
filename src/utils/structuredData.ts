@@ -1,5 +1,5 @@
-import type { Language, Translations } from './useTranslations';
-import { SITE_URL, OG_LOCALE, routes } from './routes';
+import type { Translations } from './useTranslations';
+import { SITE_URL, HTML_LANG, routes } from './routes';
 
 /**
  * Schema.org JSON-LD builders.
@@ -53,24 +53,32 @@ function openingHoursSpec() {
 
 /**
  * Site-wide LocalBusiness / ClothingStore schema. Emit once per page from the
- * root layout. Reactive to language so the `description` and `inLanguage`
- * fields match the active locale.
+ * root layout.
+ *
+ * The page is always rendered in Czech on the server (no URL-based locale
+ * routing), so `inLanguage` and `url` are pinned to CS. `knowsLanguage`
+ * advertises the staff's spoken languages — that's a fact about the atelier,
+ * not the page.
+ *
+ * The localized `description` follows the active translation dictionary so
+ * client-side language switching keeps the meta in sync, even though SSR
+ * always emits the Czech version.
  */
-export function buildLocalBusinessSchema(lang: Language, dict: Translations) {
+export function buildLocalBusinessSchema(dict: Translations) {
   return {
     '@context': 'https://schema.org',
     '@type': ['ClothingStore', 'LocalBusiness'],
     '@id': ATELIER_ID,
     name: 'Ateliér Tomandlová',
     description: dict.seo.home.description,
-    url: SITE_URL + routes.home[lang],
+    url: SITE_URL + routes.home,
     image: SITE_URL + '/og-image.jpg',
     logo: SITE_URL + '/favicon.png',
     email: 'info@ateliertomandlova.cz',
     address: ADDRESS,
     geo: GEO,
     openingHoursSpecification: openingHoursSpec(),
-    inLanguage: OG_LOCALE[lang].replace('_', '-'),
+    inLanguage: HTML_LANG,
     knowsLanguage: ['cs', 'en', 'de'],
     priceRange: '€€€',
     founder: {

@@ -4,16 +4,17 @@
   import StructuredData from '../components/StructuredData.svelte';
   import { page } from '$app/stores';
   import { onNavigate } from '$app/navigation';
-  import { language, t } from '../utils/useTranslations';
+  import { t } from '../utils/useTranslations';
   import { buildLocalBusinessSchema } from '../utils/structuredData';
 
   const hideNav = !!$page.error;
 
   // Site-wide LocalBusiness / ClothingStore JSON-LD. Skipped on `/admin/*` —
-  // those pages aren't public and don't need rich-result eligibility. Reactive
-  // to `$language` so localized fields (description) match the active locale.
+  // those pages aren't public and don't need rich-result eligibility. The
+  // localized `description` follows `$t` so client-side language switching
+  // keeps the schema in sync with what the user sees.
   $: isAdmin = $page.url.pathname.startsWith('/admin');
-  $: localBusinessSchema = buildLocalBusinessSchema($language, $t);
+  $: localBusinessSchema = buildLocalBusinessSchema($t);
 
   onNavigate((navigation) => {
     if (typeof document === 'undefined' || !('startViewTransition' in document)) return;
