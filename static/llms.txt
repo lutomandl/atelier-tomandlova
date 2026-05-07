@@ -1,0 +1,44 @@
+# Ateliér Tomandlová
+
+> A clothing atelier in the historic centre of Cheb, Czech Republic. Original, hand-tailored garments made from natural materials. Founded by Lenka Tomandlová, who studied at the Liberec textile faculty and has been making clothing for almost 30 years. The atelier also presents original jewellery and glass by Lada Vosejpková, and collaborates long-term with photographer Eva Hajšmanová. Tailoring by Olga Dražanová and Nelly Kaiseršotová.
+
+## Visit
+
+- Address: Židovská 412/9, 350 02 Cheb, Czech Republic
+- Email: info@ateliertomandlova.cz
+- Opening hours (lunch break daily 12:00–14:00 until further notice):
+  - Monday 11:00–13:00 and 14:00–17:00
+  - Tuesday 10:00–12:00 and 14:00–17:00
+  - Wednesday 10:00–12:00 and 14:00–16:00
+  - Thursday 10:00–12:00 and 14:00–17:00
+  - Friday 11:00–12:00 and 14:00–16:00
+
+## What we do
+
+- Original womenswear designed and hand-tailored on-site
+- Made from natural fabrics — chosen for their feel, drape, and properties for the human body
+- Custom and made-to-measure work
+- Regular trunk shows and selling exhibitions
+
+## Languages
+
+The site is published in Czech (default), English, and German. The Czech URLs are unprefixed; English uses the `/en/` prefix and German uses the `/de/` prefix.
+
+## Pages
+
+- [Home (CS)](https://www.ateliertomandlova.cz/): https://www.ateliertomandlova.cz/
+- [About (CS)](https://www.ateliertomandlova.cz/o-nas): the atelier, the founder, collaborators
+- [Events (CS)](https://www.ateliertomandlova.cz/akce): upcoming and past trunk shows and exhibitions
+- [Contact (CS)](https://www.ateliertomandlova.cz/kontakt): address, opening hours, map, contact form
+- [Home (EN)](https://www.ateliertomandlova.cz/en/): https://www.ateliertomandlova.cz/en/
+- [About (EN)](https://www.ateliertomandlova.cz/en/about)
+- [Events (EN)](https://www.ateliertomandlova.cz/en/events)
+- [Contact (EN)](https://www.ateliertomandlova.cz/en/contact)
+- [Home (DE)](https://www.ateliertomandlova.cz/de/): https://www.ateliertomandlova.cz/de/
+- [About (DE)](https://www.ateliertomandlova.cz/de/ueber-uns)
+- [Events (DE)](https://www.ateliertomandlova.cz/de/termine)
+- [Contact (DE)](https://www.ateliertomandlova.cz/de/kontakt)
+
+## Sitemap
+
+- [sitemap.xml](https://www.ateliertomandlova.cz/sitemap.xml)
