@@ -10,6 +10,33 @@ const cs = {
   general: {
     title: 'Ateliér Tomandlová',
   },
+  seo: {
+    home: {
+      title: 'Ateliér Tomandlová · Autorské oděvy ručně šité v Chebu',
+      description:
+        'Oděvní ateliér v historickém centru Chebu. Autorské oděvy z přírodních materiálů, šité ručně na míru — již téměř 30 let v rukou Lenky Tomandlové.',
+    },
+    about: {
+      title: 'O nás · Ateliér Tomandlová',
+      description:
+        'Lenka Tomandlová tvoří autorské oděvy téměř 30 let. V ateliéru v Chebu spolupracuje se šperkařkou Ladou Vosejpkovou a fotografkou Evou Hajšmanovou.',
+    },
+    events: {
+      title: 'Akce · Ateliér Tomandlová',
+      description:
+        'Nadcházející a minulé prodejní výstavy, přehlídky a showroomy Ateliéru Tomandlová. Kalendář akcí v Chebu i na dalších místech České republiky.',
+    },
+    gallery: {
+      title: 'Galerie · Ateliér Tomandlová',
+      description:
+        'Fotografická galerie autorských oděvů Ateliéru Tomandlová. Kolekce, detaily a archivní snímky z práce v ateliéru v centru Chebu.',
+    },
+    contact: {
+      title: 'Kontakt · Ateliér Tomandlová',
+      description:
+        'Najdete nás v Židovské ulici 412/9 v centru Chebu. Otevírací hodiny, mapa a kontaktní formulář — nebo nám napište na info@ateliertomandlova.cz.',
+    },
+  },
   error: {
     somethingWentWrong: 'Něco se pokazilo',
     goBack: 'Obnovit',
@@ -160,6 +187,33 @@ const en: Translations = {
   general: {
     title: 'Ateliér Tomandlová',
   },
+  seo: {
+    home: {
+      title: 'Ateliér Tomandlová · Hand-tailored clothing in Cheb',
+      description:
+        'A clothing atelier in the historic centre of Cheb. Original, hand-tailored garments from natural materials — by Lenka Tomandlová for almost 30 years.',
+    },
+    about: {
+      title: 'About · Ateliér Tomandlová',
+      description:
+        'Founded by Lenka Tomandlová, who has made original clothing for almost 30 years — alongside jeweller Lada Vosejpková and photographer Eva Hajšmanová.',
+    },
+    events: {
+      title: 'Events · Ateliér Tomandlová',
+      description:
+        'Upcoming and past trunk shows, exhibitions and showroom visits by Ateliér Tomandlová — in Cheb and around the Czech Republic. See the full calendar.',
+    },
+    gallery: {
+      title: 'Gallery · Ateliér Tomandlová',
+      description:
+        'A photographic gallery of original garments by Ateliér Tomandlová. Collections, details and archive shots from the atelier in central Cheb.',
+    },
+    contact: {
+      title: 'Contact · Ateliér Tomandlová',
+      description:
+        'Visit us at Židovská 412/9 in the historic centre of Cheb. Opening hours, map and contact form — or email info@ateliertomandlova.cz.',
+    },
+  },
   error: {
     somethingWentWrong: 'Something went wrong',
     goBack: 'Reload',
@@ -302,6 +356,33 @@ const en: Translations = {
 const de: Translations = {
   general: {
     title: 'Ateliér Tomandlová',
+  },
+  seo: {
+    home: {
+      title: 'Ateliér Tomandlová · Handgefertigte Mode aus Eger (Cheb)',
+      description:
+        'Kleidungsatelier im historischen Stadtkern von Eger (Cheb). Autorenmode aus Naturmaterialien, von Hand maßgefertigt — seit fast 30 Jahren.',
+    },
+    about: {
+      title: 'Über uns · Ateliér Tomandlová',
+      description:
+        'Gegründet von Lenka Tomandlová, die seit fast 30 Jahren Mode entwirft — gemeinsam mit Lada Vosejpková (Schmuck) und Eva Hajšmanová (Fotografie).',
+    },
+    events: {
+      title: 'Termine · Ateliér Tomandlová',
+      description:
+        'Kommende und vergangene Verkaufsausstellungen und Modenschauen des Ateliers Tomandlová — in Eger (Cheb) und an weiteren Orten in Tschechien.',
+    },
+    gallery: {
+      title: 'Galerie · Ateliér Tomandlová',
+      description:
+        'Fotogalerie der Autorenmode des Ateliers Tomandlová. Kollektionen, Details und Archivaufnahmen aus dem Atelier im Zentrum von Eger (Cheb).',
+    },
+    contact: {
+      title: 'Kontakt · Ateliér Tomandlová',
+      description:
+        'Besuchen Sie uns in der Židovská 412/9 im historischen Stadtkern von Eger (Cheb). Öffnungszeiten, Karte und Kontaktformular — oder per E-Mail.',
+    },
   },
   error: {
     somethingWentWrong: 'Etwas ist schiefgelaufen',

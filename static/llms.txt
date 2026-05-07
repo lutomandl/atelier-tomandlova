@@ -29,14 +29,17 @@ The site is published in Czech (default), English, and German. The Czech URLs ar
 - [Home (CS)](https://www.ateliertomandlova.cz/): https://www.ateliertomandlova.cz/
 - [About (CS)](https://www.ateliertomandlova.cz/o-nas): the atelier, the founder, collaborators
 - [Events (CS)](https://www.ateliertomandlova.cz/akce): upcoming and past trunk shows and exhibitions
+- [Gallery (CS)](https://www.ateliertomandlova.cz/galerie): photographic gallery of garments
 - [Contact (CS)](https://www.ateliertomandlova.cz/kontakt): address, opening hours, map, contact form
 - [Home (EN)](https://www.ateliertomandlova.cz/en/): https://www.ateliertomandlova.cz/en/
 - [About (EN)](https://www.ateliertomandlova.cz/en/about)
 - [Events (EN)](https://www.ateliertomandlova.cz/en/events)
+- [Gallery (EN)](https://www.ateliertomandlova.cz/en/gallery)
 - [Contact (EN)](https://www.ateliertomandlova.cz/en/contact)
 - [Home (DE)](https://www.ateliertomandlova.cz/de/): https://www.ateliertomandlova.cz/de/
 - [About (DE)](https://www.ateliertomandlova.cz/de/ueber-uns)
 - [Events (DE)](https://www.ateliertomandlova.cz/de/termine)
+- [Gallery (DE)](https://www.ateliertomandlova.cz/de/galerie)
 - [Contact (DE)](https://www.ateliertomandlova.cz/de/kontakt)
 
 ## Sitemap
