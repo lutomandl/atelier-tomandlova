@@ -4,6 +4,7 @@
   import Typography from '../../components/Typography.svelte';
   import { getSupabase, getGalleryImageUrl } from '$lib/supabaseClient';
   import { t } from '../../utils/useTranslations';
+  import SEO from '../../components/SEO.svelte';
   import xIcon from '$lib/assets/x.svg';
 
   type GalleryImage = {
@@ -122,9 +123,7 @@
   });
 </script>
 
-<svelte:head>
-  <title>{$t.gallery.heading} · {$t.general.title}</title>
-</svelte:head>
+<SEO pageKey="gallery" />
 
 <Section>
   <div class="gallery">

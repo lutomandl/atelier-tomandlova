@@ -607,19 +607,19 @@ function unflatten(parsed, revivers) {
   );
   const hydrated = Array(values.length);
   let hydrating2 = null;
-  function hydrate3(index10, standalone = false) {
-    if (index10 === UNDEFINED) return void 0;
-    if (index10 === NAN) return NaN;
-    if (index10 === POSITIVE_INFINITY) return Infinity;
-    if (index10 === NEGATIVE_INFINITY) return -Infinity;
-    if (index10 === NEGATIVE_ZERO) return -0;
-    if (standalone || typeof index10 !== "number") {
+  function hydrate3(index13, standalone = false) {
+    if (index13 === UNDEFINED) return void 0;
+    if (index13 === NAN) return NaN;
+    if (index13 === POSITIVE_INFINITY) return Infinity;
+    if (index13 === NEGATIVE_INFINITY) return -Infinity;
+    if (index13 === NEGATIVE_ZERO) return -0;
+    if (standalone || typeof index13 !== "number") {
       throw new Error(`Invalid input`);
     }
-    if (index10 in hydrated) return hydrated[index10];
-    const value = values[index10];
+    if (index13 in hydrated) return hydrated[index13];
+    const value = values[index13];
     if (!value || typeof value !== "object") {
-      hydrated[index10] = value;
+      hydrated[index13] = value;
     } else if (Array.isArray(value)) {
       if (typeof value[0] === "string") {
         const type = value[0];
@@ -634,45 +634,45 @@ function unflatten(parsed, revivers) {
             throw new Error("Invalid circular reference");
           }
           hydrating2.add(i);
-          hydrated[index10] = reviver(hydrate3(i));
+          hydrated[index13] = reviver(hydrate3(i));
           hydrating2.delete(i);
-          return hydrated[index10];
+          return hydrated[index13];
         }
         switch (type) {
           case "Date":
-            hydrated[index10] = new Date(value[1]);
+            hydrated[index13] = new Date(value[1]);
             break;
           case "Set":
             const set2 = /* @__PURE__ */ new Set();
-            hydrated[index10] = set2;
+            hydrated[index13] = set2;
             for (let i = 1; i < value.length; i += 1) {
               set2.add(hydrate3(value[i]));
             }
             break;
           case "Map":
             const map = /* @__PURE__ */ new Map();
-            hydrated[index10] = map;
+            hydrated[index13] = map;
             for (let i = 1; i < value.length; i += 2) {
               map.set(hydrate3(value[i]), hydrate3(value[i + 1]));
             }
             break;
           case "RegExp":
-            hydrated[index10] = new RegExp(value[1], value[2]);
+            hydrated[index13] = new RegExp(value[1], value[2]);
             break;
           case "Object": {
             const wrapped_index = value[1];
             if (typeof values[wrapped_index] === "object" && values[wrapped_index][0] !== "BigInt") {
               throw new Error("Invalid input");
             }
-            hydrated[index10] = Object(hydrate3(wrapped_index));
+            hydrated[index13] = Object(hydrate3(wrapped_index));
             break;
           }
           case "BigInt":
-            hydrated[index10] = BigInt(value[1]);
+            hydrated[index13] = BigInt(value[1]);
             break;
           case "null":
             const obj = /* @__PURE__ */ Object.create(null);
-            hydrated[index10] = obj;
+            hydrated[index13] = obj;
             for (let i = 1; i < value.length; i += 2) {
               if (value[i] === "__proto__") {
                 throw new Error("Cannot parse an object with a `__proto__` property");
@@ -698,7 +698,7 @@ function unflatten(parsed, revivers) {
             }
             const TypedArrayConstructor = globalThis[type];
             const buffer2 = hydrate3(value[1]);
-            hydrated[index10] = value[2] !== void 0 ? new TypedArrayConstructor(buffer2, value[2], value[3]) : new TypedArrayConstructor(buffer2);
+            hydrated[index13] = value[2] !== void 0 ? new TypedArrayConstructor(buffer2, value[2], value[3]) : new TypedArrayConstructor(buffer2);
             break;
           }
           case "ArrayBuffer": {
@@ -707,7 +707,7 @@ function unflatten(parsed, revivers) {
               throw new Error("Invalid ArrayBuffer encoding");
             }
             const arraybuffer = decode64(base64);
-            hydrated[index10] = arraybuffer;
+            hydrated[index13] = arraybuffer;
             break;
           }
           case "Temporal.Duration":
@@ -719,17 +719,17 @@ function unflatten(parsed, revivers) {
           case "Temporal.PlainYearMonth":
           case "Temporal.ZonedDateTime": {
             const temporalName = type.slice(9);
-            hydrated[index10] = Temporal[temporalName].from(value[1]);
+            hydrated[index13] = Temporal[temporalName].from(value[1]);
             break;
           }
           case "URL": {
             const url = new URL(value[1]);
-            hydrated[index10] = url;
+            hydrated[index13] = url;
             break;
           }
           case "URLSearchParams": {
             const url = new URLSearchParams(value[1]);
-            hydrated[index10] = url;
+            hydrated[index13] = url;
             break;
           }
           default:
@@ -741,7 +741,7 @@ function unflatten(parsed, revivers) {
           throw new Error("Invalid input");
         }
         const array2 = new Array(len);
-        hydrated[index10] = array2;
+        hydrated[index13] = array2;
         for (let i = 2; i < value.length; i += 2) {
           const idx = value[i];
           if (!Number.isInteger(idx) || idx < 0 || idx >= len) {
@@ -751,7 +751,7 @@ function unflatten(parsed, revivers) {
         }
       } else {
         const array2 = new Array(value.length);
-        hydrated[index10] = array2;
+        hydrated[index13] = array2;
         for (let i = 0; i < value.length; i += 1) {
           const n = value[i];
           if (n === HOLE) continue;
@@ -760,7 +760,7 @@ function unflatten(parsed, revivers) {
       }
     } else {
       const object = {};
-      hydrated[index10] = object;
+      hydrated[index13] = object;
       for (const key2 of Object.keys(value)) {
         if (key2 === "__proto__") {
           throw new Error("Cannot parse an object with a `__proto__` property");
@@ -769,7 +769,7 @@ function unflatten(parsed, revivers) {
         object[key2] = hydrate3(n);
       }
     }
-    return hydrated[index10];
+    return hydrated[index13];
   }
   return hydrate3(0);
 }
@@ -802,13 +802,13 @@ function stringify(value, reducers) {
       /** @type {number} */
       indexes.get(thing)
     );
-    const index11 = p++;
-    indexes.set(thing, index11);
+    const index14 = p++;
+    indexes.set(thing, index14);
     for (const { key: key2, fn } of custom) {
       const value2 = fn(thing);
       if (value2) {
-        stringified[index11] = `["${key2}",${flatten(value2)}]`;
-        return index11;
+        stringified[index14] = `["${key2}",${flatten(value2)}]`;
+        return index14;
       }
     }
     if (typeof thing === "function") {
@@ -978,11 +978,11 @@ function stringify(value, reducers) {
           }
       }
     }
-    stringified[index11] = str;
-    return index11;
+    stringified[index14] = str;
+    return index14;
   }
-  const index10 = flatten(value);
-  if (index10 < 0) return `${index10}`;
+  const index13 = flatten(value);
+  if (index13 < 0) return `${index13}`;
   return `[${stringified.join(",")}]`;
 }
 function stringify_primitive2(thing) {
@@ -1418,17 +1418,17 @@ function push(props, runes = false, fn) {
     } : null
   };
 }
-function pop(component10) {
+function pop(component13) {
   var context2 = component_context;
   var effects = context2.e;
   if (effects !== null) {
     context2.e = null;
     for (var fn of effects) create_user_effect(fn);
   }
-  if (component10 !== void 0) context2.x = component10;
+  if (component13 !== void 0) context2.x = component13;
   context2.i = true;
   component_context = context2.p;
-  return component10 ?? {};
+  return component13 ?? {};
 }
 function is_runes() {
   return !legacy_mode_flag || component_context !== null && component_context.l === null;
@@ -2362,12 +2362,12 @@ function update_reaction(reaction) {
 function remove_reaction(signal, dependency) {
   let reactions = dependency.reactions;
   if (reactions !== null) {
-    var index10 = index_of.call(reactions, signal);
-    if (index10 !== -1) {
+    var index13 = index_of.call(reactions, signal);
+    if (index13 !== -1) {
       var new_length = reactions.length - 1;
       if (new_length === 0) reactions = dependency.reactions = null;
       else {
-        reactions[index10] = reactions[new_length];
+        reactions[index13] = reactions[new_length];
         reactions.pop();
       }
     }
@@ -2503,6 +2503,9 @@ function is_passive_event(name) {
 function is_raw_text_element(name) {
   return RAW_TEXT_ELEMENTS.includes(name);
 }
+function html(value) {
+  return "<!---->" + String(value ?? "") + "<!---->";
+}
 function element(renderer, tag, attributes_fn = noop, children_fn = noop) {
   renderer.push("<!---->");
   if (tag) {
@@ -2518,9 +2521,9 @@ function element(renderer, tag, attributes_fn = noop, children_fn = noop) {
   }
   renderer.push("<!---->");
 }
-function render(component10, options2 = {}) {
+function render(component13, options2 = {}) {
   if (options2.csp?.hash && options2.csp.nonce) invalid_csp();
-  return Renderer.render(component10, options2);
+  return Renderer.render(component13, options2);
 }
 function head(hash2, renderer, fn) {
   renderer.head((renderer2) => {
@@ -3902,28 +3905,28 @@ var init_dev = __esm({
       * @param {{ props?: Omit<Props, '$$slots' | '$$events'>; context?: Map<any, any>; idPrefix?: string; csp?: Csp }} [options]
       * @returns {RenderOutput}
       */
-      static render(component10, options2 = {}) {
+      static render(component13, options2 = {}) {
         let sync;
         let async;
         const result = {};
         Object.defineProperties(result, {
           html: { get: () => {
             var _a11;
-            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component10, options2))).body;
+            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component13, options2))).body;
           } },
           head: { get: () => {
             var _a11;
-            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component10, options2))).head;
+            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component13, options2))).head;
           } },
           body: { get: () => {
             var _a11;
-            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component10, options2))).body;
+            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component13, options2))).body;
           } },
           hashes: { value: { script: "" } },
           then: { value: (onfulfilled, onrejected) => {
             var _a11;
             if (!async_mode_flag) {
-              const result2 = sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component10, options2));
+              const result2 = sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component13, options2));
               const user_result = onfulfilled({
                 head: result2.head,
                 body: result2.body,
@@ -3934,7 +3937,7 @@ var init_dev = __esm({
             }
             async ?? (async = init_render_context().then(() => with_render_context(() => {
               var _a12;
-              return __privateMethod(_a12 = _a3, _Renderer_static, render_async_fn).call(_a12, component10, options2);
+              return __privateMethod(_a12 = _a3, _Renderer_static, render_async_fn).call(_a12, component13, options2);
             })));
             return async.then((result2) => {
               Object.defineProperty(result2, "html", { get: () => {
@@ -3950,7 +3953,7 @@ var init_dev = __esm({
       return `<!--[?${JSON.stringify(error2).replace(/>/g, "\\u003e").replace(/</g, "\\u003c")}-->`;
     }, _Renderer_instances = new WeakSet(), collect_on_destroy_fn = function* () {
       var _a11;
-      for (const component10 of __privateMethod(this, _Renderer_instances, traverse_components_fn).call(this)) yield* __privateMethod(_a11 = component10, _Renderer_instances, collect_ondestroy_fn).call(_a11);
+      for (const component13 of __privateMethod(this, _Renderer_instances, traverse_components_fn).call(this)) yield* __privateMethod(_a11 = component13, _Renderer_instances, collect_ondestroy_fn).call(_a11);
     }, traverse_components_fn = function* () {
       var _a11;
       for (const child of __privateGet(this, _out)) if (typeof child !== "string") yield* __privateMethod(_a11 = child, _Renderer_instances, traverse_components_fn).call(_a11);
@@ -3959,22 +3962,22 @@ var init_dev = __esm({
       var _a11;
       if (__privateGet(this, _on_destroy)) for (const fn of __privateGet(this, _on_destroy)) yield fn;
       for (const child of __privateGet(this, _out)) if (child instanceof _a3 && !__privateGet(child, _is_component_body)) yield* __privateMethod(_a11 = child, _Renderer_instances, collect_ondestroy_fn).call(_a11);
-    }, render_fn2 = function(component10, options2) {
+    }, render_fn2 = function(component13, options2) {
       var _a11, _b, _c;
       var previous_context = ssr_context;
       try {
-        const renderer = __privateMethod(_a11 = _a3, _Renderer_static, open_render_fn).call(_a11, "sync", component10, options2);
+        const renderer = __privateMethod(_a11 = _a3, _Renderer_static, open_render_fn).call(_a11, "sync", component13, options2);
         const content = __privateMethod(_b = renderer, _Renderer_instances, collect_content_fn).call(_b);
         return __privateMethod(_c = _a3, _Renderer_static, close_render_fn).call(_c, content, renderer);
       } finally {
         abort();
         set_ssr_context(previous_context);
       }
-    }, render_async_fn = async function(component10, options2) {
+    }, render_async_fn = async function(component13, options2) {
       var _a11, _b, _c, _d;
       const previous_context = ssr_context;
       try {
-        const renderer = __privateMethod(_a11 = _a3, _Renderer_static, open_render_fn).call(_a11, "async", component10, options2);
+        const renderer = __privateMethod(_a11 = _a3, _Renderer_static, open_render_fn).call(_a11, "async", component13, options2);
         const content = await __privateMethod(_b = renderer, _Renderer_instances, collect_content_async_fn).call(_b);
         const hydratables = await __privateMethod(_c = renderer, _Renderer_instances, collect_hydratables_fn).call(_c);
         if (hydratables !== null) content.head = hydratables + content.head;
@@ -4030,7 +4033,7 @@ var init_dev = __esm({
       for (const [_, key2] of ctx.unresolved_promises) unresolved_hydratable(key2, ctx.lookup.get(key2)?.stack ?? "<missing stack trace>");
       for (const comparison of ctx.comparisons) await comparison;
       return await __privateMethod(this, _Renderer_instances, hydratable_block_fn).call(this, ctx);
-    }, open_render_fn = function(mode, component10, options2) {
+    }, open_render_fn = function(mode, component13, options2) {
       if (options2.idPrefix?.includes("--")) invalid_id_prefix();
       var previous_context = ssr_context;
       try {
@@ -4041,7 +4044,7 @@ var init_dev = __esm({
           r: renderer
         });
         renderer.push(BLOCK_OPEN);
-        component10(renderer, options2.props ?? {});
+        component13(renderer, options2.props ?? {});
         renderer.push(BLOCK_CLOSE);
         return renderer;
       } finally {
@@ -4781,8 +4784,8 @@ function exec(match, params, matchers) {
   if (buffered) return;
   return result;
 }
-function find_route(path, routes, matchers) {
-  for (const route of routes) {
+function find_route(path, routes2, matchers) {
+  for (const route of routes2) {
     const match = route.pattern.exec(path);
     if (!match) continue;
     const matched = exec(match, route.params, matchers);
@@ -4979,10 +4982,10 @@ function assign_nodes(start, end) {
     t: null
   };
 }
-function mount2(component10, options2) {
-  return _mount(component10, options2);
+function mount2(component13, options2) {
+  return _mount(component13, options2);
 }
-function hydrate2(component10, options2) {
+function hydrate2(component13, options2) {
   init_operations();
   options2.intro = options2.intro ?? false;
   const target = options2.target;
@@ -4994,7 +4997,7 @@ function hydrate2(component10, options2) {
     if (!anchor) throw HYDRATION_ERROR;
     set_hydrating(true);
     set_hydrate_node(anchor);
-    const instance = _mount(component10, {
+    const instance = _mount(component13, {
       ...options2,
       anchor
     });
@@ -5007,7 +5010,7 @@ function hydrate2(component10, options2) {
     init_operations();
     clear_text_content(target);
     set_hydrating(false);
-    return mount2(component10, options2);
+    return mount2(component13, options2);
   } finally {
     set_hydrating(was_hydrating);
     set_hydrate_node(previous_hydrate_node);
@@ -5015,7 +5018,7 @@ function hydrate2(component10, options2) {
 }
 function _mount(Component, { target, anchor, props = {}, events, context: context2, intro = true, transformError }) {
   init_operations();
-  var component10 = void 0;
+  var component13 = void 0;
   var unmount3 = component_root(() => {
     var anchor_node = anchor ?? target.appendChild(create_text());
     boundary(anchor_node, { pending: () => {
@@ -5026,7 +5029,7 @@ function _mount(Component, { target, anchor, props = {}, events, context: contex
       if (events)
         props.$$events = events;
       if (hydrating) assign_nodes(anchor_node2, null);
-      component10 = Component(anchor_node2, props) || {};
+      component13 = Component(anchor_node2, props) || {};
       if (hydrating) {
         active_effect.nodes.end = hydrate_node;
         if (hydrate_node === null || hydrate_node.nodeType !== 8 || hydrate_node.data !== "]") {
@@ -5073,32 +5076,32 @@ function _mount(Component, { target, anchor, props = {}, events, context: contex
       if (anchor_node !== anchor) anchor_node.parentNode?.removeChild(anchor_node);
     };
   });
-  mounted_components.set(component10, unmount3);
-  return component10;
+  mounted_components.set(component13, unmount3);
+  return component13;
 }
-function unmount2(component10, options2) {
-  const fn = mounted_components.get(component10);
+function unmount2(component13, options2) {
+  const fn = mounted_components.get(component13);
   if (fn) {
-    mounted_components.delete(component10);
+    mounted_components.delete(component13);
     return fn(options2);
   }
   return Promise.resolve();
 }
-function asClassComponent$1(component10) {
+function asClassComponent$1(component13) {
   return class extends Svelte4Component {
     /** @param {any} options */
     constructor(options2) {
       super({
-        component: component10,
+        component: component13,
         ...options2
       });
     }
   };
 }
-function asClassComponent(component10) {
-  const component_constructor = asClassComponent$1(component10);
+function asClassComponent(component13) {
+  const component_constructor = asClassComponent$1(component13);
   const _render = (props, { context: context2, csp, transformError } = {}) => {
-    const result = render(component10, {
+    const result = render(component13, {
       props,
       context: context2,
       csp,
@@ -5446,7 +5449,7 @@ var init_internal2 = __esm({
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
       },
-      version_hash: "m76b7h"
+      version_hash: "s8nhcg"
     };
   }
 });
@@ -5471,20 +5474,20 @@ var require_cookie = __commonJS({
       var len = str.length;
       if (len < 2) return obj;
       var dec = opt && opt.decode || decode;
-      var index10 = 0;
+      var index13 = 0;
       var eqIdx = 0;
       var endIdx = 0;
       do {
-        eqIdx = str.indexOf("=", index10);
+        eqIdx = str.indexOf("=", index13);
         if (eqIdx === -1) break;
-        endIdx = str.indexOf(";", index10);
+        endIdx = str.indexOf(";", index13);
         if (endIdx === -1) {
           endIdx = len;
         } else if (eqIdx > endIdx) {
-          index10 = str.lastIndexOf(";", eqIdx - 1) + 1;
+          index13 = str.lastIndexOf(";", eqIdx - 1) + 1;
           continue;
         }
-        var keyStartIdx = startIndex(str, index10, eqIdx);
+        var keyStartIdx = startIndex(str, index13, eqIdx);
         var keyEndIdx = endIndex(str, eqIdx, keyStartIdx);
         var key2 = str.slice(keyStartIdx, keyEndIdx);
         if (!__hasOwnProperty.call(obj, key2)) {
@@ -5497,21 +5500,21 @@ var require_cookie = __commonJS({
           var val = str.slice(valStartIdx, valEndIdx);
           obj[key2] = tryDecode(val, dec);
         }
-        index10 = endIdx + 1;
-      } while (index10 < len);
+        index13 = endIdx + 1;
+      } while (index13 < len);
       return obj;
     }
-    function startIndex(str, index10, max) {
+    function startIndex(str, index13, max) {
       do {
-        var code = str.charCodeAt(index10);
-        if (code !== 32 && code !== 9) return index10;
-      } while (++index10 < max);
+        var code = str.charCodeAt(index13);
+        if (code !== 32 && code !== 9) return index13;
+      } while (++index13 < max);
       return max;
     }
-    function endIndex(str, index10, min) {
-      while (index10 > min) {
-        var code = str.charCodeAt(--index10);
-        if (code !== 32 && code !== 9) return index10 + 1;
+    function endIndex(str, index13, min) {
+      while (index13 > min) {
+        var code = str.charCodeAt(--index13);
+        if (code !== 32 && code !== 9) return index13 + 1;
       }
       return min;
     }
@@ -5641,6 +5644,9 @@ function add_navigation_callback(callbacks, callback) {
 function onNavigate(callback) {
   add_navigation_callback(on_navigate_callbacks, callback);
 }
+function goto(url, opts = {}) {
+  throw new Error("Cannot call goto(...) on the server");
+}
 var PRELOAD_PRIORITIES, updated_listener, page, navigating, updated2, is_legacy, placeholder_url, onMount, tick2, on_navigate_callbacks;
 var init_client = __esm({
   ".svelte-kit/output/server/chunks/client.js"() {
@@ -5729,11 +5735,11 @@ var init_stores = __esm({
   }
 });
 
-// .svelte-kit/output/server/chunks/Button.js
+// .svelte-kit/output/server/chunks/Typography.js
 function Typography($$renderer, $$props) {
   let variant = fallback($$props["variant"], "p");
-  let element$2 = fallback($$props["element"], "p");
-  element($$renderer, element$2, () => {
+  let element$1 = fallback($$props["element"], "p");
+  element($$renderer, element$1, () => {
     $$renderer.push(`${attr_class(`typography typography--${stringify2(variant)}`, "svelte-lz1wev")}`);
   }, () => {
     $$renderer.push(`<!--[-->`);
@@ -5742,38 +5748,11 @@ function Typography($$renderer, $$props) {
   });
   bind_props($$props, {
     variant,
-    element: element$2
+    element: element$1
   });
 }
-function Button($$renderer, $$props) {
-  let bg = fallback($$props["bg"], "light");
-  let text2 = $$props["text"];
-  let href = fallback($$props["href"], void 0);
-  let disabled = fallback($$props["disabled"], false);
-  let type = fallback($$props["type"], void 0);
-  let callback = fallback($$props["callback"], void 0);
-  element($$renderer, href ? "a" : "button", () => {
-    $$renderer.push(`${attr_class(`button button--${stringify2(bg)} button--${stringify2(disabled ? "disabled" : "")}`, "svelte-1klcfz0")}${attr("href", href)}${attr("disabled", disabled, true)}${attr("type", type)}`);
-  }, () => {
-    Typography($$renderer, {
-      variant: "label",
-      children: ($$renderer2) => {
-        $$renderer2.push(`<!---->${escape_html(text2)}`);
-      },
-      $$slots: { default: true }
-    });
-  });
-  bind_props($$props, {
-    bg,
-    text: text2,
-    href,
-    disabled,
-    type,
-    callback
-  });
-}
-var init_Button = __esm({
-  ".svelte-kit/output/server/chunks/Button.js"() {
+var init_Typography = __esm({
+  ".svelte-kit/output/server/chunks/Typography.js"() {
     init_dev();
   }
 });
@@ -5790,6 +5769,28 @@ var init_useTranslations = __esm({
     dictionaries = {
       cs: {
         general: { title: "Ateli\xE9r Tomandlov\xE1" },
+        seo: {
+          home: {
+            title: "Ateli\xE9r Tomandlov\xE1 \xB7 Autorsk\xE9 od\u011Bvy ru\u010Dn\u011B \u0161it\xE9 v Chebu",
+            description: "Od\u011Bvn\xED ateli\xE9r v historick\xE9m centru Chebu. Autorsk\xE9 od\u011Bvy z p\u0159\xEDrodn\xEDch materi\xE1l\u016F, \u0161it\xE9 ru\u010Dn\u011B na m\xEDru \u2014 ji\u017E t\xE9m\u011B\u0159 30 let v rukou Lenky Tomandlov\xE9."
+          },
+          about: {
+            title: "O n\xE1s \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "Lenka Tomandlov\xE1 tvo\u0159\xED autorsk\xE9 od\u011Bvy t\xE9m\u011B\u0159 30 let. V ateli\xE9ru v Chebu spolupracuje se \u0161perka\u0159kou Ladou Vosejpkovou a fotografkou Evou Haj\u0161manovou."
+          },
+          events: {
+            title: "Akce \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "Nadch\xE1zej\xEDc\xED a minul\xE9 prodejn\xED v\xFDstavy, p\u0159ehl\xEDdky a showroomy Ateli\xE9ru Tomandlov\xE1. Kalend\xE1\u0159 akc\xED v Chebu i na dal\u0161\xEDch m\xEDstech \u010Cesk\xE9 republiky."
+          },
+          gallery: {
+            title: "Galerie \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "Fotografick\xE1 galerie autorsk\xFDch od\u011Bv\u016F Ateli\xE9ru Tomandlov\xE1. Kolekce, detaily a archivn\xED sn\xEDmky z pr\xE1ce v ateli\xE9ru v centru Chebu."
+          },
+          contact: {
+            title: "Kontakt \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "Najdete n\xE1s v \u017Didovsk\xE9 ulici 412/9 v centru Chebu. Otev\xEDrac\xED hodiny, mapa a kontaktn\xED formul\xE1\u0159 \u2014 nebo n\xE1m napi\u0161te na info@ateliertomandlova.cz."
+          }
+        },
         error: {
           somethingWentWrong: "N\u011Bco se pokazilo",
           goBack: "Obnovit",
@@ -5809,7 +5810,7 @@ var init_useTranslations = __esm({
         header: {
           metaTagOne: "autorsk\xE9 od\u011Bvy",
           metaTagTwo: "ru\u010Dn\xED v\xFDroba",
-          tagline: "Krej\u010Dovsk\xFD ateli\xE9r v historick\xE9m centru Chebu. Autorsk\xE9 od\u011Bvy z p\u0159\xEDrodn\xEDch materi\xE1l\u016F, \u0161it\xE9 ru\u010Dn\u011B na m\xEDru."
+          tagline: "Od\u011Bvn\xED ateli\xE9r v historick\xE9m centru Chebu. Autorsk\xE9 od\u011Bvy z p\u0159\xEDrodn\xEDch materi\xE1l\u016F, \u0161it\xE9 ru\u010Dn\u011B na m\xEDru."
         },
         ourWork: {
           eyebrow: "Atelier",
@@ -5860,7 +5861,7 @@ var init_useTranslations = __esm({
           ladaVosejpkova: "Lady Vosejpkov\xE9",
           evaInfo: "Dlouhodob\u011B spolupracujeme i s fotografkou",
           evaHajsmanova: "Evou Haj\u0161manovou",
-          atelierImageAlt: "Ateli\xE9r Tomandlov\xE1 \u2014 interi\xE9r krej\u010Dovsk\xE9 d\xEDlny v Chebu",
+          atelierImageAlt: "Ateli\xE9r Tomandlov\xE1 \u2014 interi\xE9r od\u011Bvn\xEDho ateli\xE9ru v Chebu",
           atelierImageCaption: "Ateli\xE9r v \u017Didovsk\xE9 ulici, Cheb",
           peopleImageAlt: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 a Eva Haj\u0161manov\xE1",
           peopleImageCaption: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 a Eva Haj\u0161manov\xE1",
@@ -5874,7 +5875,11 @@ var init_useTranslations = __esm({
         },
         gallery: {
           heading: "Galerie",
-          noImages: "Zat\xEDm zde nem\xE1me \u017E\xE1dn\xE9 obr\xE1zky"
+          noImages: "Zat\xEDm zde nem\xE1me \u017E\xE1dn\xE9 obr\xE1zky",
+          viewImage: "Zobrazit obr\xE1zek",
+          closeImage: "Zav\u0159\xEDt obr\xE1zek",
+          previousImage: "P\u0159edchoz\xED obr\xE1zek",
+          nextImage: "Dal\u0161\xED obr\xE1zek"
         },
         contact: {
           eyebrow: "Kontakt",
@@ -5917,12 +5922,34 @@ var init_useTranslations = __esm({
           }
         },
         footer: {
-          subtitle: "Krej\u010Dovsk\xFD ateli\xE9r \xB7 Cheb",
+          subtitle: "Od\u011Bvn\xED ateli\xE9r \xB7 Cheb",
           addressLine: "\u017Didovsk\xE1 412/9 \xB7 Cheb"
         }
       },
       en: {
         general: { title: "Ateli\xE9r Tomandlov\xE1" },
+        seo: {
+          home: {
+            title: "Ateli\xE9r Tomandlov\xE1 \xB7 Hand-tailored clothing in Cheb",
+            description: "A clothing atelier in the historic centre of Cheb. Original, hand-tailored garments from natural materials \u2014 by Lenka Tomandlov\xE1 for almost 30 years."
+          },
+          about: {
+            title: "About \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "Founded by Lenka Tomandlov\xE1, who has made original clothing for almost 30 years \u2014 alongside jeweller Lada Vosejpkov\xE1 and photographer Eva Haj\u0161manov\xE1."
+          },
+          events: {
+            title: "Events \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "Upcoming and past trunk shows, exhibitions and showroom visits by Ateli\xE9r Tomandlov\xE1 \u2014 in Cheb and around the Czech Republic. See the full calendar."
+          },
+          gallery: {
+            title: "Gallery \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "A photographic gallery of original garments by Ateli\xE9r Tomandlov\xE1. Collections, details and archive shots from the atelier in central Cheb."
+          },
+          contact: {
+            title: "Contact \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "Visit us at \u017Didovsk\xE1 412/9 in the historic centre of Cheb. Opening hours, map and contact form \u2014 or email info@ateliertomandlova.cz."
+          }
+        },
         error: {
           somethingWentWrong: "Something went wrong",
           goBack: "Reload",
@@ -5942,7 +5969,7 @@ var init_useTranslations = __esm({
         header: {
           metaTagOne: "original clothing",
           metaTagTwo: "handmade",
-          tagline: "A tailor\u2019s atelier in the historic centre of Cheb. Original clothing made by hand from natural materials."
+          tagline: "A clothing atelier in the historic centre of Cheb. Original clothing made by hand from natural materials."
         },
         ourWork: {
           eyebrow: "Atelier",
@@ -5988,7 +6015,7 @@ var init_useTranslations = __esm({
           ladaVosejpkova: "Lada Vosejpkov\xE1",
           evaInfo: "We have a long-standing collaboration with the photographer",
           evaHajsmanova: "Eva Haj\u0161manov\xE1",
-          atelierImageAlt: "Ateli\xE9r Tomandlov\xE1 \u2014 interior of the tailor\u2019s atelier in Cheb",
+          atelierImageAlt: "Ateli\xE9r Tomandlov\xE1 \u2014 interior of the clothing atelier in Cheb",
           atelierImageCaption: "The atelier on \u017Didovsk\xE1 street, Cheb",
           peopleImageAlt: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 and Eva Haj\u0161manov\xE1",
           peopleImageCaption: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 and Eva Haj\u0161manov\xE1",
@@ -6002,7 +6029,11 @@ var init_useTranslations = __esm({
         },
         gallery: {
           heading: "Gallery",
-          noImages: "No images here yet"
+          noImages: "No images here yet",
+          viewImage: "View image",
+          closeImage: "Close image",
+          previousImage: "Previous image",
+          nextImage: "Next image"
         },
         contact: {
           eyebrow: "Contact",
@@ -6045,12 +6076,34 @@ var init_useTranslations = __esm({
           }
         },
         footer: {
-          subtitle: "Tailor\u2019s atelier \xB7 Cheb",
+          subtitle: "Clothing atelier \xB7 Cheb",
           addressLine: "\u017Didovsk\xE1 412/9 \xB7 Cheb"
         }
       },
       de: {
         general: { title: "Ateli\xE9r Tomandlov\xE1" },
+        seo: {
+          home: {
+            title: "Ateli\xE9r Tomandlov\xE1 \xB7 Handgefertigte Mode aus Eger (Cheb)",
+            description: "Kleidungsatelier im historischen Stadtkern von Eger (Cheb). Autorenmode aus Naturmaterialien, von Hand ma\xDFgefertigt \u2014 seit fast 30 Jahren."
+          },
+          about: {
+            title: "\xDCber uns \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "Gegr\xFCndet von Lenka Tomandlov\xE1, die seit fast 30 Jahren Mode entwirft \u2014 gemeinsam mit Lada Vosejpkov\xE1 (Schmuck) und Eva Haj\u0161manov\xE1 (Fotografie)."
+          },
+          events: {
+            title: "Termine \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "Kommende und vergangene Verkaufsausstellungen und Modenschauen des Ateliers Tomandlov\xE1 \u2014 in Eger (Cheb) und an weiteren Orten in Tschechien."
+          },
+          gallery: {
+            title: "Galerie \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "Fotogalerie der Autorenmode des Ateliers Tomandlov\xE1. Kollektionen, Details und Archivaufnahmen aus dem Atelier im Zentrum von Eger (Cheb)."
+          },
+          contact: {
+            title: "Kontakt \xB7 Ateli\xE9r Tomandlov\xE1",
+            description: "Besuchen Sie uns in der \u017Didovsk\xE1 412/9 im historischen Stadtkern von Eger (Cheb). \xD6ffnungszeiten, Karte und Kontaktformular \u2014 oder per E-Mail."
+          }
+        },
         error: {
           somethingWentWrong: "Etwas ist schiefgelaufen",
           goBack: "Neu laden",
@@ -6070,7 +6123,7 @@ var init_useTranslations = __esm({
         header: {
           metaTagOne: "Autorenmode",
           metaTagTwo: "handgefertigt",
-          tagline: "Schneideratelier im historischen Stadtkern von Eger (Cheb). Autorenmode aus Naturmaterialien, von Hand ma\xDFgefertigt."
+          tagline: "Kleidungsatelier im historischen Stadtkern von Eger (Cheb). Autorenmode aus Naturmaterialien, von Hand ma\xDFgefertigt."
         },
         ourWork: {
           eyebrow: "Atelier",
@@ -6116,7 +6169,7 @@ var init_useTranslations = __esm({
           ladaVosejpkova: "Lada Vosejpkov\xE1",
           evaInfo: "Wir arbeiten langfristig auch mit der Fotografin",
           evaHajsmanova: "Eva Haj\u0161manov\xE1",
-          atelierImageAlt: "Ateli\xE9r Tomandlov\xE1 \u2014 Innenraum des Schneideateliers in Eger",
+          atelierImageAlt: "Ateli\xE9r Tomandlov\xE1 \u2014 Innenraum des Kleidungsateliers in Eger",
           atelierImageCaption: "Das Atelier in der \u017Didovsk\xE1-Stra\xDFe, Eger",
           peopleImageAlt: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 und Eva Haj\u0161manov\xE1",
           peopleImageCaption: "Lada Vosejpkov\xE1, Lenka Tomandlov\xE1 und Eva Haj\u0161manov\xE1",
@@ -6130,7 +6183,11 @@ var init_useTranslations = __esm({
         },
         gallery: {
           heading: "Galerie",
-          noImages: "Hier sind noch keine Bilder"
+          noImages: "Hier sind noch keine Bilder",
+          viewImage: "Bild anzeigen",
+          closeImage: "Bild schlie\xDFen",
+          previousImage: "Vorheriges Bild",
+          nextImage: "N\xE4chstes Bild"
         },
         contact: {
           eyebrow: "Kontakt",
@@ -6173,7 +6230,7 @@ var init_useTranslations = __esm({
           }
         },
         footer: {
-          subtitle: "Schneideratelier \xB7 Eger",
+          subtitle: "Kleidungsatelier \xB7 Eger",
           addressLine: "\u017Didovsk\xE1 412/9 \xB7 Eger"
         }
       }
@@ -6211,6 +6268,177 @@ var init_x = __esm({
   }
 });
 
+// .svelte-kit/output/server/chunks/Button.js
+function Button($$renderer, $$props) {
+  let bg = fallback($$props["bg"], "light");
+  let text2 = $$props["text"];
+  let href = fallback($$props["href"], void 0);
+  let disabled = fallback($$props["disabled"], false);
+  let type = fallback($$props["type"], void 0);
+  let callback = fallback($$props["callback"], void 0);
+  element($$renderer, href ? "a" : "button", () => {
+    $$renderer.push(`${attr_class(`button button--${stringify2(bg)} button--${stringify2(disabled ? "disabled" : "")}`, "svelte-1klcfz0")}${attr("href", href)}${attr("disabled", disabled, true)}${attr("type", type)}`);
+  }, () => {
+    Typography($$renderer, {
+      variant: "label",
+      children: ($$renderer2) => {
+        $$renderer2.push(`<!---->${escape_html(text2)}`);
+      },
+      $$slots: { default: true }
+    });
+  });
+  bind_props($$props, {
+    bg,
+    text: text2,
+    href,
+    disabled,
+    type,
+    callback
+  });
+}
+var init_Button = __esm({
+  ".svelte-kit/output/server/chunks/Button.js"() {
+    init_dev();
+    init_Typography();
+  }
+});
+
+// .svelte-kit/output/server/chunks/routes.js
+var SITE_URL, routes, OG_LOCALE;
+var init_routes = __esm({
+  ".svelte-kit/output/server/chunks/routes.js"() {
+    SITE_URL = "https://www.ateliertomandlova.cz";
+    routes = {
+      home: {
+        cs: "/",
+        en: "/en/",
+        de: "/de/"
+      },
+      about: {
+        cs: "/o-nas",
+        en: "/en/about",
+        de: "/de/ueber-uns"
+      },
+      events: {
+        cs: "/akce",
+        en: "/en/events",
+        de: "/de/termine"
+      },
+      gallery: {
+        cs: "/galerie",
+        en: "/en/gallery",
+        de: "/de/galerie"
+      },
+      contact: {
+        cs: "/kontakt",
+        en: "/en/contact",
+        de: "/de/kontakt"
+      }
+    };
+    OG_LOCALE = {
+      cs: "cs_CZ",
+      en: "en_GB",
+      de: "de_DE"
+    };
+  }
+});
+
+// .svelte-kit/output/server/chunks/structuredData.js
+function StructuredData($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    let serialized;
+    let data = $$props["data"];
+    const NEEDLE = String.fromCharCode(60);
+    $: serialized = JSON.stringify(data).split(NEEDLE).join("\\u003c");
+    head("10qhikd", $$renderer2, ($$renderer3) => {
+      $$renderer3.push(`${html(`<script type="application/ld+json">${serialized}<\/script>`)}`);
+    });
+    bind_props($$props, { data });
+  });
+}
+function openingHoursSpec() {
+  return HOURS.flatMap(({ day, intervals }) => intervals.map(([opens, closes]) => ({
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: `https://schema.org/${day}`,
+    opens,
+    closes
+  })));
+}
+function buildLocalBusinessSchema(lang, dict) {
+  return {
+    "@context": "https://schema.org",
+    "@type": ["ClothingStore", "LocalBusiness"],
+    "@id": ATELIER_ID,
+    name: "Ateli\xE9r Tomandlov\xE1",
+    description: dict.seo.home.description,
+    url: SITE_URL + routes.home[lang],
+    image: SITE_URL + "/og-image.jpg",
+    logo: SITE_URL + "/favicon.png",
+    email: "info@ateliertomandlova.cz",
+    address: ADDRESS,
+    geo: GEO,
+    openingHoursSpecification: openingHoursSpec(),
+    inLanguage: OG_LOCALE[lang].replace("_", "-"),
+    knowsLanguage: [
+      "cs",
+      "en",
+      "de"
+    ],
+    priceRange: "\u20AC\u20AC\u20AC",
+    founder: {
+      "@type": "Person",
+      name: "Lenka Tomandlov\xE1"
+    },
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "Czech Republic"
+    }
+  };
+}
+var ATELIER_ID, ADDRESS, GEO, HOURS;
+var init_structuredData = __esm({
+  ".svelte-kit/output/server/chunks/structuredData.js"() {
+    init_dev();
+    init_routes();
+    ATELIER_ID = `${SITE_URL}/#atelier`;
+    ADDRESS = {
+      "@type": "PostalAddress",
+      streetAddress: "\u017Didovsk\xE1 412/9",
+      addressLocality: "Cheb",
+      postalCode: "350 02",
+      addressRegion: "Karlovarsk\xFD kraj",
+      addressCountry: "CZ"
+    };
+    GEO = {
+      "@type": "GeoCoordinates",
+      latitude: 50.0790883,
+      longitude: 12.3682393
+    };
+    HOURS = [
+      {
+        day: "Monday",
+        intervals: [["11:00", "13:00"], ["14:00", "17:00"]]
+      },
+      {
+        day: "Tuesday",
+        intervals: [["10:00", "12:00"], ["14:00", "17:00"]]
+      },
+      {
+        day: "Wednesday",
+        intervals: [["10:00", "12:00"], ["14:00", "16:00"]]
+      },
+      {
+        day: "Thursday",
+        intervals: [["10:00", "12:00"], ["14:00", "17:00"]]
+      },
+      {
+        day: "Friday",
+        intervals: [["11:00", "12:00"], ["14:00", "16:00"]]
+      }
+    ];
+  }
+});
+
 // .svelte-kit/output/server/chunks/navigation.js
 var init_navigation = __esm({
   ".svelte-kit/output/server/chunks/navigation.js"() {
@@ -6244,6 +6472,15 @@ function MenuLinks($$renderer, $$props) {
       element: "span",
       children: ($$renderer3) => {
         $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.events)}`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----></a></li> <li class="menuLinks__link svelte-uhi6x0"><a${attr("aria-current", pathname === "/galerie" ? "page" : void 0)} href="/galerie" class="svelte-uhi6x0">`);
+    Typography($$renderer2, {
+      variant: "nav",
+      element: "span",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.gallery)}`);
       },
       $$slots: { default: true }
     });
@@ -6428,6 +6665,7 @@ function Footer($$renderer, $$props) {
 function _layout($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
+    let isAdmin2, localBusinessSchema;
     const hideNav = !!store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).error;
     onNavigate((navigation) => {
       if (typeof document === "undefined" || !("startViewTransition" in document)) return;
@@ -6438,6 +6676,13 @@ function _layout($$renderer, $$props) {
         });
       });
     });
+    $: isAdmin2 = store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).url.pathname.startsWith("/admin");
+    $: localBusinessSchema = buildLocalBusinessSchema(store_get($$store_subs ?? ($$store_subs = {}), "$language", language), store_get($$store_subs ?? ($$store_subs = {}), "$t", t));
+    if (!isAdmin2) {
+      $$renderer2.push("<!--[0-->");
+      StructuredData($$renderer2, { data: localBusinessSchema });
+    } else $$renderer2.push("<!--[-1-->");
+    $$renderer2.push(`<!--]--> `);
     if (!hideNav) {
       $$renderer2.push("<!--[0-->");
       Menu($$renderer2, {});
@@ -6459,9 +6704,11 @@ var init_layout_svelte = __esm({
     init_dev();
     init_client();
     init_stores();
-    init_Button();
+    init_Typography();
     init_useTranslations();
     init_x();
+    init_Button();
+    init_structuredData();
     init_navigation();
     logo_default = "/_app/immutable/assets/logo.CSzyB7Xy.webp";
     menu_default = "data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23262626'%20stroke-width='1'%20stroke-linecap='round'%20stroke-linejoin='round'%20class='feather%20feather-menu'%3e%3cline%20x1='3'%20y1='12'%20x2='21'%20y2='12'%3e%3c/line%3e%3cline%20x1='3'%20y1='6'%20x2='21'%20y2='6'%3e%3c/line%3e%3cline%20x1='3'%20y1='18'%20x2='21'%20y2='18'%3e%3c/line%3e%3c/svg%3e";
@@ -6486,8 +6733,8 @@ var init__ = __esm({
     index = 0;
     component = async () => component_cache ?? (component_cache = (await Promise.resolve().then(() => (init_layout_svelte(), layout_svelte_exports))).default);
     universal_id = "src/routes/+layout.ts";
-    imports = ["_app/immutable/nodes/0.A0hxz7MA.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/Cz_7L070.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/D7lbHfhw.js", "_app/immutable/chunks/Dkyv9z4d.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/tpq3dAIO.js", "_app/immutable/chunks/C0-cVTkD.js"];
-    stylesheets = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/0.C9D1Osj7.css"];
+    imports = ["_app/immutable/nodes/0.DsAidA-I.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BF-7U2OZ.js", "_app/immutable/chunks/CNIWJxy2.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/Corl4_W5.js", "_app/immutable/chunks/I5RoM6T1.js", "_app/immutable/chunks/BQNHSFwo.js", "_app/immutable/chunks/Cuf-lMyo.js"];
+    stylesheets = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/0.tI8X5CtQ.css"];
     fonts = ["_app/immutable/assets/Ogg-Bold.BpT5MOp0.ttf", "_app/immutable/assets/Ogg-Bold.BHYZ1nQZ.woff", "_app/immutable/assets/Ogg-Light.CJx7NBpI.ttf", "_app/immutable/assets/Ogg-Light.BmIZt__l.woff"];
   }
 });
@@ -6560,8 +6807,9 @@ var init_error_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/_error.svelte.js"() {
     init_dev();
     init_stores();
-    init_Button();
+    init_Typography();
     init_useTranslations();
+    init_Button();
     init_Section();
   }
 });
@@ -6580,8 +6828,8 @@ var init__2 = __esm({
   ".svelte-kit/output/server/nodes/1.js"() {
     index2 = 1;
     component2 = async () => component_cache2 ?? (component_cache2 = (await Promise.resolve().then(() => (init_error_svelte(), error_svelte_exports))).default);
-    imports2 = ["_app/immutable/nodes/1.D8siv4Gs.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/Dkyv9z4d.js", "_app/immutable/chunks/Cz_7L070.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/CCk-jJvr.js", "_app/immutable/chunks/C0-cVTkD.js"];
-    stylesheets2 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/1.ClQFIecB.css"];
+    imports2 = ["_app/immutable/nodes/1.B6z8eqTF.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/CNIWJxy2.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/DEXS9FLr.js", "_app/immutable/chunks/Cuf-lMyo.js"];
+    stylesheets2 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/1.ClQFIecB.css"];
     fonts2 = [];
   }
 });
@@ -26784,12 +27032,18 @@ function getSupabase() {
   _supabase = createClient(supabaseUrl, supabaseAnonKey);
   return _supabase;
 }
-function getPosterPublicUrl(path, options2 = {}) {
+function getBucketPublicUrl(bucket, path, options2 = {}) {
   if (!path) return null;
   const client = getSupabase();
   if (!client) return null;
-  const { data } = client.storage.from(POSTERS_BUCKET).getPublicUrl(path, void 0);
+  const { data } = client.storage.from(bucket).getPublicUrl(path, void 0);
   return data.publicUrl || null;
+}
+function getPosterPublicUrl(path, options2 = {}) {
+  return getBucketPublicUrl(POSTERS_BUCKET, path, options2);
+}
+function getGalleryImageUrl(path, options2 = {}) {
+  return getBucketPublicUrl(GALLERY_BUCKET, path, options2);
 }
 async function isAdmin() {
   const client = getSupabase();
@@ -26798,13 +27052,14 @@ async function isAdmin() {
   if (error2) return false;
   return (data ?? []).length > 0;
 }
-var supabaseUrl, supabaseAnonKey, POSTERS_BUCKET, _supabase;
+var supabaseUrl, supabaseAnonKey, POSTERS_BUCKET, GALLERY_BUCKET, _supabase;
 var init_supabaseClient = __esm({
   ".svelte-kit/output/server/chunks/supabaseClient.js"() {
     init_dist4();
     supabaseUrl = "https://dripseuxyhxsawugmnzk.supabase.co";
     supabaseAnonKey = "sb_publishable_hDiMh7g63SRYes20h0e7JA_vob-gRMz";
     POSTERS_BUCKET = "posters";
+    GALLERY_BUCKET = "gallery";
     _supabase = null;
   }
 });
@@ -26857,7 +27112,7 @@ function Input($$renderer, $$props) {
 var init_Input = __esm({
   ".svelte-kit/output/server/chunks/Input.js"() {
     init_dev();
-    init_Button();
+    init_Typography();
   }
 });
 
@@ -27082,6 +27337,7 @@ var init_layout_svelte2 = __esm({
     init_index_server();
     init_dev();
     init_stores();
+    init_Typography();
     init_Button();
     init_Section();
     init_supabaseClient();
@@ -27110,8 +27366,8 @@ var init__3 = __esm({
       "ssr": false
     };
     universal_id2 = "src/routes/admin/+layout.ts";
-    imports3 = ["_app/immutable/nodes/2.BQNh-pgR.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/Dkyv9z4d.js", "_app/immutable/chunks/Cz_7L070.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/BY0Lw52_.js", "_app/immutable/chunks/CCk-jJvr.js"];
-    stylesheets3 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/2.eR4sTe5M.css"];
+    imports3 = ["_app/immutable/nodes/2.DklmBeaq.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/CNIWJxy2.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    stylesheets3 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/2.eR4sTe5M.css"];
     fonts3 = [];
   }
 });
@@ -27151,6 +27407,11 @@ function _page($$renderer, $$props) {
         });
         $$renderer3.push(`<!----> `);
         Button($$renderer3, {
+          text: "Spr\xE1va galerie",
+          href: "/admin/gallery"
+        });
+        $$renderer3.push(`<!----> `);
+        Button($$renderer3, {
           text: loading ? "\u2026" : "Odhl\xE1sit se",
           callback: signOut
         });
@@ -27164,6 +27425,7 @@ var init_page_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/admin/_page.svelte.js"() {
     init_index_server();
     init_dev();
+    init_Typography();
     init_Button();
     init_Section();
     init_supabaseClient();
@@ -27184,8 +27446,8 @@ var init__4 = __esm({
   ".svelte-kit/output/server/nodes/4.js"() {
     index4 = 4;
     component4 = async () => component_cache4 ?? (component_cache4 = (await Promise.resolve().then(() => (init_page_svelte(), page_svelte_exports))).default);
-    imports4 = ["_app/immutable/nodes/4.CSrQYBLS.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/CCk-jJvr.js"];
-    stylesheets4 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/4.ex_2d-5Q.css"];
+    imports4 = ["_app/immutable/nodes/4.C3BZS6RA.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    stylesheets4 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/4.ex_2d-5Q.css"];
     fonts4 = [];
   }
 });
@@ -27256,6 +27518,11 @@ function _page2($$renderer, $$props) {
         Button($$renderer3, {
           text: "P\u0159idat novou akci",
           href: "/admin/events/new"
+        });
+        $$renderer3.push(`<!----> `);
+        Button($$renderer3, {
+          text: "Zp\u011Bt",
+          href: "/admin"
         });
         $$renderer3.push(`<!----></div> `);
         if (error2) {
@@ -27350,6 +27617,7 @@ var init_page_svelte2 = __esm({
   ".svelte-kit/output/server/entries/pages/admin/events/_page.svelte.js"() {
     init_index_server();
     init_dev();
+    init_Typography();
     init_Button();
     init_navigation();
     init_Section();
@@ -27371,8 +27639,8 @@ var init__5 = __esm({
   ".svelte-kit/output/server/nodes/5.js"() {
     index5 = 5;
     component5 = async () => component_cache5 ?? (component_cache5 = (await Promise.resolve().then(() => (init_page_svelte2(), page_svelte_exports2))).default);
-    imports5 = ["_app/immutable/nodes/5.DH4syVPm.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/D7lbHfhw.js", "_app/immutable/chunks/Cz_7L070.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/CCk-jJvr.js"];
-    stylesheets5 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/5.nFnmK94E.css"];
+    imports5 = ["_app/immutable/nodes/5.D_Hb7n9N.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/BF-7U2OZ.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    stylesheets5 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/5.nFnmK94E.css"];
     fonts5 = [];
   }
 });
@@ -27438,6 +27706,7 @@ var init_page_svelte3 = __esm({
     init_dev();
     init_client();
     init_stores();
+    init_Typography();
     init_Button();
     init_navigation();
     init_Section();
@@ -27461,8 +27730,8 @@ var init__6 = __esm({
   ".svelte-kit/output/server/nodes/6.js"() {
     index6 = 6;
     component6 = async () => component_cache6 ?? (component_cache6 = (await Promise.resolve().then(() => (init_page_svelte3(), page_svelte_exports3))).default);
-    imports6 = ["_app/immutable/nodes/6.D3BfBD4W.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/Cz_7L070.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/D7lbHfhw.js", "_app/immutable/chunks/Dkyv9z4d.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/BY0Lw52_.js", "_app/immutable/chunks/CCk-jJvr.js", "_app/immutable/chunks/BXeY2-Ui.js"];
-    stylesheets6 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/6.C5hKHldS.css"];
+    imports6 = ["_app/immutable/nodes/6.CGCnCyBI.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/BF-7U2OZ.js", "_app/immutable/chunks/CNIWJxy2.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js", "_app/immutable/chunks/BGMO7txs.js"];
+    stylesheets6 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/6.C5hKHldS.css"];
     fonts6 = [];
   }
 });
@@ -27585,6 +27854,7 @@ function _page4($$renderer, $$props) {
 var init_page_svelte4 = __esm({
   ".svelte-kit/output/server/entries/pages/admin/events/new/_page.svelte.js"() {
     init_dev();
+    init_Typography();
     init_Button();
     init_navigation();
     init_Section();
@@ -27607,18 +27877,477 @@ var init__7 = __esm({
   ".svelte-kit/output/server/nodes/7.js"() {
     index7 = 7;
     component7 = async () => component_cache7 ?? (component_cache7 = (await Promise.resolve().then(() => (init_page_svelte4(), page_svelte_exports4))).default);
-    imports7 = ["_app/immutable/nodes/7.BAO7bL3Y.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/Cz_7L070.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/D7lbHfhw.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/BY0Lw52_.js", "_app/immutable/chunks/CCk-jJvr.js", "_app/immutable/chunks/BXeY2-Ui.js"];
-    stylesheets7 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/7.BVssn5KX.css"];
+    imports7 = ["_app/immutable/nodes/7.FbzTtBKl.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/BF-7U2OZ.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js", "_app/immutable/chunks/BGMO7txs.js"];
+    stylesheets7 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/7.BVssn5KX.css"];
     fonts7 = [];
   }
 });
 
-// .svelte-kit/output/server/entries/pages/admin/reset/_page.svelte.js
+// .svelte-kit/output/server/entries/pages/admin/gallery/_page.svelte.js
 var page_svelte_exports5 = {};
 __export(page_svelte_exports5, {
   default: () => _page5
 });
 function _page5($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    const supabase = getSupabase();
+    let loading = true;
+    let error2 = null;
+    let albums = [];
+    const isJwtError = (message) => !!message && /jwt|token.*expired/i.test(message);
+    const loadAlbums = async () => {
+      if (!supabase) return;
+      loading = true;
+      error2 = null;
+      const { data, error: loadError } = await supabase.from("gallery_albums").select("id,title,subtitle,published,created_at,gallery_images(image_path,created_at)").order("created_at", { ascending: false });
+      loading = false;
+      if (loadError) {
+        if (isJwtError(loadError.message)) {
+          await goto("/admin");
+          return;
+        }
+        error2 = loadError.message;
+        albums = [];
+        return;
+      }
+      albums = (data || []).map((row) => {
+        const images = (row.gallery_images || []).slice().sort((a, b) => a.created_at.localeCompare(b.created_at));
+        return {
+          id: row.id,
+          title: row.title,
+          subtitle: row.subtitle,
+          published: row.published,
+          created_at: row.created_at,
+          image_count: images.length,
+          cover_image_path: images[0]?.image_path ?? null
+        };
+      });
+    };
+    const togglePublished = async (row) => {
+      if (!supabase) return;
+      const { error: updateError } = await supabase.from("gallery_albums").update({
+        published: !row.published,
+        updated_at: (/* @__PURE__ */ new Date()).toISOString()
+      }).eq("id", row.id);
+      if (updateError) {
+        error2 = updateError.message;
+        return;
+      }
+      await loadAlbums();
+    };
+    const deleteAlbum = async (row) => {
+      if (!supabase) return;
+      if (!confirm(`Opravdu smazat album \u201E${row.title}" a v\u0161echny jeho obr\xE1zky?`)) return;
+      const { data: imageRows } = await supabase.from("gallery_images").select("image_path").eq("album_id", row.id);
+      const paths = (imageRows ?? []).map((r2) => r2.image_path);
+      if (paths.length) await supabase.storage.from(GALLERY_BUCKET).remove(paths);
+      const { error: deleteError } = await supabase.from("gallery_albums").delete().eq("id", row.id);
+      if (deleteError) {
+        error2 = deleteError.message;
+        return;
+      }
+      await loadAlbums();
+    };
+    Section($$renderer2, {
+      children: ($$renderer3) => {
+        $$renderer3.push(`<div class="adminGallery svelte-c0xo81">`);
+        Typography($$renderer3, {
+          variant: "h1",
+          element: "h1",
+          children: ($$renderer4) => {
+            $$renderer4.push(`<!---->Galerie`);
+          },
+          $$slots: { default: true }
+        });
+        $$renderer3.push(`<!----> <div class="adminGallery__actions svelte-c0xo81">`);
+        Button($$renderer3, {
+          text: "P\u0159idat nov\xE9 album",
+          href: "/admin/gallery/new"
+        });
+        $$renderer3.push(`<!----> `);
+        Button($$renderer3, {
+          text: "Zp\u011Bt",
+          href: "/admin"
+        });
+        $$renderer3.push(`<!----></div> `);
+        if (error2) {
+          $$renderer3.push("<!--[0-->");
+          Typography($$renderer3, {
+            children: ($$renderer4) => {
+              $$renderer4.push(`<strong>${escape_html(error2)}</strong>`);
+            },
+            $$slots: { default: true }
+          });
+        } else $$renderer3.push("<!--[-1-->");
+        $$renderer3.push(`<!--]--> `);
+        if (loading) {
+          $$renderer3.push("<!--[0-->");
+          Typography($$renderer3, {
+            children: ($$renderer4) => {
+              $$renderer4.push(`<!---->Na\u010D\xEDt\xE1m\u2026`);
+            },
+            $$slots: { default: true }
+          });
+        } else if (albums.length === 0) {
+          $$renderer3.push("<!--[1-->");
+          Typography($$renderer3, {
+            children: ($$renderer4) => {
+              $$renderer4.push(`<!---->Zat\xEDm tu nic nen\xED.`);
+            },
+            $$slots: { default: true }
+          });
+        } else {
+          $$renderer3.push("<!--[-1-->");
+          $$renderer3.push(`<div class="adminGallery__list svelte-c0xo81"><!--[-->`);
+          const each_array = ensure_array_like(albums);
+          for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+            let row = each_array[$$index];
+            $$renderer3.push(`<div class="adminGallery__item svelte-c0xo81"><div class="adminGallery__itemThumb svelte-c0xo81">`);
+            if (row.cover_image_path) {
+              $$renderer3.push("<!--[0-->");
+              $$renderer3.push(`<img${attr("src", getGalleryImageUrl(row.cover_image_path, { width: 320 }) || "")}${attr("alt", row.title)} loading="lazy" class="svelte-c0xo81"/>`);
+            } else {
+              $$renderer3.push("<!--[-1-->");
+              $$renderer3.push(`<div class="adminGallery__itemThumb__empty svelte-c0xo81">\u2014</div>`);
+            }
+            $$renderer3.push(`<!--]--></div> <div class="adminGallery__itemMain svelte-c0xo81">`);
+            Typography($$renderer3, {
+              variant: "h3",
+              element: "h3",
+              children: ($$renderer4) => {
+                $$renderer4.push(`<!---->${escape_html(row.title)}`);
+              },
+              $$slots: { default: true }
+            });
+            $$renderer3.push(`<!----> `);
+            if (row.subtitle) {
+              $$renderer3.push("<!--[0-->");
+              Typography($$renderer3, {
+                variant: "subtitle",
+                children: ($$renderer4) => {
+                  $$renderer4.push(`<!---->${escape_html(row.subtitle)}`);
+                },
+                $$slots: { default: true }
+              });
+            } else $$renderer3.push("<!--[-1-->");
+            $$renderer3.push(`<!--]--> `);
+            Typography($$renderer3, {
+              variant: "subtitle",
+              children: ($$renderer4) => {
+                $$renderer4.push(`<!---->Obr\xE1zk\u016F: <strong>${escape_html(row.image_count)}</strong>`);
+              },
+              $$slots: { default: true }
+            });
+            $$renderer3.push(`<!----> `);
+            Typography($$renderer3, {
+              variant: "subtitle",
+              children: ($$renderer4) => {
+                $$renderer4.push(`<!---->Stav: <strong>${escape_html(row.published ? "Publikov\xE1no" : "Skryto")}</strong>`);
+              },
+              $$slots: { default: true }
+            });
+            $$renderer3.push(`<!----></div> <div class="adminGallery__itemActions svelte-c0xo81">`);
+            Button($$renderer3, {
+              text: "Upravit",
+              href: `/admin/gallery/${row.id}`
+            });
+            $$renderer3.push(`<!----> `);
+            Button($$renderer3, {
+              text: row.published ? "Skr\xFDt" : "Publikovat",
+              bg: row.published ? "light" : "dark",
+              callback: () => togglePublished(row)
+            });
+            $$renderer3.push(`<!----> `);
+            Button($$renderer3, {
+              text: "Smazat",
+              callback: () => deleteAlbum(row)
+            });
+            $$renderer3.push(`<!----></div></div>`);
+          }
+          $$renderer3.push(`<!--]--></div>`);
+        }
+        $$renderer3.push(`<!--]--></div>`);
+      },
+      $$slots: { default: true }
+    });
+  });
+}
+var init_page_svelte5 = __esm({
+  ".svelte-kit/output/server/entries/pages/admin/gallery/_page.svelte.js"() {
+    init_index_server();
+    init_dev();
+    init_client();
+    init_Typography();
+    init_Button();
+    init_navigation();
+    init_Section();
+    init_supabaseClient();
+  }
+});
+
+// .svelte-kit/output/server/nodes/8.js
+var __exports8 = {};
+__export(__exports8, {
+  component: () => component8,
+  fonts: () => fonts8,
+  imports: () => imports8,
+  index: () => index8,
+  stylesheets: () => stylesheets8
+});
+var index8, component_cache8, component8, imports8, stylesheets8, fonts8;
+var init__8 = __esm({
+  ".svelte-kit/output/server/nodes/8.js"() {
+    index8 = 8;
+    component8 = async () => component_cache8 ?? (component_cache8 = (await Promise.resolve().then(() => (init_page_svelte5(), page_svelte_exports5))).default);
+    imports8 = ["_app/immutable/nodes/8.7bow6IZg.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/BF-7U2OZ.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    stylesheets8 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/8.CWySFeC6.css"];
+    fonts8 = [];
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/admin/gallery/_id_/_page.svelte.js
+var page_svelte_exports6 = {};
+__export(page_svelte_exports6, {
+  default: () => _page6
+});
+function _page6($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    getSupabase();
+    store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).params.id;
+    let $$settled = true;
+    let $$inner_renderer;
+    function $$render_inner($$renderer3) {
+      Section($$renderer3, {
+        children: ($$renderer4) => {
+          $$renderer4.push(`<div class="adminAlbumForm svelte-xwhjix">`);
+          Typography($$renderer4, {
+            variant: "h1",
+            element: "h1",
+            children: ($$renderer5) => {
+              $$renderer5.push(`<!---->Upravit album`);
+            },
+            $$slots: { default: true }
+          });
+          $$renderer4.push(`<!----> `);
+          $$renderer4.push("<!--[0-->");
+          Typography($$renderer4, {
+            children: ($$renderer5) => {
+              $$renderer5.push(`<!---->Na\u010D\xEDt\xE1m\u2026`);
+            },
+            $$slots: { default: true }
+          });
+          $$renderer4.push(`<!--]--></div>`);
+        },
+        $$slots: { default: true }
+      });
+    }
+    do {
+      $$settled = true;
+      $$inner_renderer = $$renderer2.copy();
+      $$render_inner($$inner_renderer);
+    } while (!$$settled);
+    $$renderer2.subsume($$inner_renderer);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+  });
+}
+var init_page_svelte6 = __esm({
+  ".svelte-kit/output/server/entries/pages/admin/gallery/_id_/_page.svelte.js"() {
+    init_index_server();
+    init_dev();
+    init_client();
+    init_stores();
+    init_Typography();
+    init_Button();
+    init_navigation();
+    init_Section();
+    init_supabaseClient();
+    init_Input();
+  }
+});
+
+// .svelte-kit/output/server/nodes/9.js
+var __exports9 = {};
+__export(__exports9, {
+  component: () => component9,
+  fonts: () => fonts9,
+  imports: () => imports9,
+  index: () => index9,
+  stylesheets: () => stylesheets9
+});
+var index9, component_cache9, component9, imports9, stylesheets9, fonts9;
+var init__9 = __esm({
+  ".svelte-kit/output/server/nodes/9.js"() {
+    index9 = 9;
+    component9 = async () => component_cache9 ?? (component_cache9 = (await Promise.resolve().then(() => (init_page_svelte6(), page_svelte_exports6))).default);
+    imports9 = ["_app/immutable/nodes/9.JfBk74qz.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/BF-7U2OZ.js", "_app/immutable/chunks/CNIWJxy2.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    stylesheets9 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/9.CLYKn3Jg.css"];
+    fonts9 = [];
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/admin/gallery/new/_page.svelte.js
+var page_svelte_exports7 = {};
+__export(page_svelte_exports7, {
+  default: () => _page7
+});
+function _page7($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    const supabase = getSupabase();
+    let loading = false;
+    let error2 = null;
+    let title = "";
+    let subtitle = "";
+    let published = false;
+    const isJwtError = (message) => !!message && /jwt|token.*expired/i.test(message);
+    const save = async () => {
+      if (!supabase) return;
+      error2 = null;
+      if (!title.trim()) {
+        error2 = "Vypl\u0148 n\xE1zev.";
+        return;
+      }
+      loading = true;
+      try {
+        const { data, error: insertError } = await supabase.from("gallery_albums").insert({
+          title: title.trim(),
+          subtitle: subtitle.trim() || null,
+          published
+        }).select("id").single();
+        if (insertError) throw new Error(insertError.message);
+        await goto(`/admin/gallery/${data.id}`);
+      } catch (e) {
+        const message = e?.message || "N\u011Bco se nepovedlo.";
+        if (isJwtError(message)) {
+          await goto("/admin");
+          return;
+        }
+        error2 = message;
+      } finally {
+        loading = false;
+      }
+    };
+    let $$settled = true;
+    let $$inner_renderer;
+    function $$render_inner($$renderer3) {
+      Section($$renderer3, {
+        children: ($$renderer4) => {
+          $$renderer4.push(`<div class="adminAlbumForm svelte-zivkus">`);
+          Typography($$renderer4, {
+            variant: "h1",
+            element: "h1",
+            children: ($$renderer5) => {
+              $$renderer5.push(`<!---->Nov\xE9 album`);
+            },
+            $$slots: { default: true }
+          });
+          $$renderer4.push(`<!----> <div class="adminAlbumForm__fields svelte-zivkus">`);
+          Input($$renderer4, {
+            label: "N\xE1zev",
+            name: "title",
+            get value() {
+              return title;
+            },
+            set value($$value) {
+              title = $$value;
+              $$settled = false;
+            }
+          });
+          $$renderer4.push(`<!----> `);
+          Input($$renderer4, {
+            label: "Podtitulek",
+            name: "subtitle",
+            required: false,
+            size: "big",
+            get value() {
+              return subtitle;
+            },
+            set value($$value) {
+              subtitle = $$value;
+              $$settled = false;
+            }
+          });
+          $$renderer4.push(`<!----> <div class="adminAlbumForm__row svelte-zivkus"><label class="adminAlbumForm__checkbox svelte-zivkus"><input type="checkbox"${attr("checked", published, true)}/> <span>Publikovat hned</span></label></div> `);
+          Typography($$renderer4, {
+            variant: "subtitle",
+            children: ($$renderer5) => {
+              $$renderer5.push(`<!---->Obr\xE1zky bude\u0161 moci nahr\xE1t v dal\u0161\xEDm kroku, po vytvo\u0159en\xED alba.`);
+            },
+            $$slots: { default: true }
+          });
+          $$renderer4.push(`<!----> `);
+          if (error2) {
+            $$renderer4.push("<!--[0-->");
+            Typography($$renderer4, {
+              children: ($$renderer5) => {
+                $$renderer5.push(`<strong>${escape_html(error2)}</strong>`);
+              },
+              $$slots: { default: true }
+            });
+          } else $$renderer4.push("<!--[-1-->");
+          $$renderer4.push(`<!--]--></div> <div class="adminAlbumForm__actions svelte-zivkus">`);
+          Button($$renderer4, {
+            text: "Zp\u011Bt",
+            href: "/admin/gallery"
+          });
+          $$renderer4.push(`<!----> `);
+          Button($$renderer4, {
+            disabled: loading,
+            text: loading ? "Ukl\xE1d\xE1m\u2026" : "Vytvo\u0159it album",
+            callback: save
+          });
+          $$renderer4.push(`<!----></div></div>`);
+        },
+        $$slots: { default: true }
+      });
+    }
+    do {
+      $$settled = true;
+      $$inner_renderer = $$renderer2.copy();
+      $$render_inner($$inner_renderer);
+    } while (!$$settled);
+    $$renderer2.subsume($$inner_renderer);
+  });
+}
+var init_page_svelte7 = __esm({
+  ".svelte-kit/output/server/entries/pages/admin/gallery/new/_page.svelte.js"() {
+    init_dev();
+    init_client();
+    init_Typography();
+    init_Button();
+    init_navigation();
+    init_Section();
+    init_supabaseClient();
+    init_Input();
+  }
+});
+
+// .svelte-kit/output/server/nodes/10.js
+var __exports10 = {};
+__export(__exports10, {
+  component: () => component10,
+  fonts: () => fonts10,
+  imports: () => imports10,
+  index: () => index10,
+  stylesheets: () => stylesheets10
+});
+var index10, component_cache10, component10, imports10, stylesheets10, fonts10;
+var init__10 = __esm({
+  ".svelte-kit/output/server/nodes/10.js"() {
+    index10 = 10;
+    component10 = async () => component_cache10 ?? (component_cache10 = (await Promise.resolve().then(() => (init_page_svelte7(), page_svelte_exports7))).default);
+    imports10 = ["_app/immutable/nodes/10.DJPwIg3i.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/BF-7U2OZ.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    stylesheets10 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/10.DuBd1bwr.css"];
+    fonts10 = [];
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/admin/reset/_page.svelte.js
+var page_svelte_exports8 = {};
+__export(page_svelte_exports8, {
+  default: () => _page8
+});
+function _page8($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     const supabase = getSupabase();
     let $$settled = true;
@@ -27666,11 +28395,12 @@ function _page5($$renderer, $$props) {
     $$renderer2.subsume($$inner_renderer);
   });
 }
-var init_page_svelte5 = __esm({
+var init_page_svelte8 = __esm({
   ".svelte-kit/output/server/entries/pages/admin/reset/_page.svelte.js"() {
     init_index_server();
     init_dev();
     init_client();
+    init_Typography();
     init_Button();
     init_navigation();
     init_Section();
@@ -27679,23 +28409,23 @@ var init_page_svelte5 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/8.js
-var __exports8 = {};
-__export(__exports8, {
-  component: () => component8,
-  fonts: () => fonts8,
-  imports: () => imports8,
-  index: () => index8,
-  stylesheets: () => stylesheets8
+// .svelte-kit/output/server/nodes/11.js
+var __exports11 = {};
+__export(__exports11, {
+  component: () => component11,
+  fonts: () => fonts11,
+  imports: () => imports11,
+  index: () => index11,
+  stylesheets: () => stylesheets11
 });
-var index8, component_cache8, component8, imports8, stylesheets8, fonts8;
-var init__8 = __esm({
-  ".svelte-kit/output/server/nodes/8.js"() {
-    index8 = 8;
-    component8 = async () => component_cache8 ?? (component_cache8 = (await Promise.resolve().then(() => (init_page_svelte5(), page_svelte_exports5))).default);
-    imports8 = ["_app/immutable/nodes/8.CkD_G3JU.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/Cz_7L070.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/DXCmrI7Y.js", "_app/immutable/chunks/D7lbHfhw.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/BY0Lw52_.js", "_app/immutable/chunks/CCk-jJvr.js"];
-    stylesheets8 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/8.D8smtPme.css"];
-    fonts8 = [];
+var index11, component_cache11, component11, imports11, stylesheets11, fonts11;
+var init__11 = __esm({
+  ".svelte-kit/output/server/nodes/11.js"() {
+    index11 = 11;
+    component11 = async () => component_cache11 ?? (component_cache11 = (await Promise.resolve().then(() => (init_page_svelte8(), page_svelte_exports8))).default);
+    imports11 = ["_app/immutable/nodes/11.CgEIP-Pv.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/BF-7U2OZ.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    stylesheets11 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/11.D8smtPme.css"];
+    fonts11 = [];
   }
 });
 
@@ -27782,10 +28512,54 @@ var init_page_server_ts = __esm({
   }
 });
 
+// .svelte-kit/output/server/chunks/SEO.js
+function SEO($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let meta, alternates, canonical, ogImageUrl;
+    let pageKey = $$props["pageKey"];
+    let type = fallback($$props["type"], "website");
+    let image = fallback($$props["image"], void 0);
+    const DEFAULT_OG_IMAGE = "/og-image.jpg";
+    $: meta = store_get($$store_subs ?? ($$store_subs = {}), "$t", t).seo[pageKey];
+    $: alternates = routes[pageKey];
+    $: canonical = SITE_URL + alternates[store_get($$store_subs ?? ($$store_subs = {}), "$language", language)];
+    $: ogImageUrl = (() => {
+      const src = image || DEFAULT_OG_IMAGE;
+      return /^https?:\/\//.test(src) ? src : SITE_URL + src;
+    })();
+    head("ie66xt", $$renderer2, ($$renderer3) => {
+      $$renderer3.title(($$renderer4) => {
+        $$renderer4.push(`<title>${escape_html(meta.title)}</title>`);
+      });
+      $$renderer3.push(`<meta name="description"${attr("content", meta.description)}/> <meta name="robots" content="index,follow"/> <link rel="canonical"${attr("href", canonical)}/> <link rel="alternate" hreflang="cs"${attr("href", SITE_URL + alternates.cs)}/> <link rel="alternate" hreflang="en"${attr("href", SITE_URL + alternates.en)}/> <link rel="alternate" hreflang="de"${attr("href", SITE_URL + alternates.de)}/> <link rel="alternate" hreflang="x-default"${attr("href", SITE_URL + alternates.cs)}/> <meta property="og:type"${attr("content", type)}/> <meta property="og:site_name" content="Ateli\xE9r Tomandlov\xE1"/> <meta property="og:title"${attr("content", meta.title)}/> <meta property="og:description"${attr("content", meta.description)}/> <meta property="og:url"${attr("content", canonical)}/> <meta property="og:image"${attr("content", ogImageUrl)}/> <meta property="og:image:width" content="1200"/> <meta property="og:image:height" content="630"/> <meta property="og:image:alt"${attr("content", meta.title)}/> <meta property="og:locale"${attr("content", OG_LOCALE[store_get($$store_subs ?? ($$store_subs = {}), "$language", language)])}/> <!--[-->`);
+      const each_array = ensure_array_like(Object.keys(OG_LOCALE).filter((l) => l !== store_get($$store_subs ?? ($$store_subs = {}), "$language", language)));
+      for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+        let alt = each_array[$$index];
+        $$renderer3.push(`<meta property="og:locale:alternate"${attr("content", OG_LOCALE[alt])}/>`);
+      }
+      $$renderer3.push(`<!--]--> <meta name="twitter:card" content="summary_large_image"/> <meta name="twitter:title"${attr("content", meta.title)}/> <meta name="twitter:description"${attr("content", meta.description)}/> <meta name="twitter:image"${attr("content", ogImageUrl)}/>`);
+    });
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+    bind_props($$props, {
+      pageKey,
+      type,
+      image
+    });
+  });
+}
+var init_SEO = __esm({
+  ".svelte-kit/output/server/chunks/SEO.js"() {
+    init_dev();
+    init_useTranslations();
+    init_routes();
+  }
+});
+
 // .svelte-kit/output/server/entries/pages/kontakt/_page.svelte.js
-var page_svelte_exports6 = {};
-__export(page_svelte_exports6, {
-  default: () => _page6
+var page_svelte_exports9 = {};
+__export(page_svelte_exports9, {
+  default: () => _page9
 });
 function ContactForm($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
@@ -27888,18 +28662,16 @@ function ContactForm($$renderer, $$props) {
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
-function _page6($$renderer, $$props) {
+function _page9($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
     const MAP_SRC = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d352.6625814339094!2d12.368239292743317!3d50.079088328849885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a0f6985b12dd77%3A0xbb8a067ac58ed0fd!2zQXRlbGnDqXIgVG9tYW5kbG92w6E!5e0!3m2!1scs!2scz!4v1776887304590!5m2!1scs!2scz";
     head("wkxllv", $$renderer2, ($$renderer3) => {
-      $$renderer3.title(($$renderer4) => {
-        $$renderer4.push(`<title>${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.contact)} \xB7 ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).general.title)}</title>`);
-      });
       $$renderer3.push(`<script src="https://www.google.com/recaptcha/api.js" async="" defer=""><\/script>`);
       $$renderer3.push(`<!---->`);
     });
-    $$renderer2.push(`<div class="contactPage">`);
+    SEO($$renderer2, { pageKey: "contact" });
+    $$renderer2.push(`<!----> <div class="contactPage">`);
     Section($$renderer2, {
       children: ($$renderer3) => {
         $$renderer3.push(`<div class="contactPage__form svelte-wkxllv"><span class="contactPage__eyebrow svelte-wkxllv">\u2014\xA0 ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.eyebrow)}</span> `);
@@ -27945,40 +28717,42 @@ function _page6($$renderer, $$props) {
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
-var init_page_svelte6 = __esm({
+var init_page_svelte9 = __esm({
   ".svelte-kit/output/server/entries/pages/kontakt/_page.svelte.js"() {
     init_index_server();
     init_dev();
     init_client();
-    init_Button();
+    init_Typography();
     init_useTranslations();
+    init_Button();
     init_navigation();
     init_Section();
     init_Input();
+    init_SEO();
   }
 });
 
-// .svelte-kit/output/server/nodes/10.js
-var __exports9 = {};
-__export(__exports9, {
-  component: () => component9,
-  fonts: () => fonts9,
-  imports: () => imports9,
-  index: () => index9,
+// .svelte-kit/output/server/nodes/14.js
+var __exports12 = {};
+__export(__exports12, {
+  component: () => component12,
+  fonts: () => fonts12,
+  imports: () => imports12,
+  index: () => index12,
   server: () => page_server_ts_exports,
   server_id: () => server_id,
-  stylesheets: () => stylesheets9
+  stylesheets: () => stylesheets12
 });
-var index9, component_cache9, component9, server_id, imports9, stylesheets9, fonts9;
-var init__9 = __esm({
-  ".svelte-kit/output/server/nodes/10.js"() {
+var index12, component_cache12, component12, server_id, imports12, stylesheets12, fonts12;
+var init__12 = __esm({
+  ".svelte-kit/output/server/nodes/14.js"() {
     init_page_server_ts();
-    index9 = 10;
-    component9 = async () => component_cache9 ?? (component_cache9 = (await Promise.resolve().then(() => (init_page_svelte6(), page_svelte_exports6))).default);
+    index12 = 14;
+    component12 = async () => component_cache12 ?? (component_cache12 = (await Promise.resolve().then(() => (init_page_svelte9(), page_svelte_exports9))).default);
     server_id = "src/routes/kontakt/+page.server.ts";
-    imports9 = ["_app/immutable/nodes/10.CkV-sBUM.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/Cz_7L070.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/chunks/D7lbHfhw.js", "_app/immutable/chunks/CP97kCR3.js", "_app/immutable/chunks/DasZLIxE.js", "_app/immutable/chunks/BY0Lw52_.js", "_app/immutable/chunks/CCk-jJvr.js", "_app/immutable/chunks/C0-cVTkD.js"];
-    stylesheets9 = ["_app/immutable/assets/Button.Bjom0cAV.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/10.DjfAKFnT.css"];
-    fonts9 = [];
+    imports12 = ["_app/immutable/nodes/14.3apiAfIy.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BF-7U2OZ.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/CdRT-F5U.js", "_app/immutable/chunks/I5RoM6T1.js", "_app/immutable/chunks/Cuf-lMyo.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    stylesheets12 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/14.DjfAKFnT.css"];
+    fonts12 = [];
   }
 });
 
@@ -28053,14 +28827,14 @@ async function deserialize_binary_form(request) {
   if (Number.isNaN(content_length)) throw deserialize_error("invalid Content-Length header");
   const reader = request.body.getReader();
   const chunks = [];
-  function get_chunk(index10) {
-    if (index10 in chunks) return chunks[index10];
+  function get_chunk(index13) {
+    if (index13 in chunks) return chunks[index13];
     let i = chunks.length;
-    while (i <= index10) {
+    while (i <= index13) {
       chunks[i] = reader.read().then((chunk) => chunk.value);
       i++;
     }
-    return chunks[index10];
+    return chunks[index13];
   }
   async function get_buffer(offset, length) {
     let start_chunk;
@@ -28116,11 +28890,11 @@ async function deserialize_binary_form(request) {
     files_start_offset = HEADER_BYTES + data_length + file_offsets_length;
   }
   const file_spans = [];
-  const [data, meta] = parse(text_decoder.decode(data_buffer), { File: ([name, type, size, last_modified, index10]) => {
-    if (typeof name !== "string" || typeof type !== "string" || typeof size !== "number" || typeof last_modified !== "number" || typeof index10 !== "number") throw deserialize_error("invalid file metadata");
-    let offset = file_offsets[index10];
+  const [data, meta] = parse(text_decoder.decode(data_buffer), { File: ([name, type, size, last_modified, index13]) => {
+    if (typeof name !== "string" || typeof type !== "string" || typeof size !== "number" || typeof last_modified !== "number" || typeof index13 !== "number") throw deserialize_error("invalid file metadata");
+    let offset = file_offsets[index13];
     if (offset === void 0) throw deserialize_error("duplicate file offset table index");
-    file_offsets[index10] = void 0;
+    file_offsets[index13] = void 0;
     offset += files_start_offset;
     if (offset + size > content_length) throw deserialize_error("file data overflow");
     file_spans.push({
@@ -28869,7 +29643,7 @@ function server_data_serializer(event, event_state, options2) {
   let max_nodes = -1;
   const iterator = create_async_iterator();
   const global3 = get_global_name(options2);
-  function get_replacer(index10) {
+  function get_replacer(index13) {
     return function replacer(thing) {
       if (typeof thing?.then === "function") {
         const id = promise_id++;
@@ -28892,7 +29666,7 @@ function server_data_serializer(event, event_state, options2) {
               str = uneval([, error2], replacer);
             }
             return {
-              index: index10,
+              index: index13,
               str: `${global3}.resolve(${id}, ${str.includes("app.decode") ? `(app) => ${str}` : `() => ${str}`})`
             };
           }
@@ -28934,8 +29708,8 @@ function server_data_serializer(event, event_state, options2) {
 `;
       return {
         data: `[${compact(max_nodes > -1 ? strings.slice(0, max_nodes) : strings).join(",")}]`,
-        chunks: promise_id > 1 ? iterator.iterate(({ index: index10, str }) => {
-          if (max_nodes > -1 && index10 >= max_nodes) return "";
+        chunks: promise_id > 1 ? iterator.iterate(({ index: index13, str }) => {
+          if (max_nodes > -1 && index13 >= max_nodes) return "";
           return open + str + close;
         }) : null
       };
@@ -29655,8 +30429,8 @@ async function render_response({ branch: branch2, fetched, options: options2, ma
   }
   const { client } = manifest2._;
   const modulepreloads = new Set(client.imports);
-  const stylesheets10 = new Set(client.stylesheets);
-  const fonts10 = new Set(client.fonts);
+  const stylesheets13 = new Set(client.stylesheets);
+  const fonts13 = new Set(client.fonts);
   const link_headers = /* @__PURE__ */ new Set();
   const inline_styles = /* @__PURE__ */ new Map();
   let rendered;
@@ -29732,11 +30506,11 @@ async function render_response({ branch: branch2, fetched, options: options2, ma
         const maybe_promise = options2.root.render(props, render_opts);
         const rendered2 = options2.async && "then" in maybe_promise ? maybe_promise.then((r2) => r2) : maybe_promise;
         if (options2.async) reset();
-        const { head: head4, html: html2, css, hashes } = options2.async ? await rendered2 : rendered2;
+        const { head: head4, html: html3, css, hashes } = options2.async ? await rendered2 : rendered2;
         if (hashes) csp.add_script_hashes(hashes.script);
         return {
           head: head4,
-          html: html2,
+          html: html3,
           css,
           hashes
         };
@@ -29746,8 +30520,8 @@ async function render_response({ branch: branch2, fetched, options: options2, ma
     }
     for (const { node } of branch2) {
       for (const url of node.imports) modulepreloads.add(url);
-      for (const url of node.stylesheets) stylesheets10.add(url);
-      for (const url of node.fonts) fonts10.add(url);
+      for (const url of node.stylesheets) stylesheets13.add(url);
+      for (const url of node.fonts) fonts13.add(url);
       if (node.inline_styles && !client.inline) Object.entries(await node.inline_styles()).forEach(([filename, css]) => {
         if (typeof css === "string") {
           inline_styles.set(filename, css);
@@ -29778,7 +30552,7 @@ async function render_response({ branch: branch2, fetched, options: options2, ma
     csp.add_style(style);
     head3.add_style(style, attributes2);
   }
-  for (const dep of stylesheets10) {
+  for (const dep of stylesheets13) {
     const path = prefixed(dep);
     const attributes2 = ['rel="stylesheet"'];
     if (inline_styles.has(dep)) attributes2.push("disabled", 'media="(max-width: 0)"');
@@ -29788,7 +30562,7 @@ async function render_response({ branch: branch2, fetched, options: options2, ma
     })) link_headers.add(`<${encodeURI(path)}>; rel="preload"; as="style"; nopush`);
     head3.add_stylesheet(path, attributes2);
   }
-  for (const dep of fonts10) {
+  for (const dep of fonts13) {
     const path = prefixed(dep);
     if (resolve_opts.preload({
       type: "font",
@@ -29990,7 +30764,7 @@ ${indent}}`);
     if (report_only_header) headers2.set("content-security-policy-report-only", report_only_header);
     if (link_headers.size) headers2.set("link", Array.from(link_headers).join(", "));
   }
-  const html = options2.templates.app({
+  const html2 = options2.templates.app({
     head: head3.build(),
     body: body2,
     assets: assets$1,
@@ -29998,7 +30772,7 @@ ${indent}}`);
     env: public_env
   });
   const transformed = await resolve_opts.transformPageChunk({
-    html,
+    html: html2,
     done: true
   }) || "";
   if (!chunks) headers2.set("etag", `"${hash(transformed)}"`);
@@ -30523,8 +31297,8 @@ async function render_page(event, event_state, page3, options2, manifest2, state
         const status2 = get_status(err);
         const error2 = await handle_error_and_jsonify(event, event_state, options2, err);
         while (i--) if (page3.errors[i]) {
-          const index10 = page3.errors[i];
-          const node2 = await manifest2._.nodes[index10]();
+          const index13 = page3.errors[i];
+          const node2 = await manifest2._.nodes[index13]();
           let j = i;
           while (!branch2[j]) j -= 1;
           data_serializer.set_max_nodes(j + 1);
@@ -30956,7 +31730,7 @@ function get_public_env(request) {
   });
   return new Response(body, { headers });
 }
-var default_transform = ({ html }) => html;
+var default_transform = ({ html: html2 }) => html2;
 var default_filter = () => false;
 var default_preload = ({ type }) => type === "js" || type === "css";
 var page_methods = /* @__PURE__ */ new Set([
@@ -31452,10 +32226,10 @@ var manifest = (() => {
   return {
     appDir: "_app",
     appPath: "_app",
-    assets: /* @__PURE__ */ new Set(["favicon.png", "manifest.json", "robots.txt", "screenshot.png"]),
-    mimeTypes: { ".png": "image/png", ".json": "application/json", ".txt": "text/plain", ".ttf": "font/ttf", ".woff": "font/woff" },
+    assets: /* @__PURE__ */ new Set(["favicon.png", "llms.txt", "manifest.json", "og-image.jpg", "robots.txt", "screenshot.png"]),
+    mimeTypes: { ".png": "image/png", ".txt": "text/plain", ".json": "application/json", ".jpg": "image/jpeg", ".ttf": "font/ttf", ".woff": "font/woff" },
     _: {
-      client: { start: "_app/immutable/entry/start.CZCzaIqF.js", app: "_app/immutable/entry/app.yuyZ_-Dr.js", imports: ["_app/immutable/entry/start.CZCzaIqF.js", "_app/immutable/chunks/Cz_7L070.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/Q-hMYE5R.js", "_app/immutable/entry/app.yuyZ_-Dr.js", "_app/immutable/chunks/wCgeMeRG.js", "_app/immutable/chunks/O6-aNYLC.js", "_app/immutable/chunks/CP97kCR3.js"], stylesheets: [], fonts: [], uses_env_dynamic_public: false },
+      client: { start: "_app/immutable/entry/start.zXZaZJlE.js", app: "_app/immutable/entry/app.D2xe0dSt.js", imports: ["_app/immutable/entry/start.zXZaZJlE.js", "_app/immutable/chunks/83eATsPr.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/entry/app.D2xe0dSt.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/B64WrFVF.js", "_app/immutable/chunks/BVEOzTpX.js"], stylesheets: [], fonts: [], uses_env_dynamic_public: false },
       nodes: [
         __memo(() => Promise.resolve().then(() => (init__(), __exports))),
         __memo(() => Promise.resolve().then(() => (init__2(), __exports2))),
@@ -31465,7 +32239,10 @@ var manifest = (() => {
         __memo(() => Promise.resolve().then(() => (init__6(), __exports6))),
         __memo(() => Promise.resolve().then(() => (init__7(), __exports7))),
         __memo(() => Promise.resolve().then(() => (init__8(), __exports8))),
-        __memo(() => Promise.resolve().then(() => (init__9(), __exports9)))
+        __memo(() => Promise.resolve().then(() => (init__9(), __exports9))),
+        __memo(() => Promise.resolve().then(() => (init__10(), __exports10))),
+        __memo(() => Promise.resolve().then(() => (init__11(), __exports11))),
+        __memo(() => Promise.resolve().then(() => (init__12(), __exports12)))
       ],
       remotes: {},
       routes: [
@@ -31498,21 +32275,42 @@ var manifest = (() => {
           endpoint: null
         },
         {
+          id: "/admin/gallery",
+          pattern: /^\/admin\/gallery\/?$/,
+          params: [],
+          page: { layouts: [0, 2], errors: [1, ,], leaf: 7 },
+          endpoint: null
+        },
+        {
+          id: "/admin/gallery/new",
+          pattern: /^\/admin\/gallery\/new\/?$/,
+          params: [],
+          page: { layouts: [0, 2], errors: [1, ,], leaf: 9 },
+          endpoint: null
+        },
+        {
+          id: "/admin/gallery/[id]",
+          pattern: /^\/admin\/gallery\/([^/]+?)\/?$/,
+          params: [{ "name": "id", "optional": false, "rest": false, "chained": false }],
+          page: { layouts: [0, 2], errors: [1, ,], leaf: 8 },
+          endpoint: null
+        },
+        {
           id: "/admin/reset",
           pattern: /^\/admin\/reset\/?$/,
           params: [],
-          page: { layouts: [0, 2], errors: [1, ,], leaf: 7 },
+          page: { layouts: [0, 2], errors: [1, ,], leaf: 10 },
           endpoint: null
         },
         {
           id: "/kontakt",
           pattern: /^\/kontakt\/?$/,
           params: [],
-          page: { layouts: [0], errors: [1], leaf: 8 },
+          page: { layouts: [0], errors: [1], leaf: 11 },
           endpoint: null
         }
       ],
-      prerendered_routes: /* @__PURE__ */ new Set(["/", "/akce", "/o-nas"]),
+      prerendered_routes: /* @__PURE__ */ new Set(["/", "/akce", "/galerie", "/o-nas"]),
       matchers: async () => {
         return {};
       },

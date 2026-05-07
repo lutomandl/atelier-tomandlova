@@ -2,12 +2,10 @@
   import Header from '../components/Header.svelte';
   import EventsSection from '../components/EventsSection.svelte';
   import OurWork from '../components/OurWork.svelte';
-  import { t } from '../utils/useTranslations';
+  import SEO from '../components/SEO.svelte';
 </script>
 
-<svelte:head>
-  <title>{$t.general.title}</title>
-</svelte:head>
+<SEO pageKey="home" />
 
 <Header />
 

@@ -3,6 +3,7 @@
   import Typography from '../../components/Typography.svelte';
   import { t } from '../../utils/useTranslations';
   import ContactForm from '../../components/ContactForm.svelte';
+  import SEO from '../../components/SEO.svelte';
 
   // Google Maps embed — links to the Ateliér Tomandlová business listing
   // (hours, phone, reviews, Navigovat). To refresh, open Google Maps →
@@ -15,8 +16,9 @@
     '!5m2!1scs!2scz';
 </script>
 
+<SEO pageKey="contact" />
+
 <svelte:head>
-  <title>{$t.menu.contact} · {$t.general.title}</title>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </svelte:head>
 

@@ -3,6 +3,9 @@
   import Typography from '../../components/Typography.svelte';
   import { t } from '../../utils/useTranslations';
   import OurWork from '../../components/OurWork.svelte';
+  import SEO from '../../components/SEO.svelte';
+  import StructuredData from '../../components/StructuredData.svelte';
+  import { buildAboutPersonSchemas } from '../../utils/structuredData';
   import atelier from '$lib/assets/atelier.webp';
   import holky from '$lib/assets/holky.webp';
 
@@ -10,11 +13,14 @@
   // design can own the typography of the opening/closing marks.
   $: lenkaQuote = $t.about.quoteLenka.replace(/^[„"“”]|[„"“”]$/g, '').trim();
   $: peopleQuote = $t.about.quotePeople.replace(/^[„"“”]|[„"“”]$/g, '').trim();
+
+  // Person schemas for the people on this page; localized via the translations
+  // dict so role labels match the active locale.
+  $: personSchemas = buildAboutPersonSchemas($t);
 </script>
 
-<svelte:head>
-  <title>{$t.menu.about} · {$t.general.title}</title>
-</svelte:head>
+<SEO pageKey="about" />
+<StructuredData data={personSchemas} />
 
 <div class="about">
   <Section>

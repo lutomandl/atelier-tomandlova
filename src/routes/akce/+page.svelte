@@ -3,12 +3,11 @@
   import EventsContainer from '../../components/EventsContainer.svelte';
   import Section from '../../components/Section.svelte';
   import Typography from '../../components/Typography.svelte';
+  import SEO from '../../components/SEO.svelte';
   import { t } from '../../utils/useTranslations';
 </script>
 
-<svelte:head>
-  <title>{$t.menu.events} · {$t.general.title}</title>
-</svelte:head>
+<SEO pageKey="events" />
 
 <Section>
   <BackgroundGraphic graphic="splash" top={5} left={70} width={22} paralaxSpeed={4} />
