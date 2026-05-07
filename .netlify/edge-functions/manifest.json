@@ -1,1 +1,1 @@
-{"functions":[{"function":"render","path":"/*","excludedPath":["/_app/immutable/*","/_app/version.json","/","/akce","/galerie","/o-nas","/favicon.png","/llms.txt","/manifest.json","/og-image.jpg","/robots.txt","/screenshot.png","/.netlify/*"]}],"version":1}
+{"functions":[{"function":"render","path":"/*","excludedPath":["/_app/immutable/*","/_app/version.json","/","/akce","/galerie","/o-nas","/sitemap.xml","/favicon.png","/llms.txt","/manifest.json","/og-image.jpg","/robots.txt","/screenshot.png","/.netlify/*"]}],"version":1}
