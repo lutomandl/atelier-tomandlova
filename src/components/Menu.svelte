@@ -8,7 +8,7 @@
 
 <nav class="menu">
   <a class="menu__home" href="/" aria-label={$t.menu.homeAria}>
-    <img class="menu__logo" alt="" src={logo} />
+    <img class="menu__logo" alt="" src={logo} width="350" height="203" decoding="async" />
   </a>
   <div class="menu__desktop">
     <MenuLinks />

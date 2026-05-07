@@ -31,6 +31,19 @@
   });
 </script>
 
+<!--
+  Admin pages aren't public. Belt-and-braces: `robots.txt` already
+  `Disallow: /admin/`, but if a crawler ever finds an admin URL through
+  a back-link it should still refuse to index it. Emitted from the root
+  layout (which renders for admin paths even though the admin sub-layout
+  has `ssr = false`).
+-->
+<svelte:head>
+  {#if isAdmin}
+    <meta name="robots" content="noindex,nofollow" />
+  {/if}
+</svelte:head>
+
 {#if !isAdmin}
   <StructuredData data={localBusinessSchema} />
 {/if}

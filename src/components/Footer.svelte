@@ -11,7 +11,7 @@
 <footer class="footer">
   <div class="footer__wrapper">
     <div class="footer__title">
-      <img alt="" src={logo} />
+      <img alt="" src={logo} width="350" height="203" loading="lazy" decoding="async" />
       <Typography variant="h2" element="p">{$t.general.title}</Typography>
       <Typography variant="subtitle" element="p">{$t.footer.subtitle}</Typography>
     </div>

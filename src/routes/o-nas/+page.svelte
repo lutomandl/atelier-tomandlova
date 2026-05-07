@@ -36,7 +36,15 @@
       </div>
 
       <figure class="about__intro__image">
-        <img src={atelier} alt={$t.about.atelierImageAlt} />
+        <img
+          src={atelier}
+          alt={$t.about.atelierImageAlt}
+          width="720"
+          height="482"
+          fetchpriority="high"
+          loading="eager"
+          decoding="async"
+        />
         <figcaption>{$t.about.atelierImageCaption}</figcaption>
       </figure>
     </div>
@@ -60,7 +68,14 @@
         </header>
 
         <figure class="about__people__image">
-          <img src={holky} alt={$t.about.peopleImageAlt} />
+          <img
+            src={holky}
+            alt={$t.about.peopleImageAlt}
+            width="1847"
+            height="701"
+            loading="lazy"
+            decoding="async"
+          />
           <figcaption>{$t.about.peopleImageCaption}</figcaption>
         </figure>
       </div>

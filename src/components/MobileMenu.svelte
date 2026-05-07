@@ -27,7 +27,14 @@
 <div class="mobileMenu__tab" class:menuOpened role="dialog" aria-modal="true" aria-hidden={!menuOpened}>
   <div class="mobileMenu__tab__header">
     <a href="/" on:click={toggleMenu} aria-label={$t.menu.home}>
-      <img class="mobileMenu__tab__logo" alt="" src={logo} />
+      <img
+        class="mobileMenu__tab__logo"
+        alt=""
+        src={logo}
+        width="350"
+        height="203"
+        decoding="async"
+      />
     </a>
     <button
       type="button"
