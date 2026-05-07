@@ -607,19 +607,19 @@ function unflatten(parsed, revivers) {
   );
   const hydrated = Array(values.length);
   let hydrating2 = null;
-  function hydrate3(index13, standalone = false) {
-    if (index13 === UNDEFINED) return void 0;
-    if (index13 === NAN) return NaN;
-    if (index13 === POSITIVE_INFINITY) return Infinity;
-    if (index13 === NEGATIVE_INFINITY) return -Infinity;
-    if (index13 === NEGATIVE_ZERO) return -0;
-    if (standalone || typeof index13 !== "number") {
+  function hydrate3(index14, standalone = false) {
+    if (index14 === UNDEFINED) return void 0;
+    if (index14 === NAN) return NaN;
+    if (index14 === POSITIVE_INFINITY) return Infinity;
+    if (index14 === NEGATIVE_INFINITY) return -Infinity;
+    if (index14 === NEGATIVE_ZERO) return -0;
+    if (standalone || typeof index14 !== "number") {
       throw new Error(`Invalid input`);
     }
-    if (index13 in hydrated) return hydrated[index13];
-    const value = values[index13];
+    if (index14 in hydrated) return hydrated[index14];
+    const value = values[index14];
     if (!value || typeof value !== "object") {
-      hydrated[index13] = value;
+      hydrated[index14] = value;
     } else if (Array.isArray(value)) {
       if (typeof value[0] === "string") {
         const type = value[0];
@@ -634,45 +634,45 @@ function unflatten(parsed, revivers) {
             throw new Error("Invalid circular reference");
           }
           hydrating2.add(i);
-          hydrated[index13] = reviver(hydrate3(i));
+          hydrated[index14] = reviver(hydrate3(i));
           hydrating2.delete(i);
-          return hydrated[index13];
+          return hydrated[index14];
         }
         switch (type) {
           case "Date":
-            hydrated[index13] = new Date(value[1]);
+            hydrated[index14] = new Date(value[1]);
             break;
           case "Set":
             const set2 = /* @__PURE__ */ new Set();
-            hydrated[index13] = set2;
+            hydrated[index14] = set2;
             for (let i = 1; i < value.length; i += 1) {
               set2.add(hydrate3(value[i]));
             }
             break;
           case "Map":
             const map = /* @__PURE__ */ new Map();
-            hydrated[index13] = map;
+            hydrated[index14] = map;
             for (let i = 1; i < value.length; i += 2) {
               map.set(hydrate3(value[i]), hydrate3(value[i + 1]));
             }
             break;
           case "RegExp":
-            hydrated[index13] = new RegExp(value[1], value[2]);
+            hydrated[index14] = new RegExp(value[1], value[2]);
             break;
           case "Object": {
             const wrapped_index = value[1];
             if (typeof values[wrapped_index] === "object" && values[wrapped_index][0] !== "BigInt") {
               throw new Error("Invalid input");
             }
-            hydrated[index13] = Object(hydrate3(wrapped_index));
+            hydrated[index14] = Object(hydrate3(wrapped_index));
             break;
           }
           case "BigInt":
-            hydrated[index13] = BigInt(value[1]);
+            hydrated[index14] = BigInt(value[1]);
             break;
           case "null":
             const obj = /* @__PURE__ */ Object.create(null);
-            hydrated[index13] = obj;
+            hydrated[index14] = obj;
             for (let i = 1; i < value.length; i += 2) {
               if (value[i] === "__proto__") {
                 throw new Error("Cannot parse an object with a `__proto__` property");
@@ -698,7 +698,7 @@ function unflatten(parsed, revivers) {
             }
             const TypedArrayConstructor = globalThis[type];
             const buffer2 = hydrate3(value[1]);
-            hydrated[index13] = value[2] !== void 0 ? new TypedArrayConstructor(buffer2, value[2], value[3]) : new TypedArrayConstructor(buffer2);
+            hydrated[index14] = value[2] !== void 0 ? new TypedArrayConstructor(buffer2, value[2], value[3]) : new TypedArrayConstructor(buffer2);
             break;
           }
           case "ArrayBuffer": {
@@ -707,7 +707,7 @@ function unflatten(parsed, revivers) {
               throw new Error("Invalid ArrayBuffer encoding");
             }
             const arraybuffer = decode64(base64);
-            hydrated[index13] = arraybuffer;
+            hydrated[index14] = arraybuffer;
             break;
           }
           case "Temporal.Duration":
@@ -719,17 +719,17 @@ function unflatten(parsed, revivers) {
           case "Temporal.PlainYearMonth":
           case "Temporal.ZonedDateTime": {
             const temporalName = type.slice(9);
-            hydrated[index13] = Temporal[temporalName].from(value[1]);
+            hydrated[index14] = Temporal[temporalName].from(value[1]);
             break;
           }
           case "URL": {
             const url = new URL(value[1]);
-            hydrated[index13] = url;
+            hydrated[index14] = url;
             break;
           }
           case "URLSearchParams": {
             const url = new URLSearchParams(value[1]);
-            hydrated[index13] = url;
+            hydrated[index14] = url;
             break;
           }
           default:
@@ -741,7 +741,7 @@ function unflatten(parsed, revivers) {
           throw new Error("Invalid input");
         }
         const array2 = new Array(len);
-        hydrated[index13] = array2;
+        hydrated[index14] = array2;
         for (let i = 2; i < value.length; i += 2) {
           const idx = value[i];
           if (!Number.isInteger(idx) || idx < 0 || idx >= len) {
@@ -751,7 +751,7 @@ function unflatten(parsed, revivers) {
         }
       } else {
         const array2 = new Array(value.length);
-        hydrated[index13] = array2;
+        hydrated[index14] = array2;
         for (let i = 0; i < value.length; i += 1) {
           const n = value[i];
           if (n === HOLE) continue;
@@ -760,7 +760,7 @@ function unflatten(parsed, revivers) {
       }
     } else {
       const object = {};
-      hydrated[index13] = object;
+      hydrated[index14] = object;
       for (const key2 of Object.keys(value)) {
         if (key2 === "__proto__") {
           throw new Error("Cannot parse an object with a `__proto__` property");
@@ -769,7 +769,7 @@ function unflatten(parsed, revivers) {
         object[key2] = hydrate3(n);
       }
     }
-    return hydrated[index13];
+    return hydrated[index14];
   }
   return hydrate3(0);
 }
@@ -802,13 +802,13 @@ function stringify(value, reducers) {
       /** @type {number} */
       indexes.get(thing)
     );
-    const index14 = p++;
-    indexes.set(thing, index14);
+    const index15 = p++;
+    indexes.set(thing, index15);
     for (const { key: key2, fn } of custom) {
       const value2 = fn(thing);
       if (value2) {
-        stringified[index14] = `["${key2}",${flatten(value2)}]`;
-        return index14;
+        stringified[index15] = `["${key2}",${flatten(value2)}]`;
+        return index15;
       }
     }
     if (typeof thing === "function") {
@@ -978,11 +978,11 @@ function stringify(value, reducers) {
           }
       }
     }
-    stringified[index14] = str;
-    return index14;
+    stringified[index15] = str;
+    return index15;
   }
-  const index13 = flatten(value);
-  if (index13 < 0) return `${index13}`;
+  const index14 = flatten(value);
+  if (index14 < 0) return `${index14}`;
   return `[${stringified.join(",")}]`;
 }
 function stringify_primitive2(thing) {
@@ -1418,17 +1418,17 @@ function push(props, runes = false, fn) {
     } : null
   };
 }
-function pop(component13) {
+function pop(component14) {
   var context2 = component_context;
   var effects = context2.e;
   if (effects !== null) {
     context2.e = null;
     for (var fn of effects) create_user_effect(fn);
   }
-  if (component13 !== void 0) context2.x = component13;
+  if (component14 !== void 0) context2.x = component14;
   context2.i = true;
   component_context = context2.p;
-  return component13 ?? {};
+  return component14 ?? {};
 }
 function is_runes() {
   return !legacy_mode_flag || component_context !== null && component_context.l === null;
@@ -2362,12 +2362,12 @@ function update_reaction(reaction) {
 function remove_reaction(signal, dependency) {
   let reactions = dependency.reactions;
   if (reactions !== null) {
-    var index13 = index_of.call(reactions, signal);
-    if (index13 !== -1) {
+    var index14 = index_of.call(reactions, signal);
+    if (index14 !== -1) {
       var new_length = reactions.length - 1;
       if (new_length === 0) reactions = dependency.reactions = null;
       else {
-        reactions[index13] = reactions[new_length];
+        reactions[index14] = reactions[new_length];
         reactions.pop();
       }
     }
@@ -2521,9 +2521,9 @@ function element(renderer, tag, attributes_fn = noop, children_fn = noop) {
   }
   renderer.push("<!---->");
 }
-function render(component13, options2 = {}) {
+function render(component14, options2 = {}) {
   if (options2.csp?.hash && options2.csp.nonce) invalid_csp();
-  return Renderer.render(component13, options2);
+  return Renderer.render(component14, options2);
 }
 function head(hash2, renderer, fn) {
   renderer.head((renderer2) => {
@@ -2565,6 +2565,10 @@ function stringify2(value) {
 function attr_class(value, hash2, directives) {
   var result = to_class(value, hash2, directives);
   return result ? ` class="${escape_html(result, true)}"` : "";
+}
+function attr_style(value, directives) {
+  var result = to_style(value, directives);
+  return result ? ` style="${escape_html(result, true)}"` : "";
 }
 function store_get(store_values, store_name, store) {
   if (store_name in store_values && store_values[store_name][0] === store) return store_values[store_name][2];
@@ -3905,28 +3909,28 @@ var init_dev = __esm({
       * @param {{ props?: Omit<Props, '$$slots' | '$$events'>; context?: Map<any, any>; idPrefix?: string; csp?: Csp }} [options]
       * @returns {RenderOutput}
       */
-      static render(component13, options2 = {}) {
+      static render(component14, options2 = {}) {
         let sync;
         let async;
         const result = {};
         Object.defineProperties(result, {
           html: { get: () => {
             var _a11;
-            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component13, options2))).body;
+            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component14, options2))).body;
           } },
           head: { get: () => {
             var _a11;
-            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component13, options2))).head;
+            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component14, options2))).head;
           } },
           body: { get: () => {
             var _a11;
-            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component13, options2))).body;
+            return (sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component14, options2))).body;
           } },
           hashes: { value: { script: "" } },
           then: { value: (onfulfilled, onrejected) => {
             var _a11;
             if (!async_mode_flag) {
-              const result2 = sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component13, options2));
+              const result2 = sync ?? (sync = __privateMethod(_a11 = _a3, _Renderer_static, render_fn2).call(_a11, component14, options2));
               const user_result = onfulfilled({
                 head: result2.head,
                 body: result2.body,
@@ -3937,7 +3941,7 @@ var init_dev = __esm({
             }
             async ?? (async = init_render_context().then(() => with_render_context(() => {
               var _a12;
-              return __privateMethod(_a12 = _a3, _Renderer_static, render_async_fn).call(_a12, component13, options2);
+              return __privateMethod(_a12 = _a3, _Renderer_static, render_async_fn).call(_a12, component14, options2);
             })));
             return async.then((result2) => {
               Object.defineProperty(result2, "html", { get: () => {
@@ -3953,7 +3957,7 @@ var init_dev = __esm({
       return `<!--[?${JSON.stringify(error2).replace(/>/g, "\\u003e").replace(/</g, "\\u003c")}-->`;
     }, _Renderer_instances = new WeakSet(), collect_on_destroy_fn = function* () {
       var _a11;
-      for (const component13 of __privateMethod(this, _Renderer_instances, traverse_components_fn).call(this)) yield* __privateMethod(_a11 = component13, _Renderer_instances, collect_ondestroy_fn).call(_a11);
+      for (const component14 of __privateMethod(this, _Renderer_instances, traverse_components_fn).call(this)) yield* __privateMethod(_a11 = component14, _Renderer_instances, collect_ondestroy_fn).call(_a11);
     }, traverse_components_fn = function* () {
       var _a11;
       for (const child of __privateGet(this, _out)) if (typeof child !== "string") yield* __privateMethod(_a11 = child, _Renderer_instances, traverse_components_fn).call(_a11);
@@ -3962,22 +3966,22 @@ var init_dev = __esm({
       var _a11;
       if (__privateGet(this, _on_destroy)) for (const fn of __privateGet(this, _on_destroy)) yield fn;
       for (const child of __privateGet(this, _out)) if (child instanceof _a3 && !__privateGet(child, _is_component_body)) yield* __privateMethod(_a11 = child, _Renderer_instances, collect_ondestroy_fn).call(_a11);
-    }, render_fn2 = function(component13, options2) {
+    }, render_fn2 = function(component14, options2) {
       var _a11, _b, _c;
       var previous_context = ssr_context;
       try {
-        const renderer = __privateMethod(_a11 = _a3, _Renderer_static, open_render_fn).call(_a11, "sync", component13, options2);
+        const renderer = __privateMethod(_a11 = _a3, _Renderer_static, open_render_fn).call(_a11, "sync", component14, options2);
         const content = __privateMethod(_b = renderer, _Renderer_instances, collect_content_fn).call(_b);
         return __privateMethod(_c = _a3, _Renderer_static, close_render_fn).call(_c, content, renderer);
       } finally {
         abort();
         set_ssr_context(previous_context);
       }
-    }, render_async_fn = async function(component13, options2) {
+    }, render_async_fn = async function(component14, options2) {
       var _a11, _b, _c, _d;
       const previous_context = ssr_context;
       try {
-        const renderer = __privateMethod(_a11 = _a3, _Renderer_static, open_render_fn).call(_a11, "async", component13, options2);
+        const renderer = __privateMethod(_a11 = _a3, _Renderer_static, open_render_fn).call(_a11, "async", component14, options2);
         const content = await __privateMethod(_b = renderer, _Renderer_instances, collect_content_async_fn).call(_b);
         const hydratables = await __privateMethod(_c = renderer, _Renderer_instances, collect_hydratables_fn).call(_c);
         if (hydratables !== null) content.head = hydratables + content.head;
@@ -4033,7 +4037,7 @@ var init_dev = __esm({
       for (const [_, key2] of ctx.unresolved_promises) unresolved_hydratable(key2, ctx.lookup.get(key2)?.stack ?? "<missing stack trace>");
       for (const comparison of ctx.comparisons) await comparison;
       return await __privateMethod(this, _Renderer_instances, hydratable_block_fn).call(this, ctx);
-    }, open_render_fn = function(mode, component13, options2) {
+    }, open_render_fn = function(mode, component14, options2) {
       if (options2.idPrefix?.includes("--")) invalid_id_prefix();
       var previous_context = ssr_context;
       try {
@@ -4044,7 +4048,7 @@ var init_dev = __esm({
           r: renderer
         });
         renderer.push(BLOCK_OPEN);
-        component13(renderer, options2.props ?? {});
+        component14(renderer, options2.props ?? {});
         renderer.push(BLOCK_CLOSE);
         return renderer;
       } finally {
@@ -4982,10 +4986,10 @@ function assign_nodes(start, end) {
     t: null
   };
 }
-function mount2(component13, options2) {
-  return _mount(component13, options2);
+function mount2(component14, options2) {
+  return _mount(component14, options2);
 }
-function hydrate2(component13, options2) {
+function hydrate2(component14, options2) {
   init_operations();
   options2.intro = options2.intro ?? false;
   const target = options2.target;
@@ -4997,7 +5001,7 @@ function hydrate2(component13, options2) {
     if (!anchor) throw HYDRATION_ERROR;
     set_hydrating(true);
     set_hydrate_node(anchor);
-    const instance = _mount(component13, {
+    const instance = _mount(component14, {
       ...options2,
       anchor
     });
@@ -5010,7 +5014,7 @@ function hydrate2(component13, options2) {
     init_operations();
     clear_text_content(target);
     set_hydrating(false);
-    return mount2(component13, options2);
+    return mount2(component14, options2);
   } finally {
     set_hydrating(was_hydrating);
     set_hydrate_node(previous_hydrate_node);
@@ -5018,7 +5022,7 @@ function hydrate2(component13, options2) {
 }
 function _mount(Component, { target, anchor, props = {}, events, context: context2, intro = true, transformError }) {
   init_operations();
-  var component13 = void 0;
+  var component14 = void 0;
   var unmount3 = component_root(() => {
     var anchor_node = anchor ?? target.appendChild(create_text());
     boundary(anchor_node, { pending: () => {
@@ -5029,7 +5033,7 @@ function _mount(Component, { target, anchor, props = {}, events, context: contex
       if (events)
         props.$$events = events;
       if (hydrating) assign_nodes(anchor_node2, null);
-      component13 = Component(anchor_node2, props) || {};
+      component14 = Component(anchor_node2, props) || {};
       if (hydrating) {
         active_effect.nodes.end = hydrate_node;
         if (hydrate_node === null || hydrate_node.nodeType !== 8 || hydrate_node.data !== "]") {
@@ -5076,32 +5080,32 @@ function _mount(Component, { target, anchor, props = {}, events, context: contex
       if (anchor_node !== anchor) anchor_node.parentNode?.removeChild(anchor_node);
     };
   });
-  mounted_components.set(component13, unmount3);
-  return component13;
+  mounted_components.set(component14, unmount3);
+  return component14;
 }
-function unmount2(component13, options2) {
-  const fn = mounted_components.get(component13);
+function unmount2(component14, options2) {
+  const fn = mounted_components.get(component14);
   if (fn) {
-    mounted_components.delete(component13);
+    mounted_components.delete(component14);
     return fn(options2);
   }
   return Promise.resolve();
 }
-function asClassComponent$1(component13) {
+function asClassComponent$1(component14) {
   return class extends Svelte4Component {
     /** @param {any} options */
     constructor(options2) {
       super({
-        component: component13,
+        component: component14,
         ...options2
       });
     }
   };
 }
-function asClassComponent(component13) {
-  const component_constructor = asClassComponent$1(component13);
+function asClassComponent(component14) {
+  const component_constructor = asClassComponent$1(component14);
   const _render = (props, { context: context2, csp, transformError } = {}) => {
-    const result = render(component13, {
+    const result = render(component14, {
       props,
       context: context2,
       csp,
@@ -5449,7 +5453,7 @@ var init_internal2 = __esm({
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
       },
-      version_hash: "16etdui"
+      version_hash: "1muwiuw"
     };
   }
 });
@@ -5474,20 +5478,20 @@ var require_cookie = __commonJS({
       var len = str.length;
       if (len < 2) return obj;
       var dec = opt && opt.decode || decode;
-      var index13 = 0;
+      var index14 = 0;
       var eqIdx = 0;
       var endIdx = 0;
       do {
-        eqIdx = str.indexOf("=", index13);
+        eqIdx = str.indexOf("=", index14);
         if (eqIdx === -1) break;
-        endIdx = str.indexOf(";", index13);
+        endIdx = str.indexOf(";", index14);
         if (endIdx === -1) {
           endIdx = len;
         } else if (eqIdx > endIdx) {
-          index13 = str.lastIndexOf(";", eqIdx - 1) + 1;
+          index14 = str.lastIndexOf(";", eqIdx - 1) + 1;
           continue;
         }
-        var keyStartIdx = startIndex(str, index13, eqIdx);
+        var keyStartIdx = startIndex(str, index14, eqIdx);
         var keyEndIdx = endIndex(str, eqIdx, keyStartIdx);
         var key2 = str.slice(keyStartIdx, keyEndIdx);
         if (!__hasOwnProperty.call(obj, key2)) {
@@ -5500,21 +5504,21 @@ var require_cookie = __commonJS({
           var val = str.slice(valStartIdx, valEndIdx);
           obj[key2] = tryDecode(val, dec);
         }
-        index13 = endIdx + 1;
-      } while (index13 < len);
+        index14 = endIdx + 1;
+      } while (index14 < len);
       return obj;
     }
-    function startIndex(str, index13, max) {
+    function startIndex(str, index14, max) {
       do {
-        var code = str.charCodeAt(index13);
-        if (code !== 32 && code !== 9) return index13;
-      } while (++index13 < max);
+        var code = str.charCodeAt(index14);
+        if (code !== 32 && code !== 9) return index14;
+      } while (++index14 < max);
       return max;
     }
-    function endIndex(str, index13, min) {
-      while (index13 > min) {
-        var code = str.charCodeAt(--index13);
-        if (code !== 32 && code !== 9) return index13 + 1;
+    function endIndex(str, index14, min) {
+      while (index14 > min) {
+        var code = str.charCodeAt(--index14);
+        if (code !== 32 && code !== 9) return index14 + 1;
       }
       return min;
     }
@@ -6317,497 +6321,6 @@ var init_routes = __esm({
     };
     OG_LOCALE = "cs_CZ";
     HTML_LANG = "cs-CZ";
-  }
-});
-
-// .svelte-kit/output/server/chunks/structuredData.js
-function StructuredData($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    let serialized;
-    let data = $$props["data"];
-    const NEEDLE = String.fromCharCode(60);
-    $: serialized = JSON.stringify(data).split(NEEDLE).join("\\u003c");
-    head("10qhikd", $$renderer2, ($$renderer3) => {
-      $$renderer3.push(`${html(`<script type="application/ld+json">${serialized}<\/script>`)}`);
-    });
-    bind_props($$props, { data });
-  });
-}
-function openingHoursSpec() {
-  return HOURS.flatMap(({ day, intervals }) => intervals.map(([opens, closes]) => ({
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: `https://schema.org/${day}`,
-    opens,
-    closes
-  })));
-}
-function buildLocalBusinessSchema(dict) {
-  return {
-    "@context": "https://schema.org",
-    "@type": ["ClothingStore", "LocalBusiness"],
-    "@id": ATELIER_ID,
-    name: "Ateli\xE9r Tomandlov\xE1",
-    description: dict.seo.home.description,
-    url: SITE_URL + routes.home,
-    image: SITE_URL + "/og-image.jpg",
-    logo: SITE_URL + "/favicon.png",
-    email: "info@ateliertomandlova.cz",
-    address: ADDRESS,
-    geo: GEO,
-    openingHoursSpecification: openingHoursSpec(),
-    inLanguage: HTML_LANG,
-    knowsLanguage: [
-      "cs",
-      "en",
-      "de"
-    ],
-    priceRange: "\u20AC\u20AC\u20AC",
-    founder: {
-      "@type": "Person",
-      name: "Lenka Tomandlov\xE1"
-    },
-    areaServed: {
-      "@type": "AdministrativeArea",
-      name: "Czech Republic"
-    }
-  };
-}
-var ATELIER_ID, ADDRESS, GEO, HOURS;
-var init_structuredData = __esm({
-  ".svelte-kit/output/server/chunks/structuredData.js"() {
-    init_dev();
-    init_routes();
-    ATELIER_ID = `${SITE_URL}/#atelier`;
-    ADDRESS = {
-      "@type": "PostalAddress",
-      streetAddress: "\u017Didovsk\xE1 412/9",
-      addressLocality: "Cheb",
-      postalCode: "350 02",
-      addressRegion: "Karlovarsk\xFD kraj",
-      addressCountry: "CZ"
-    };
-    GEO = {
-      "@type": "GeoCoordinates",
-      latitude: 50.0790883,
-      longitude: 12.3682393
-    };
-    HOURS = [
-      {
-        day: "Monday",
-        intervals: [["11:00", "13:00"], ["14:00", "17:00"]]
-      },
-      {
-        day: "Tuesday",
-        intervals: [["10:00", "12:00"], ["14:00", "17:00"]]
-      },
-      {
-        day: "Wednesday",
-        intervals: [["10:00", "12:00"], ["14:00", "16:00"]]
-      },
-      {
-        day: "Thursday",
-        intervals: [["10:00", "12:00"], ["14:00", "17:00"]]
-      },
-      {
-        day: "Friday",
-        intervals: [["11:00", "12:00"], ["14:00", "16:00"]]
-      }
-    ];
-  }
-});
-
-// .svelte-kit/output/server/chunks/navigation.js
-var init_navigation = __esm({
-  ".svelte-kit/output/server/chunks/navigation.js"() {
-    init_client();
-  }
-});
-
-// .svelte-kit/output/server/entries/pages/_layout.svelte.js
-var layout_svelte_exports = {};
-__export(layout_svelte_exports, {
-  default: () => _layout
-});
-function MenuLinks($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    var $$store_subs;
-    let pathname;
-    let callback = fallback($$props["callback"], void 0);
-    $: pathname = store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).url.pathname;
-    $$renderer2.push(`<ul class="menuLinks svelte-uhi6x0"><li class="menuLinks__link svelte-uhi6x0"><a${attr("aria-current", pathname === "/o-nas" ? "page" : void 0)} href="/o-nas" class="svelte-uhi6x0">`);
-    Typography($$renderer2, {
-      variant: "nav",
-      element: "span",
-      children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.about)}`);
-      },
-      $$slots: { default: true }
-    });
-    $$renderer2.push(`<!----></a></li> <li class="menuLinks__link svelte-uhi6x0"><a${attr("aria-current", pathname === "/akce" ? "page" : void 0)} href="/akce" class="svelte-uhi6x0">`);
-    Typography($$renderer2, {
-      variant: "nav",
-      element: "span",
-      children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.events)}`);
-      },
-      $$slots: { default: true }
-    });
-    $$renderer2.push(`<!----></a></li> <li class="menuLinks__link svelte-uhi6x0"><a${attr("aria-current", pathname === "/galerie" ? "page" : void 0)} href="/galerie" class="svelte-uhi6x0">`);
-    Typography($$renderer2, {
-      variant: "nav",
-      element: "span",
-      children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.gallery)}`);
-      },
-      $$slots: { default: true }
-    });
-    $$renderer2.push(`<!----></a></li> <li class="menuLinks__link svelte-uhi6x0"><a${attr("aria-current", pathname === "/kontakt" ? "page" : void 0)} href="/kontakt" class="svelte-uhi6x0">`);
-    Typography($$renderer2, {
-      variant: "nav",
-      element: "span",
-      children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.contact)}`);
-      },
-      $$slots: { default: true }
-    });
-    $$renderer2.push(`<!----></a></li></ul>`);
-    if ($$store_subs) unsubscribe_stores($$store_subs);
-    bind_props($$props, { callback });
-  });
-}
-function LanguageSwitcher($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    var $$store_subs;
-    let variant = fallback($$props["variant"], "desktop");
-    $$renderer2.push(`<div${attr_class(`languageSwitcher languageSwitcher--${stringify2(variant)}`, "svelte-1njmqi3")} role="group"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.languageLabel)}><!--[-->`);
-    const each_array = ensure_array_like(availableLanguages);
-    for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
-      let { code, label } = each_array[$$index];
-      $$renderer2.push(`<button type="button"${attr_class("languageSwitcher__btn svelte-1njmqi3", void 0, { "active": store_get($$store_subs ?? ($$store_subs = {}), "$language", language) === code })}${attr("aria-pressed", store_get($$store_subs ?? ($$store_subs = {}), "$language", language) === code)}>${escape_html(label)}</button>`);
-    }
-    $$renderer2.push(`<!--]--></div>`);
-    if ($$store_subs) unsubscribe_stores($$store_subs);
-    bind_props($$props, { variant });
-  });
-}
-function MobileMenu($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    var $$store_subs;
-    let menuOpened = false;
-    function toggleMenu() {
-      menuOpened = !menuOpened;
-    }
-    $$renderer2.push(`<button type="button"${attr_class("mobileMenu__button svelte-2pdber", void 0, { "menuOpened": menuOpened })}${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.openMenu)}${attr("aria-expanded", menuOpened)}><img${attr("src", menu_default)} alt="" class="svelte-2pdber"/></button> <div${attr_class("mobileMenu__tab svelte-2pdber", void 0, { "menuOpened": menuOpened })} role="dialog" aria-modal="true"${attr("aria-hidden", !menuOpened)}><div class="mobileMenu__tab__header svelte-2pdber"><a href="/"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.home)}><img class="mobileMenu__tab__logo svelte-2pdber" alt=""${attr("src", logo_default)}/></a> <button type="button" class="mobileMenu__tab__x svelte-2pdber"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.closeMenu)}><img${attr("src", x_default)} alt="" class="svelte-2pdber"/></button></div> <nav class="mobileMenu__tab__nav svelte-2pdber">`);
-    MenuLinks($$renderer2, { callback: toggleMenu });
-    $$renderer2.push(`<!----></nav> <div class="mobileMenu__tab__footer svelte-2pdber">`);
-    LanguageSwitcher($$renderer2, { variant: "mobile" });
-    $$renderer2.push(`<!----> <span>${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.street)}, ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.city)}</span> <a${attr("href", `mailto:${store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email}`)} class="svelte-2pdber">${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email)}</a></div></div>`);
-    if ($$store_subs) unsubscribe_stores($$store_subs);
-  });
-}
-function Menu($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    var $$store_subs;
-    $$renderer2.push(`<nav class="menu svelte-1qo109d"><a class="menu__home" href="/"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.homeAria)}><img class="menu__logo svelte-1qo109d" alt=""${attr("src", logo_default)}/></a> <div class="menu__desktop svelte-1qo109d">`);
-    MenuLinks($$renderer2, {});
-    $$renderer2.push(`<!----> `);
-    LanguageSwitcher($$renderer2, {});
-    $$renderer2.push(`<!----></div> <div class="menu__mobile svelte-1qo109d">`);
-    MobileMenu($$renderer2, {});
-    $$renderer2.push(`<!----></div></nav>`);
-    if ($$store_subs) unsubscribe_stores($$store_subs);
-  });
-}
-function OpeningHours($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    var $$store_subs;
-    let lines;
-    $: lines = [
-      {
-        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.monday,
-        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.mondayTime
-      },
-      {
-        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.tuesday,
-        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.tuesdayTime
-      },
-      {
-        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.wednesday,
-        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.wednesdayTime
-      },
-      {
-        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.thursday,
-        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.thursdayTime
-      },
-      {
-        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.friday,
-        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.fridayTime
-      }
-    ];
-    $$renderer2.push(`<div class="openingHours svelte-1qpxkpp"><!--[-->`);
-    const each_array = ensure_array_like(lines);
-    for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
-      let { day, time } = each_array[$$index];
-      $$renderer2.push(`<div class="openingHours__line svelte-1qpxkpp">`);
-      Typography($$renderer2, {
-        variant: "subtitle",
-        element: "span",
-        children: ($$renderer3) => {
-          $$renderer3.push(`<!---->${escape_html(day)}`);
-        },
-        $$slots: { default: true }
-      });
-      $$renderer2.push(`<!----> `);
-      Typography($$renderer2, {
-        variant: "subtitle",
-        element: "span",
-        children: ($$renderer3) => {
-          $$renderer3.push(`<!---->${escape_html(time)}`);
-        },
-        $$slots: { default: true }
-      });
-      $$renderer2.push(`<!----></div>`);
-    }
-    $$renderer2.push(`<!--]--> `);
-    Typography($$renderer2, {
-      variant: "subtitle",
-      element: "p",
-      children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.openingHoursNote)}`);
-      },
-      $$slots: { default: true }
-    });
-    $$renderer2.push(`<!----></div>`);
-    if ($$store_subs) unsubscribe_stores($$store_subs);
-  });
-}
-function Footer($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    var $$store_subs;
-    const year = (/* @__PURE__ */ new Date()).getFullYear();
-    $$renderer2.push(`<footer class="footer svelte-1sr6y3t"><div class="footer__wrapper svelte-1sr6y3t"><div class="footer__title svelte-1sr6y3t"><img alt=""${attr("src", logo_default)} class="svelte-1sr6y3t"/> `);
-    Typography($$renderer2, {
-      variant: "h2",
-      element: "p",
-      children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).general.title)}`);
-      },
-      $$slots: { default: true }
-    });
-    $$renderer2.push(`<!----> `);
-    Typography($$renderer2, {
-      variant: "subtitle",
-      element: "p",
-      children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).footer.subtitle)}`);
-      },
-      $$slots: { default: true }
-    });
-    $$renderer2.push(`<!----></div> <div class="footer__info svelte-1sr6y3t"><div class="footer__info__address svelte-1sr6y3t">`);
-    Typography($$renderer2, {
-      variant: "subtitle",
-      children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.street)}`);
-      },
-      $$slots: { default: true }
-    });
-    $$renderer2.push(`<!----> `);
-    Typography($$renderer2, {
-      variant: "subtitle",
-      children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.city)}`);
-      },
-      $$slots: { default: true }
-    });
-    $$renderer2.push(`<!----></div> <div class="footer__info__contact svelte-1sr6y3t"><a${attr("href", `mailto:${store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email}`)} class="svelte-1sr6y3t">`);
-    Typography($$renderer2, {
-      variant: "subtitle",
-      children: ($$renderer3) => {
-        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email)}`);
-      },
-      $$slots: { default: true }
-    });
-    $$renderer2.push(`<!----></a></div> `);
-    OpeningHours($$renderer2, {});
-    $$renderer2.push(`<!----> <div class="footer__contactButton svelte-1sr6y3t">`);
-    Button($$renderer2, {
-      bg: "dark",
-      href: "/kontakt",
-      text: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.contactUs
-    });
-    $$renderer2.push(`<!----></div></div> <div class="footer__bottom svelte-1sr6y3t"><span>\xA9 ${escape_html(year)} \xB7 ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).general.title)}</span> <span>${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).footer.addressLine)}</span></div></div></footer>`);
-    if ($$store_subs) unsubscribe_stores($$store_subs);
-  });
-}
-function _layout($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    var $$store_subs;
-    let isAdmin2, localBusinessSchema;
-    const hideNav = !!store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).error;
-    onNavigate((navigation) => {
-      if (typeof document === "undefined" || !("startViewTransition" in document)) return;
-      return new Promise((resolve2) => {
-        document.startViewTransition(async () => {
-          resolve2();
-          await navigation.complete;
-        });
-      });
-    });
-    $: isAdmin2 = store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).url.pathname.startsWith("/admin");
-    $: localBusinessSchema = buildLocalBusinessSchema(store_get($$store_subs ?? ($$store_subs = {}), "$t", t));
-    if (!isAdmin2) {
-      $$renderer2.push("<!--[0-->");
-      StructuredData($$renderer2, { data: localBusinessSchema });
-    } else $$renderer2.push("<!--[-1-->");
-    $$renderer2.push(`<!--]--> `);
-    if (!hideNav) {
-      $$renderer2.push("<!--[0-->");
-      Menu($$renderer2, {});
-    } else $$renderer2.push("<!--[-1-->");
-    $$renderer2.push(`<!--]--> <main><!--[-->`);
-    slot($$renderer2, $$props, "default", {}, null);
-    $$renderer2.push(`<!--]--></main> `);
-    if (!hideNav) {
-      $$renderer2.push("<!--[0-->");
-      Footer($$renderer2, {});
-    } else $$renderer2.push("<!--[-1-->");
-    $$renderer2.push(`<!--]-->`);
-    if ($$store_subs) unsubscribe_stores($$store_subs);
-  });
-}
-var logo_default, menu_default;
-var init_layout_svelte = __esm({
-  ".svelte-kit/output/server/entries/pages/_layout.svelte.js"() {
-    init_dev();
-    init_client();
-    init_stores();
-    init_Typography();
-    init_useTranslations();
-    init_x();
-    init_Button();
-    init_structuredData();
-    init_navigation();
-    logo_default = "/_app/immutable/assets/logo.CSzyB7Xy.webp";
-    menu_default = "data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23262626'%20stroke-width='1'%20stroke-linecap='round'%20stroke-linejoin='round'%20class='feather%20feather-menu'%3e%3cline%20x1='3'%20y1='12'%20x2='21'%20y2='12'%3e%3c/line%3e%3cline%20x1='3'%20y1='6'%20x2='21'%20y2='6'%3e%3c/line%3e%3cline%20x1='3'%20y1='18'%20x2='21'%20y2='18'%3e%3c/line%3e%3c/svg%3e";
-  }
-});
-
-// .svelte-kit/output/server/nodes/0.js
-var __exports = {};
-__export(__exports, {
-  component: () => component,
-  fonts: () => fonts,
-  imports: () => imports,
-  index: () => index,
-  stylesheets: () => stylesheets,
-  universal: () => layout_ts_exports,
-  universal_id: () => universal_id
-});
-var index, component_cache, component, universal_id, imports, stylesheets, fonts;
-var init__ = __esm({
-  ".svelte-kit/output/server/nodes/0.js"() {
-    init_layout_ts();
-    index = 0;
-    component = async () => component_cache ?? (component_cache = (await Promise.resolve().then(() => (init_layout_svelte(), layout_svelte_exports))).default);
-    universal_id = "src/routes/+layout.ts";
-    imports = ["_app/immutable/nodes/0.DqwTlwV-.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/mLi7bn2o.js", "_app/immutable/chunks/CGfHbuzQ.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/Y3qPMLCW.js", "_app/immutable/chunks/Q3Qn-Idf.js", "_app/immutable/chunks/BQNHSFwo.js", "_app/immutable/chunks/Cuf-lMyo.js"];
-    stylesheets = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/0.tI8X5CtQ.css"];
-    fonts = ["_app/immutable/assets/Ogg-Bold.BpT5MOp0.ttf", "_app/immutable/assets/Ogg-Bold.BHYZ1nQZ.woff", "_app/immutable/assets/Ogg-Light.CJx7NBpI.ttf", "_app/immutable/assets/Ogg-Light.BmIZt__l.woff"];
-  }
-});
-
-// .svelte-kit/output/server/chunks/Section.js
-function Section($$renderer, $$props) {
-  let bg = fallback($$props["bg"], "dark");
-  $$renderer.push(`<section${attr_class(`section ${stringify2(bg === "light" ? "section--light" : "")}`, "svelte-1009h7f")}><!--[-->`);
-  slot($$renderer, $$props, "default", {}, null);
-  $$renderer.push(`<!--]--></section>`);
-  bind_props($$props, { bg });
-}
-var init_Section = __esm({
-  ".svelte-kit/output/server/chunks/Section.js"() {
-    init_dev();
-  }
-});
-
-// .svelte-kit/output/server/entries/pages/_error.svelte.js
-var error_svelte_exports = {};
-__export(error_svelte_exports, {
-  default: () => _error
-});
-function _error($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    var $$store_subs;
-    const dev = true;
-    const url = void 0;
-    head("1j96wlh", $$renderer2, ($$renderer3) => {
-      $$renderer3.title(($$renderer4) => {
-        $$renderer4.push(`<title>${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).error.pageTitle)}</title>`);
-      });
-    });
-    Section($$renderer2, {
-      children: ($$renderer3) => {
-        $$renderer3.push(`<div class="error svelte-1j96wlh">`);
-        Typography($$renderer3, {
-          variant: "h1",
-          children: ($$renderer4) => {
-            $$renderer4.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).error.somethingWentWrong)}`);
-          },
-          $$slots: { default: true }
-        });
-        $$renderer3.push(`<!----> `);
-        Typography($$renderer3, {
-          variant: "h2",
-          children: ($$renderer4) => {
-            $$renderer4.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).status)} - ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$page", page2)?.error?.message)}`);
-          },
-          $$slots: { default: true }
-        });
-        $$renderer3.push(`<!----> `);
-        Button($$renderer3, {
-          href: url,
-          text: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).error.goBack
-        });
-        $$renderer3.push(`<!----> `);
-        if (dev) {
-          $$renderer3.push("<!--[0-->");
-          $$renderer3.push(`<pre class="error__pre svelte-1j96wlh">${escape_html(JSON.stringify(store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).error, null, 2))}</pre>`);
-        } else $$renderer3.push("<!--[-1-->");
-        $$renderer3.push(`<!--]--></div>`);
-      },
-      $$slots: { default: true }
-    });
-    if ($$store_subs) unsubscribe_stores($$store_subs);
-  });
-}
-var init_error_svelte = __esm({
-  ".svelte-kit/output/server/entries/pages/_error.svelte.js"() {
-    init_dev();
-    init_stores();
-    init_Typography();
-    init_useTranslations();
-    init_Button();
-    init_Section();
-  }
-});
-
-// .svelte-kit/output/server/nodes/1.js
-var __exports2 = {};
-__export(__exports2, {
-  component: () => component2,
-  fonts: () => fonts2,
-  imports: () => imports2,
-  index: () => index2,
-  stylesheets: () => stylesheets2
-});
-var index2, component_cache2, component2, imports2, stylesheets2, fonts2;
-var init__2 = __esm({
-  ".svelte-kit/output/server/nodes/1.js"() {
-    index2 = 1;
-    component2 = async () => component_cache2 ?? (component_cache2 = (await Promise.resolve().then(() => (init_error_svelte(), error_svelte_exports))).default);
-    imports2 = ["_app/immutable/nodes/1.CPO_jFpe.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/CGfHbuzQ.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/DEXS9FLr.js", "_app/immutable/chunks/Cuf-lMyo.js"];
-    stylesheets2 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/1.ClQFIecB.css"];
-    fonts2 = [];
   }
 });
 
@@ -27041,6 +26554,522 @@ var init_supabaseClient = __esm({
   }
 });
 
+// .svelte-kit/output/server/chunks/structuredData.js
+function StructuredData($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    let serialized;
+    let data = $$props["data"];
+    const NEEDLE = String.fromCharCode(60);
+    $: serialized = JSON.stringify(data).split(NEEDLE).join("\\u003c");
+    head("10qhikd", $$renderer2, ($$renderer3) => {
+      $$renderer3.push(`${html(`<script type="application/ld+json">${serialized}<\/script>`)}`);
+    });
+    bind_props($$props, { data });
+  });
+}
+function openingHoursSpec() {
+  return HOURS.flatMap(({ day, intervals }) => intervals.map(([opens, closes]) => ({
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: `https://schema.org/${day}`,
+    opens,
+    closes
+  })));
+}
+function buildLocalBusinessSchema(dict) {
+  return {
+    "@context": "https://schema.org",
+    "@type": ["ClothingStore", "LocalBusiness"],
+    "@id": ATELIER_ID,
+    name: "Ateli\xE9r Tomandlov\xE1",
+    description: dict.seo.home.description,
+    url: SITE_URL + routes.home,
+    image: SITE_URL + "/og-image.jpg",
+    logo: SITE_URL + "/favicon.png",
+    email: "info@ateliertomandlova.cz",
+    address: ADDRESS,
+    geo: GEO,
+    openingHoursSpecification: openingHoursSpec(),
+    inLanguage: HTML_LANG,
+    knowsLanguage: [
+      "cs",
+      "en",
+      "de"
+    ],
+    priceRange: "\u20AC\u20AC\u20AC",
+    founder: {
+      "@type": "Person",
+      name: "Lenka Tomandlov\xE1"
+    },
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "Czech Republic"
+    }
+  };
+}
+function buildEventSchema(event) {
+  const a = event.attributes;
+  if (!a.Title || !a.From) return null;
+  const startDate = a.StartingTime ? `${a.From}T${a.StartingTime}:00` : a.From;
+  const endDate = a.To ? `${a.To}T23:59:59` : void 0;
+  const posterUrl = a.PosterPath ? getPosterPublicUrl(a.PosterPath) : null;
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: a.Title,
+    startDate,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    organizer: { "@id": ATELIER_ID }
+  };
+  if (endDate) schema.endDate = endDate;
+  if (a.Description) schema.description = a.Description;
+  if (a.Place) schema.location = {
+    "@type": "Place",
+    name: a.Place
+  };
+  if (posterUrl) schema.image = posterUrl;
+  return schema;
+}
+var ATELIER_ID, ADDRESS, GEO, HOURS;
+var init_structuredData = __esm({
+  ".svelte-kit/output/server/chunks/structuredData.js"() {
+    init_dev();
+    init_routes();
+    init_supabaseClient();
+    ATELIER_ID = `${SITE_URL}/#atelier`;
+    ADDRESS = {
+      "@type": "PostalAddress",
+      streetAddress: "\u017Didovsk\xE1 412/9",
+      addressLocality: "Cheb",
+      postalCode: "350 02",
+      addressRegion: "Karlovarsk\xFD kraj",
+      addressCountry: "CZ"
+    };
+    GEO = {
+      "@type": "GeoCoordinates",
+      latitude: 50.0790883,
+      longitude: 12.3682393
+    };
+    HOURS = [
+      {
+        day: "Monday",
+        intervals: [["11:00", "13:00"], ["14:00", "17:00"]]
+      },
+      {
+        day: "Tuesday",
+        intervals: [["10:00", "12:00"], ["14:00", "17:00"]]
+      },
+      {
+        day: "Wednesday",
+        intervals: [["10:00", "12:00"], ["14:00", "16:00"]]
+      },
+      {
+        day: "Thursday",
+        intervals: [["10:00", "12:00"], ["14:00", "17:00"]]
+      },
+      {
+        day: "Friday",
+        intervals: [["11:00", "12:00"], ["14:00", "16:00"]]
+      }
+    ];
+  }
+});
+
+// .svelte-kit/output/server/chunks/navigation.js
+var init_navigation = __esm({
+  ".svelte-kit/output/server/chunks/navigation.js"() {
+    init_client();
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/_layout.svelte.js
+var layout_svelte_exports = {};
+__export(layout_svelte_exports, {
+  default: () => _layout
+});
+function MenuLinks($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let pathname;
+    let callback = fallback($$props["callback"], void 0);
+    $: pathname = store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).url.pathname;
+    $$renderer2.push(`<ul class="menuLinks svelte-uhi6x0"><li class="menuLinks__link svelte-uhi6x0"><a${attr("aria-current", pathname === "/o-nas" ? "page" : void 0)} href="/o-nas" class="svelte-uhi6x0">`);
+    Typography($$renderer2, {
+      variant: "nav",
+      element: "span",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.about)}`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----></a></li> <li class="menuLinks__link svelte-uhi6x0"><a${attr("aria-current", pathname === "/akce" ? "page" : void 0)} href="/akce" class="svelte-uhi6x0">`);
+    Typography($$renderer2, {
+      variant: "nav",
+      element: "span",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.events)}`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----></a></li> <li class="menuLinks__link svelte-uhi6x0"><a${attr("aria-current", pathname === "/galerie" ? "page" : void 0)} href="/galerie" class="svelte-uhi6x0">`);
+    Typography($$renderer2, {
+      variant: "nav",
+      element: "span",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.gallery)}`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----></a></li> <li class="menuLinks__link svelte-uhi6x0"><a${attr("aria-current", pathname === "/kontakt" ? "page" : void 0)} href="/kontakt" class="svelte-uhi6x0">`);
+    Typography($$renderer2, {
+      variant: "nav",
+      element: "span",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.contact)}`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----></a></li></ul>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+    bind_props($$props, { callback });
+  });
+}
+function LanguageSwitcher($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let variant = fallback($$props["variant"], "desktop");
+    $$renderer2.push(`<div${attr_class(`languageSwitcher languageSwitcher--${stringify2(variant)}`, "svelte-1njmqi3")} role="group"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.languageLabel)}><!--[-->`);
+    const each_array = ensure_array_like(availableLanguages);
+    for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+      let { code, label } = each_array[$$index];
+      $$renderer2.push(`<button type="button"${attr_class("languageSwitcher__btn svelte-1njmqi3", void 0, { "active": store_get($$store_subs ?? ($$store_subs = {}), "$language", language) === code })}${attr("aria-pressed", store_get($$store_subs ?? ($$store_subs = {}), "$language", language) === code)}>${escape_html(label)}</button>`);
+    }
+    $$renderer2.push(`<!--]--></div>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+    bind_props($$props, { variant });
+  });
+}
+function MobileMenu($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let menuOpened = false;
+    function toggleMenu() {
+      menuOpened = !menuOpened;
+    }
+    $$renderer2.push(`<button type="button"${attr_class("mobileMenu__button svelte-2pdber", void 0, { "menuOpened": menuOpened })}${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.openMenu)}${attr("aria-expanded", menuOpened)}><img${attr("src", menu_default)} alt="" class="svelte-2pdber"/></button> <div${attr_class("mobileMenu__tab svelte-2pdber", void 0, { "menuOpened": menuOpened })} role="dialog" aria-modal="true"${attr("aria-hidden", !menuOpened)}><div class="mobileMenu__tab__header svelte-2pdber"><a href="/"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.home)}><img class="mobileMenu__tab__logo svelte-2pdber" alt=""${attr("src", logo_default)}/></a> <button type="button" class="mobileMenu__tab__x svelte-2pdber"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.closeMenu)}><img${attr("src", x_default)} alt="" class="svelte-2pdber"/></button></div> <nav class="mobileMenu__tab__nav svelte-2pdber">`);
+    MenuLinks($$renderer2, { callback: toggleMenu });
+    $$renderer2.push(`<!----></nav> <div class="mobileMenu__tab__footer svelte-2pdber">`);
+    LanguageSwitcher($$renderer2, { variant: "mobile" });
+    $$renderer2.push(`<!----> <span>${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.street)}, ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.city)}</span> <a${attr("href", `mailto:${store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email}`)} class="svelte-2pdber">${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email)}</a></div></div>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+  });
+}
+function Menu($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    $$renderer2.push(`<nav class="menu svelte-1qo109d"><a class="menu__home" href="/"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).menu.homeAria)}><img class="menu__logo svelte-1qo109d" alt=""${attr("src", logo_default)}/></a> <div class="menu__desktop svelte-1qo109d">`);
+    MenuLinks($$renderer2, {});
+    $$renderer2.push(`<!----> `);
+    LanguageSwitcher($$renderer2, {});
+    $$renderer2.push(`<!----></div> <div class="menu__mobile svelte-1qo109d">`);
+    MobileMenu($$renderer2, {});
+    $$renderer2.push(`<!----></div></nav>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+  });
+}
+function OpeningHours($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let lines;
+    $: lines = [
+      {
+        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.monday,
+        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.mondayTime
+      },
+      {
+        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.tuesday,
+        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.tuesdayTime
+      },
+      {
+        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.wednesday,
+        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.wednesdayTime
+      },
+      {
+        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.thursday,
+        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.thursdayTime
+      },
+      {
+        day: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.friday,
+        time: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.fridayTime
+      }
+    ];
+    $$renderer2.push(`<div class="openingHours svelte-1qpxkpp"><!--[-->`);
+    const each_array = ensure_array_like(lines);
+    for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+      let { day, time } = each_array[$$index];
+      $$renderer2.push(`<div class="openingHours__line svelte-1qpxkpp">`);
+      Typography($$renderer2, {
+        variant: "subtitle",
+        element: "span",
+        children: ($$renderer3) => {
+          $$renderer3.push(`<!---->${escape_html(day)}`);
+        },
+        $$slots: { default: true }
+      });
+      $$renderer2.push(`<!----> `);
+      Typography($$renderer2, {
+        variant: "subtitle",
+        element: "span",
+        children: ($$renderer3) => {
+          $$renderer3.push(`<!---->${escape_html(time)}`);
+        },
+        $$slots: { default: true }
+      });
+      $$renderer2.push(`<!----></div>`);
+    }
+    $$renderer2.push(`<!--]--> `);
+    Typography($$renderer2, {
+      variant: "subtitle",
+      element: "p",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.openingHours.openingHoursNote)}`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----></div>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+  });
+}
+function Footer($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    const year = (/* @__PURE__ */ new Date()).getFullYear();
+    $$renderer2.push(`<footer class="footer svelte-1sr6y3t"><div class="footer__wrapper svelte-1sr6y3t"><div class="footer__title svelte-1sr6y3t"><img alt=""${attr("src", logo_default)} class="svelte-1sr6y3t"/> `);
+    Typography($$renderer2, {
+      variant: "h2",
+      element: "p",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).general.title)}`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----> `);
+    Typography($$renderer2, {
+      variant: "subtitle",
+      element: "p",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).footer.subtitle)}`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----></div> <div class="footer__info svelte-1sr6y3t"><div class="footer__info__address svelte-1sr6y3t">`);
+    Typography($$renderer2, {
+      variant: "subtitle",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.street)}`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----> `);
+    Typography($$renderer2, {
+      variant: "subtitle",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.address.city)}`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----></div> <div class="footer__info__contact svelte-1sr6y3t"><a${attr("href", `mailto:${store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email}`)} class="svelte-1sr6y3t">`);
+    Typography($$renderer2, {
+      variant: "subtitle",
+      children: ($$renderer3) => {
+        $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.email)}`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!----></a></div> `);
+    OpeningHours($$renderer2, {});
+    $$renderer2.push(`<!----> <div class="footer__contactButton svelte-1sr6y3t">`);
+    Button($$renderer2, {
+      bg: "dark",
+      href: "/kontakt",
+      text: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).contact.contactUs
+    });
+    $$renderer2.push(`<!----></div></div> <div class="footer__bottom svelte-1sr6y3t"><span>\xA9 ${escape_html(year)} \xB7 ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).general.title)}</span> <span>${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).footer.addressLine)}</span></div></div></footer>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+  });
+}
+function _layout($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let isAdmin2, localBusinessSchema;
+    const hideNav = !!store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).error;
+    onNavigate((navigation) => {
+      if (typeof document === "undefined" || !("startViewTransition" in document)) return;
+      return new Promise((resolve2) => {
+        document.startViewTransition(async () => {
+          resolve2();
+          await navigation.complete;
+        });
+      });
+    });
+    $: isAdmin2 = store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).url.pathname.startsWith("/admin");
+    $: localBusinessSchema = buildLocalBusinessSchema(store_get($$store_subs ?? ($$store_subs = {}), "$t", t));
+    if (!isAdmin2) {
+      $$renderer2.push("<!--[0-->");
+      StructuredData($$renderer2, { data: localBusinessSchema });
+    } else $$renderer2.push("<!--[-1-->");
+    $$renderer2.push(`<!--]--> `);
+    if (!hideNav) {
+      $$renderer2.push("<!--[0-->");
+      Menu($$renderer2, {});
+    } else $$renderer2.push("<!--[-1-->");
+    $$renderer2.push(`<!--]--> <main><!--[-->`);
+    slot($$renderer2, $$props, "default", {}, null);
+    $$renderer2.push(`<!--]--></main> `);
+    if (!hideNav) {
+      $$renderer2.push("<!--[0-->");
+      Footer($$renderer2, {});
+    } else $$renderer2.push("<!--[-1-->");
+    $$renderer2.push(`<!--]-->`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+  });
+}
+var logo_default, menu_default;
+var init_layout_svelte = __esm({
+  ".svelte-kit/output/server/entries/pages/_layout.svelte.js"() {
+    init_dev();
+    init_client();
+    init_stores();
+    init_Typography();
+    init_useTranslations();
+    init_x();
+    init_Button();
+    init_structuredData();
+    init_navigation();
+    logo_default = "/_app/immutable/assets/logo.CSzyB7Xy.webp";
+    menu_default = "data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23262626'%20stroke-width='1'%20stroke-linecap='round'%20stroke-linejoin='round'%20class='feather%20feather-menu'%3e%3cline%20x1='3'%20y1='12'%20x2='21'%20y2='12'%3e%3c/line%3e%3cline%20x1='3'%20y1='6'%20x2='21'%20y2='6'%3e%3c/line%3e%3cline%20x1='3'%20y1='18'%20x2='21'%20y2='18'%3e%3c/line%3e%3c/svg%3e";
+  }
+});
+
+// .svelte-kit/output/server/nodes/0.js
+var __exports = {};
+__export(__exports, {
+  component: () => component,
+  fonts: () => fonts,
+  imports: () => imports,
+  index: () => index,
+  stylesheets: () => stylesheets,
+  universal: () => layout_ts_exports,
+  universal_id: () => universal_id
+});
+var index, component_cache, component, universal_id, imports, stylesheets, fonts;
+var init__ = __esm({
+  ".svelte-kit/output/server/nodes/0.js"() {
+    init_layout_ts();
+    index = 0;
+    component = async () => component_cache ?? (component_cache = (await Promise.resolve().then(() => (init_layout_svelte(), layout_svelte_exports))).default);
+    universal_id = "src/routes/+layout.ts";
+    imports = ["_app/immutable/nodes/0.mV25SBr8.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/CcNEWuV0.js", "_app/immutable/chunks/DLD9WldM.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/DRxUQHmn.js", "_app/immutable/chunks/qFGIJzzy.js", "_app/immutable/chunks/Q3Qn-Idf.js", "_app/immutable/chunks/BQNHSFwo.js", "_app/immutable/chunks/Cuf-lMyo.js"];
+    stylesheets = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/0.tI8X5CtQ.css"];
+    fonts = ["_app/immutable/assets/Ogg-Bold.BpT5MOp0.ttf", "_app/immutable/assets/Ogg-Bold.BHYZ1nQZ.woff", "_app/immutable/assets/Ogg-Light.CJx7NBpI.ttf", "_app/immutable/assets/Ogg-Light.BmIZt__l.woff"];
+  }
+});
+
+// .svelte-kit/output/server/chunks/Section.js
+function Section($$renderer, $$props) {
+  let bg = fallback($$props["bg"], "dark");
+  $$renderer.push(`<section${attr_class(`section ${stringify2(bg === "light" ? "section--light" : "")}`, "svelte-1009h7f")}><!--[-->`);
+  slot($$renderer, $$props, "default", {}, null);
+  $$renderer.push(`<!--]--></section>`);
+  bind_props($$props, { bg });
+}
+var init_Section = __esm({
+  ".svelte-kit/output/server/chunks/Section.js"() {
+    init_dev();
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/_error.svelte.js
+var error_svelte_exports = {};
+__export(error_svelte_exports, {
+  default: () => _error
+});
+function _error($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    const dev = true;
+    const url = void 0;
+    head("1j96wlh", $$renderer2, ($$renderer3) => {
+      $$renderer3.title(($$renderer4) => {
+        $$renderer4.push(`<title>${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).error.pageTitle)}</title>`);
+      });
+    });
+    Section($$renderer2, {
+      children: ($$renderer3) => {
+        $$renderer3.push(`<div class="error svelte-1j96wlh">`);
+        Typography($$renderer3, {
+          variant: "h1",
+          children: ($$renderer4) => {
+            $$renderer4.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).error.somethingWentWrong)}`);
+          },
+          $$slots: { default: true }
+        });
+        $$renderer3.push(`<!----> `);
+        Typography($$renderer3, {
+          variant: "h2",
+          children: ($$renderer4) => {
+            $$renderer4.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).status)} - ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$page", page2)?.error?.message)}`);
+          },
+          $$slots: { default: true }
+        });
+        $$renderer3.push(`<!----> `);
+        Button($$renderer3, {
+          href: url,
+          text: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).error.goBack
+        });
+        $$renderer3.push(`<!----> `);
+        if (dev) {
+          $$renderer3.push("<!--[0-->");
+          $$renderer3.push(`<pre class="error__pre svelte-1j96wlh">${escape_html(JSON.stringify(store_get($$store_subs ?? ($$store_subs = {}), "$page", page2).error, null, 2))}</pre>`);
+        } else $$renderer3.push("<!--[-1-->");
+        $$renderer3.push(`<!--]--></div>`);
+      },
+      $$slots: { default: true }
+    });
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+  });
+}
+var init_error_svelte = __esm({
+  ".svelte-kit/output/server/entries/pages/_error.svelte.js"() {
+    init_dev();
+    init_stores();
+    init_Typography();
+    init_useTranslations();
+    init_Button();
+    init_Section();
+  }
+});
+
+// .svelte-kit/output/server/nodes/1.js
+var __exports2 = {};
+__export(__exports2, {
+  component: () => component2,
+  fonts: () => fonts2,
+  imports: () => imports2,
+  index: () => index2,
+  stylesheets: () => stylesheets2
+});
+var index2, component_cache2, component2, imports2, stylesheets2, fonts2;
+var init__2 = __esm({
+  ".svelte-kit/output/server/nodes/1.js"() {
+    index2 = 1;
+    component2 = async () => component_cache2 ?? (component_cache2 = (await Promise.resolve().then(() => (init_error_svelte(), error_svelte_exports))).default);
+    imports2 = ["_app/immutable/nodes/1.BLfBnpKG.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/DLD9WldM.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/5S7A8Mm5.js", "_app/immutable/chunks/Cuf-lMyo.js"];
+    stylesheets2 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/1.ClQFIecB.css"];
+    fonts2 = [];
+  }
+});
+
 // .svelte-kit/output/server/chunks/Input.js
 function Input($$renderer, $$props) {
   let type = fallback($$props["type"], "text");
@@ -27316,8 +27345,8 @@ var init_layout_svelte2 = __esm({
     init_stores();
     init_Typography();
     init_Button();
-    init_Section();
     init_supabaseClient();
+    init_Section();
     init_Input();
   }
 });
@@ -27343,7 +27372,7 @@ var init__3 = __esm({
       "ssr": false
     };
     universal_id2 = "src/routes/admin/+layout.ts";
-    imports3 = ["_app/immutable/nodes/2.C4F-Ldsu.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/CGfHbuzQ.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    imports3 = ["_app/immutable/nodes/2.BUBc-3zn.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/qFGIJzzy.js", "_app/immutable/chunks/DLD9WldM.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/5S7A8Mm5.js"];
     stylesheets3 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/2.eR4sTe5M.css"];
     fonts3 = [];
   }
@@ -27404,8 +27433,8 @@ var init_page_svelte = __esm({
     init_dev();
     init_Typography();
     init_Button();
-    init_Section();
     init_supabaseClient();
+    init_Section();
   }
 });
 
@@ -27423,7 +27452,7 @@ var init__4 = __esm({
   ".svelte-kit/output/server/nodes/4.js"() {
     index4 = 4;
     component4 = async () => component_cache4 ?? (component_cache4 = (await Promise.resolve().then(() => (init_page_svelte(), page_svelte_exports))).default);
-    imports4 = ["_app/immutable/nodes/4.C3BZS6RA.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    imports4 = ["_app/immutable/nodes/4.DCd2vTbB.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/qFGIJzzy.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/5S7A8Mm5.js"];
     stylesheets4 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/4.ex_2d-5Q.css"];
     fonts4 = [];
   }
@@ -27597,8 +27626,8 @@ var init_page_svelte2 = __esm({
     init_Typography();
     init_Button();
     init_navigation();
-    init_Section();
     init_supabaseClient();
+    init_Section();
   }
 });
 
@@ -27616,7 +27645,7 @@ var init__5 = __esm({
   ".svelte-kit/output/server/nodes/5.js"() {
     index5 = 5;
     component5 = async () => component_cache5 ?? (component_cache5 = (await Promise.resolve().then(() => (init_page_svelte2(), page_svelte_exports2))).default);
-    imports5 = ["_app/immutable/nodes/5.Be5DGhGQ.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/mLi7bn2o.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    imports5 = ["_app/immutable/nodes/5.DsGmsiY2.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/qFGIJzzy.js", "_app/immutable/chunks/CcNEWuV0.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/5S7A8Mm5.js"];
     stylesheets5 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/5.nFnmK94E.css"];
     fonts5 = [];
   }
@@ -27686,8 +27715,8 @@ var init_page_svelte3 = __esm({
     init_Typography();
     init_Button();
     init_navigation();
-    init_Section();
     init_supabaseClient();
+    init_Section();
     init_Input();
     init_posterUpload();
   }
@@ -27707,7 +27736,7 @@ var init__6 = __esm({
   ".svelte-kit/output/server/nodes/6.js"() {
     index6 = 6;
     component6 = async () => component_cache6 ?? (component_cache6 = (await Promise.resolve().then(() => (init_page_svelte3(), page_svelte_exports3))).default);
-    imports6 = ["_app/immutable/nodes/6.D5IQAVRZ.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/mLi7bn2o.js", "_app/immutable/chunks/CGfHbuzQ.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js", "_app/immutable/chunks/BGMO7txs.js"];
+    imports6 = ["_app/immutable/nodes/6.CLL7y2hB.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/qFGIJzzy.js", "_app/immutable/chunks/CcNEWuV0.js", "_app/immutable/chunks/DLD9WldM.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/5S7A8Mm5.js", "_app/immutable/chunks/Lk_vAGH7.js"];
     stylesheets6 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/6.C5hKHldS.css"];
     fonts6 = [];
   }
@@ -27834,8 +27863,8 @@ var init_page_svelte4 = __esm({
     init_Typography();
     init_Button();
     init_navigation();
-    init_Section();
     init_supabaseClient();
+    init_Section();
     init_Input();
   }
 });
@@ -27854,7 +27883,7 @@ var init__7 = __esm({
   ".svelte-kit/output/server/nodes/7.js"() {
     index7 = 7;
     component7 = async () => component_cache7 ?? (component_cache7 = (await Promise.resolve().then(() => (init_page_svelte4(), page_svelte_exports4))).default);
-    imports7 = ["_app/immutable/nodes/7.CGs4xMkp.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/mLi7bn2o.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js", "_app/immutable/chunks/BGMO7txs.js"];
+    imports7 = ["_app/immutable/nodes/7.bef49s_N.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/qFGIJzzy.js", "_app/immutable/chunks/CcNEWuV0.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/5S7A8Mm5.js", "_app/immutable/chunks/Lk_vAGH7.js"];
     stylesheets7 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/7.BVssn5KX.css"];
     fonts7 = [];
   }
@@ -28057,8 +28086,8 @@ var init_page_svelte5 = __esm({
     init_Typography();
     init_Button();
     init_navigation();
-    init_Section();
     init_supabaseClient();
+    init_Section();
   }
 });
 
@@ -28076,7 +28105,7 @@ var init__8 = __esm({
   ".svelte-kit/output/server/nodes/8.js"() {
     index8 = 8;
     component8 = async () => component_cache8 ?? (component_cache8 = (await Promise.resolve().then(() => (init_page_svelte5(), page_svelte_exports5))).default);
-    imports8 = ["_app/immutable/nodes/8.gsIh3Vif.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/mLi7bn2o.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    imports8 = ["_app/immutable/nodes/8.B71uW_xc.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/qFGIJzzy.js", "_app/immutable/chunks/CcNEWuV0.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/5S7A8Mm5.js"];
     stylesheets8 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/8.CWySFeC6.css"];
     fonts8 = [];
   }
@@ -28137,8 +28166,8 @@ var init_page_svelte6 = __esm({
     init_Typography();
     init_Button();
     init_navigation();
-    init_Section();
     init_supabaseClient();
+    init_Section();
     init_Input();
   }
 });
@@ -28157,7 +28186,7 @@ var init__9 = __esm({
   ".svelte-kit/output/server/nodes/9.js"() {
     index9 = 9;
     component9 = async () => component_cache9 ?? (component_cache9 = (await Promise.resolve().then(() => (init_page_svelte6(), page_svelte_exports6))).default);
-    imports9 = ["_app/immutable/nodes/9.QsLqqUdV.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/mLi7bn2o.js", "_app/immutable/chunks/CGfHbuzQ.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    imports9 = ["_app/immutable/nodes/9.DG7CnB5h.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/qFGIJzzy.js", "_app/immutable/chunks/CcNEWuV0.js", "_app/immutable/chunks/DLD9WldM.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/5S7A8Mm5.js"];
     stylesheets9 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/9.CLYKn3Jg.css"];
     fonts9 = [];
   }
@@ -28293,8 +28322,8 @@ var init_page_svelte7 = __esm({
     init_Typography();
     init_Button();
     init_navigation();
-    init_Section();
     init_supabaseClient();
+    init_Section();
     init_Input();
   }
 });
@@ -28313,7 +28342,7 @@ var init__10 = __esm({
   ".svelte-kit/output/server/nodes/10.js"() {
     index10 = 10;
     component10 = async () => component_cache10 ?? (component_cache10 = (await Promise.resolve().then(() => (init_page_svelte7(), page_svelte_exports7))).default);
-    imports10 = ["_app/immutable/nodes/10.WwGZA6mO.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/mLi7bn2o.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    imports10 = ["_app/immutable/nodes/10.vyE1nHon.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/qFGIJzzy.js", "_app/immutable/chunks/CcNEWuV0.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/5S7A8Mm5.js"];
     stylesheets10 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/10.DuBd1bwr.css"];
     fonts10 = [];
   }
@@ -28380,8 +28409,8 @@ var init_page_svelte8 = __esm({
     init_Typography();
     init_Button();
     init_navigation();
-    init_Section();
     init_supabaseClient();
+    init_Section();
     init_Input();
   }
 });
@@ -28400,9 +28429,470 @@ var init__11 = __esm({
   ".svelte-kit/output/server/nodes/11.js"() {
     index11 = 11;
     component11 = async () => component_cache11 ?? (component_cache11 = (await Promise.resolve().then(() => (init_page_svelte8(), page_svelte_exports8))).default);
-    imports11 = ["_app/immutable/nodes/11.BDOUC-GS.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/RiX4B-Cu.js", "_app/immutable/chunks/mLi7bn2o.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/DEXS9FLr.js"];
+    imports11 = ["_app/immutable/nodes/11.mqYJpAGu.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/qFGIJzzy.js", "_app/immutable/chunks/CcNEWuV0.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/5S7A8Mm5.js"];
     stylesheets11 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/11.D8smtPme.css"];
     fonts11 = [];
+  }
+});
+
+// .svelte-kit/output/server/chunks/eventsApi.js
+async function getEvents(filter, sort, paginationStart, paginationLimit) {
+  const supabase = getSupabase();
+  if (!supabase) return null;
+  const today = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+  const start = paginationStart || 0;
+  const limit = paginationLimit || 100;
+  const op = filter === "gte" ? "gte" : "lt";
+  const dateOr = `from_date.${op}.${today},to_date.${op}.${today}`;
+  const { data, error: error2, count } = await supabase.from("events").select("id,title,description,place,from_date,to_date,starting_time,poster_path", { count: "exact" }).eq("published", true).or(dateOr).order("from_date", {
+    ascending: sort === "asc",
+    nullsFirst: false
+  }).range(start, start + limit - 1);
+  if (error2) {
+    console.error(`Error fetching events: ${error2.message}`);
+    return null;
+  }
+  const total = count || 0;
+  const pageSize = limit;
+  const page3 = Math.floor(start / pageSize) + 1;
+  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  return {
+    events: (data || []).map((row) => ({
+      id: row.id,
+      attributes: {
+        Title: row.title ?? null,
+        Description: row.description ?? null,
+        Place: row.place ?? null,
+        From: row.from_date ?? null,
+        To: row.to_date ?? null,
+        StartingTime: row.starting_time ?? null,
+        PosterPath: row.poster_path ?? null
+      }
+    })),
+    meta: { pagination: {
+      page: page3,
+      pageSize,
+      pageCount,
+      total
+    } }
+  };
+}
+var init_eventsApi = __esm({
+  ".svelte-kit/output/server/chunks/eventsApi.js"() {
+    init_supabaseClient();
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/akce/_page.ts.js
+var page_ts_exports = {};
+__export(page_ts_exports, {
+  load: () => load,
+  prerender: () => prerender2
+});
+var prerender2, load;
+var init_page_ts = __esm({
+  ".svelte-kit/output/server/entries/pages/akce/_page.ts.js"() {
+    init_eventsApi();
+    prerender2 = false;
+    load = async () => {
+      const [upcomingResp, pastResp] = await Promise.all([getEvents("gte", "asc", 0, 100), getEvents("lt", "desc", 0, 10)]);
+      return {
+        upcomingEvents: upcomingResp?.events ?? [],
+        pastEvents: pastResp?.events ?? [],
+        pastTotalCount: pastResp?.meta.pagination.total ?? 0
+      };
+    };
+  }
+});
+
+// .svelte-kit/output/server/chunks/EventsContainer.js
+function PosterView($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let baseUrl;
+    let posterPath = $$props["posterPath"];
+    let close = $$props["close"];
+    let viewPoster = fallback($$props["viewPoster"], false);
+    const srcset = void 0;
+    $: baseUrl = getPosterPublicUrl(posterPath);
+    $$renderer2.push(`<div${attr_class(`posterView ${viewPoster ? "posterView--visible" : ""}`, "svelte-1mfbyqo")}><div${attr_class(`posterView__overlay ${viewPoster ? "posterView__overlay--visible" : ""}`, "svelte-1mfbyqo")} role="button" tabindex="-1"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.closePoster)}></div> <button class="posterView__close svelte-1mfbyqo"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.closePoster)}><img${attr("src", x_default)} alt="" class="svelte-1mfbyqo"/></button> <div${attr_class(`posterView__image ${viewPoster ? "posterView__image--visible" : ""}`, "svelte-1mfbyqo")}><img loading="lazy" decoding="async"${attr("src", baseUrl)}${attr("srcset", srcset)} sizes="(max-width: 768px) 90vw, 1000px"${attr("alt", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.viewPoster)} class="svelte-1mfbyqo"/></div></div>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+    bind_props($$props, {
+      posterPath,
+      close,
+      viewPoster
+    });
+  });
+}
+function Event($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let title, description, place, StartingTime, From, To, posterPath, fromDate, toDate, dayStart, dayEnd, monthShort, dateFromLong, dateToLong, timeFormatted, thumbnailUrl;
+    let event = $$props["event"];
+    let viewPoster = false;
+    const closePoster = () => {
+      viewPoster = false;
+    };
+    $: ({ Title: title = "", Description: description = "", Place: place = "", StartingTime, From, To, PosterPath: posterPath = null } = event?.attributes || {});
+    $: fromDate = From ? new Date(From) : null;
+    $: toDate = To ? new Date(To) : null;
+    $: dayStart = fromDate?.getDate() ?? null;
+    $: dayEnd = toDate?.getDate() ?? null;
+    $: monthShort = fromDate?.toLocaleDateString(store_get($$store_subs ?? ($$store_subs = {}), "$locale", locale), { month: "short" }).replace(".", "") || "";
+    $: dateFromLong = fromDate?.toLocaleDateString(store_get($$store_subs ?? ($$store_subs = {}), "$locale", locale), {
+      day: "numeric",
+      month: "long"
+    }) || null;
+    $: dateToLong = toDate?.toLocaleDateString(store_get($$store_subs ?? ($$store_subs = {}), "$locale", locale), {
+      day: "numeric",
+      month: "long"
+    }) || null;
+    $: timeFormatted = StartingTime?.slice(0, 5) || null;
+    $: thumbnailUrl = getPosterPublicUrl(posterPath) || null;
+    let $$settled = true;
+    let $$inner_renderer;
+    function $$render_inner($$renderer3) {
+      $$renderer3.push(`<article class="event fx-rise svelte-1fkyxfg"><div class="event__date svelte-1fkyxfg" aria-hidden="true"><span class="event__date__day svelte-1fkyxfg">${escape_html(dayStart)}`);
+      if (dayEnd && dayEnd !== dayStart) {
+        $$renderer3.push("<!--[0-->");
+        $$renderer3.push(`<span class="event__date__sep svelte-1fkyxfg">\u2013</span>${escape_html(dayEnd)}`);
+      } else $$renderer3.push("<!--[-1-->");
+      $$renderer3.push(`<!--]--></span> <span class="event__date__month svelte-1fkyxfg">${escape_html(monthShort)}</span></div> <div class="event__body svelte-1fkyxfg">`);
+      Typography($$renderer3, {
+        variant: "h3",
+        element: "h3",
+        children: ($$renderer4) => {
+          $$renderer4.push(`<!---->${escape_html(title)}`);
+        },
+        $$slots: { default: true }
+      });
+      $$renderer3.push(`<!----> <dl class="event__details svelte-1fkyxfg">`);
+      if (place) {
+        $$renderer3.push("<!--[0-->");
+        $$renderer3.push(`<div class="event__details__line svelte-1fkyxfg"><dt class="svelte-1fkyxfg">${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.fields.place)}</dt> <dd class="svelte-1fkyxfg">${escape_html(place)}</dd></div>`);
+      } else $$renderer3.push("<!--[-1-->");
+      $$renderer3.push(`<!--]--> <div class="event__details__line svelte-1fkyxfg"><dt class="svelte-1fkyxfg">${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.fields.when)}</dt> <dd class="svelte-1fkyxfg">${escape_html(dateFromLong)}${escape_html(dateToLong && dateFromLong !== dateToLong ? ` \u2013 ${dateToLong}` : "")}</dd></div> `);
+      if (timeFormatted) {
+        $$renderer3.push("<!--[0-->");
+        $$renderer3.push(`<div class="event__details__line svelte-1fkyxfg"><dt class="svelte-1fkyxfg">${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.fields.time)}</dt> <dd class="svelte-1fkyxfg">${escape_html(timeFormatted)}</dd></div>`);
+      } else $$renderer3.push("<!--[-1-->");
+      $$renderer3.push(`<!--]--></dl> `);
+      if (description) {
+        $$renderer3.push("<!--[0-->");
+        Typography($$renderer3, {
+          children: ($$renderer4) => {
+            $$renderer4.push(`<!---->${escape_html(description)}`);
+          },
+          $$slots: { default: true }
+        });
+      } else $$renderer3.push("<!--[-1-->");
+      $$renderer3.push(`<!--]--></div> `);
+      if (thumbnailUrl) {
+        $$renderer3.push("<!--[0-->");
+        $$renderer3.push(`<button type="button" class="event__poster svelte-1fkyxfg"${attr("aria-label", store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.viewPoster)}><img${attr("src", thumbnailUrl)}${attr("alt", `${stringify2(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.posterAltPrefix)} ${stringify2(title)}`)} loading="lazy" class="svelte-1fkyxfg"/></button>`);
+      } else $$renderer3.push("<!--[-1-->");
+      $$renderer3.push(`<!--]--></article> `);
+      if (posterPath) {
+        $$renderer3.push("<!--[0-->");
+        PosterView($$renderer3, {
+          posterPath,
+          close: closePoster,
+          get viewPoster() {
+            return viewPoster;
+          },
+          set viewPoster($$value) {
+            viewPoster = $$value;
+            $$settled = false;
+          }
+        });
+      } else $$renderer3.push("<!--[-1-->");
+      $$renderer3.push(`<!--]-->`);
+    }
+    do {
+      $$settled = true;
+      $$inner_renderer = $$renderer2.copy();
+      $$render_inner($$inner_renderer);
+    } while (!$$settled);
+    $$renderer2.subsume($$inner_renderer);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+    bind_props($$props, { event });
+  });
+}
+function EventsContainer($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let upcoming = fallback($$props["upcoming"], false);
+    let sortDesc = fallback($$props["sortDesc"], false);
+    let withPagination = fallback($$props["withPagination"], false);
+    let initialEvents = fallback($$props["initialEvents"], void 0);
+    let initialTotalCount = fallback($$props["initialTotalCount"], void 0);
+    let events = initialEvents ?? [];
+    let paginationLimit = withPagination ? 10 : 100;
+    let paginationStart = initialEvents ? initialEvents.length : 0;
+    let totalCount = initialTotalCount ?? 0;
+    const filter = upcoming ? "gte" : "lt";
+    const sort = sortDesc ? "desc" : "asc";
+    const loadEvents = async () => {
+      const response = await getEvents(filter, sort, paginationStart, paginationLimit);
+      if (response) {
+        events = [...events, ...response?.events];
+        if (withPagination && response?.meta) {
+          const { pageSize, total } = response?.meta?.pagination;
+          totalCount = total;
+          paginationStart += pageSize;
+        }
+      }
+    };
+    $$renderer2.push(`<div class="eventsContainer svelte-3lglk8">`);
+    if (events.length === 0) {
+      $$renderer2.push("<!--[0-->");
+      Typography($$renderer2, {
+        element: "span",
+        children: ($$renderer3) => {
+          $$renderer3.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.noEvents)}`);
+        },
+        $$slots: { default: true }
+      });
+    } else {
+      $$renderer2.push("<!--[-1-->");
+      $$renderer2.push(`<!--[-->`);
+      const each_array = ensure_array_like(events);
+      for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+        let event = each_array[$$index];
+        Event($$renderer2, { event });
+      }
+      $$renderer2.push(`<!--]-->`);
+    }
+    $$renderer2.push(`<!--]--> `);
+    if (withPagination && totalCount > paginationStart) {
+      $$renderer2.push("<!--[0-->");
+      Button($$renderer2, {
+        callback: loadEvents,
+        text: store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.loadMore
+      });
+    } else $$renderer2.push("<!--[-1-->");
+    $$renderer2.push(`<!--]--></div>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+    bind_props($$props, {
+      upcoming,
+      sortDesc,
+      withPagination,
+      initialEvents,
+      initialTotalCount
+    });
+  });
+}
+var init_EventsContainer = __esm({
+  ".svelte-kit/output/server/chunks/EventsContainer.js"() {
+    init_index_server();
+    init_dev();
+    init_Typography();
+    init_useTranslations();
+    init_x();
+    init_Button();
+    init_supabaseClient();
+    init_eventsApi();
+  }
+});
+
+// .svelte-kit/output/server/chunks/SEO.js
+function SEO($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let meta, canonical, ogImageUrl;
+    let pageKey = $$props["pageKey"];
+    let type = fallback($$props["type"], "website");
+    let image = fallback($$props["image"], void 0);
+    const DEFAULT_OG_IMAGE = "/og-image.jpg";
+    $: meta = store_get($$store_subs ?? ($$store_subs = {}), "$t", t).seo[pageKey];
+    $: canonical = SITE_URL + routes[pageKey];
+    $: ogImageUrl = (() => {
+      const src = image || DEFAULT_OG_IMAGE;
+      return /^https?:\/\//.test(src) ? src : SITE_URL + src;
+    })();
+    head("ie66xt", $$renderer2, ($$renderer3) => {
+      $$renderer3.title(($$renderer4) => {
+        $$renderer4.push(`<title>${escape_html(meta.title)}</title>`);
+      });
+      $$renderer3.push(`<meta name="description"${attr("content", meta.description)}/> <meta name="robots" content="index,follow"/> <link rel="canonical"${attr("href", canonical)}/> <meta property="og:type"${attr("content", type)}/> <meta property="og:site_name" content="Ateli\xE9r Tomandlov\xE1"/> <meta property="og:title"${attr("content", meta.title)}/> <meta property="og:description"${attr("content", meta.description)}/> <meta property="og:url"${attr("content", canonical)}/> <meta property="og:image"${attr("content", ogImageUrl)}/> <meta property="og:image:width" content="1200"/> <meta property="og:image:height" content="630"/> <meta property="og:image:alt"${attr("content", meta.title)}/> <meta property="og:locale"${attr("content", OG_LOCALE)}/> <meta name="twitter:card" content="summary_large_image"/> <meta name="twitter:title"${attr("content", meta.title)}/> <meta name="twitter:description"${attr("content", meta.description)}/> <meta name="twitter:image"${attr("content", ogImageUrl)}/>`);
+    });
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+    bind_props($$props, {
+      pageKey,
+      type,
+      image
+    });
+  });
+}
+var init_SEO = __esm({
+  ".svelte-kit/output/server/chunks/SEO.js"() {
+    init_dev();
+    init_routes();
+    init_useTranslations();
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/akce/_page.svelte.js
+var page_svelte_exports9 = {};
+__export(page_svelte_exports9, {
+  default: () => _page9
+});
+function BackgroundGraphic($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    let graphic = $$props["graphic"];
+    let top = $$props["top"];
+    let left = $$props["left"];
+    let width = $$props["width"];
+    let paralaxSpeed = fallback($$props["paralaxSpeed"], 4);
+    let layer = fallback($$props["layer"], "back");
+    const graphicSvg = (() => {
+      switch (graphic) {
+        case "accentLine":
+          return accent_line_default;
+        case "circle":
+          return circle_default;
+        case "halfCircle":
+          return half_circle_default;
+        case "hill":
+          return hill_default;
+        case "pencilBlue":
+          return pencil_blue_default;
+        case "splash":
+          return splash_default;
+        case "transparentCircle":
+          return transparent_circle_default;
+        case "yellowLine":
+          return yellow_line_default;
+      }
+    })();
+    $$renderer2.push(`<div class="backgroundGraphic svelte-1q270ck" aria-hidden="true"${attr_style(`top: ${top}%;
+    left: ${left}%;
+    width: ${width}vmax;
+    transform: translateY(-${0 / paralaxSpeed}px);
+    z-index: ${layer === "front" ? 10 : 0};
+  `)}><img${attr("src", graphicSvg)} alt="" class="svelte-1q270ck"/></div>`);
+    bind_props($$props, {
+      graphic,
+      top,
+      left,
+      width,
+      paralaxSpeed,
+      layer
+    });
+  });
+}
+function _page9($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let eventSchemas;
+    let data = $$props["data"];
+    $: eventSchemas = data.upcomingEvents.map(buildEventSchema).filter((s2) => s2 !== null);
+    SEO($$renderer2, { pageKey: "events" });
+    $$renderer2.push(`<!----> `);
+    if (eventSchemas.length > 0) {
+      $$renderer2.push("<!--[0-->");
+      StructuredData($$renderer2, { data: eventSchemas });
+    } else $$renderer2.push("<!--[-1-->");
+    $$renderer2.push(`<!--]--> `);
+    Section($$renderer2, {
+      children: ($$renderer3) => {
+        BackgroundGraphic($$renderer3, {
+          graphic: "splash",
+          top: 5,
+          left: 70,
+          width: 22,
+          paralaxSpeed: 4
+        });
+        $$renderer3.push(`<!----> `);
+        BackgroundGraphic($$renderer3, {
+          graphic: "hill",
+          top: 85,
+          left: -5,
+          width: 35,
+          paralaxSpeed: 3
+        });
+        $$renderer3.push(`<!----> <div class="eventsPage svelte-1aq6y4t"><div class="eventsPage__upcoming svelte-1aq6y4t"><span class="eventsPage__eyebrow svelte-1aq6y4t">\u2014\xA0 ${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.eyebrowAkce)}</span> `);
+        Typography($$renderer3, {
+          variant: "h1",
+          element: "h1",
+          children: ($$renderer4) => {
+            $$renderer4.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.upcomingEvents)}`);
+          },
+          $$slots: { default: true }
+        });
+        $$renderer3.push(`<!----> `);
+        EventsContainer($$renderer3, {
+          upcoming: true,
+          initialEvents: data.upcomingEvents
+        });
+        $$renderer3.push(`<!----></div> <div class="eventsPage__past svelte-1aq6y4t">`);
+        Typography($$renderer3, {
+          variant: "h2",
+          element: "h2",
+          children: ($$renderer4) => {
+            $$renderer4.push(`<!---->${escape_html(store_get($$store_subs ?? ($$store_subs = {}), "$t", t).events.pastEvents)}`);
+          },
+          $$slots: { default: true }
+        });
+        $$renderer3.push(`<!----> `);
+        EventsContainer($$renderer3, {
+          sortDesc: true,
+          withPagination: true,
+          initialEvents: data.pastEvents,
+          initialTotalCount: data.pastTotalCount
+        });
+        $$renderer3.push(`<!----></div></div>`);
+      },
+      $$slots: { default: true }
+    });
+    $$renderer2.push(`<!---->`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+    bind_props($$props, { data });
+  });
+}
+var accent_line_default, circle_default, half_circle_default, hill_default, pencil_blue_default, splash_default, transparent_circle_default, yellow_line_default;
+var init_page_svelte9 = __esm({
+  ".svelte-kit/output/server/entries/pages/akce/_page.svelte.js"() {
+    init_index_server();
+    init_dev();
+    init_Typography();
+    init_useTranslations();
+    init_structuredData();
+    init_Section();
+    init_EventsContainer();
+    init_SEO();
+    accent_line_default = "data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20800%20120'%20fill='none'%20aria-hidden='true'%3e%3cpath%20d='M4%2076%20C%2080%2018,%20170%2010,%20260%2052%20S%20440%20112,%20540%2070%20S%20740%2016,%20796%2060'%20stroke='%23b4452a'%20stroke-width='10'%20stroke-linecap='round'%20fill='none'%20/%3e%3c/svg%3e";
+    circle_default = "/_app/immutable/assets/circle.BX9BpDaw.svg";
+    half_circle_default = "/_app/immutable/assets/half-circle.BKz1PtkX.svg";
+    hill_default = "/_app/immutable/assets/hill.C5aMJPGV.svg";
+    pencil_blue_default = "/_app/immutable/assets/pencil-blue.CpyLY-_g.svg";
+    splash_default = "/_app/immutable/assets/splash.7LPT7JyJ.svg";
+    transparent_circle_default = "/_app/immutable/assets/transparent-circle.kCYl1Bw8.svg";
+    yellow_line_default = "/_app/immutable/assets/yellow-line.B2aje-kg.svg";
+  }
+});
+
+// .svelte-kit/output/server/nodes/12.js
+var __exports12 = {};
+__export(__exports12, {
+  component: () => component12,
+  fonts: () => fonts12,
+  imports: () => imports12,
+  index: () => index12,
+  stylesheets: () => stylesheets12,
+  universal: () => page_ts_exports,
+  universal_id: () => universal_id3
+});
+var index12, component_cache12, component12, universal_id3, imports12, stylesheets12, fonts12;
+var init__12 = __esm({
+  ".svelte-kit/output/server/nodes/12.js"() {
+    init_page_ts();
+    index12 = 12;
+    component12 = async () => component_cache12 ?? (component_cache12 = (await Promise.resolve().then(() => (init_page_svelte9(), page_svelte_exports9))).default);
+    universal_id3 = "src/routes/akce/+page.ts";
+    imports12 = ["_app/immutable/nodes/12.cWrVnBV7.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CNDVTjle.js", "_app/immutable/chunks/qFGIJzzy.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BQNHSFwo.js", "_app/immutable/chunks/Cuf-lMyo.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/BFHZay5a.js", "_app/immutable/chunks/Q3Qn-Idf.js", "_app/immutable/chunks/5S7A8Mm5.js", "_app/immutable/chunks/DRxUQHmn.js"];
+    stylesheets12 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/EventsContainer.D7sYuVQ_.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/12.But9PT5J.css"];
+    fonts12 = [];
   }
 });
 
@@ -28418,14 +28908,14 @@ var init_constants5 = __esm({
 var page_server_ts_exports = {};
 __export(page_server_ts_exports, {
   actions: () => actions,
-  prerender: () => prerender2
+  prerender: () => prerender3
 });
-var prerender2, actions;
+var prerender3, actions;
 var init_page_server_ts = __esm({
   ".svelte-kit/output/server/entries/pages/kontakt/_page.server.ts.js"() {
     init_constants5();
     init_exports();
-    prerender2 = false;
+    prerender3 = false;
     actions = { default: async ({ request }) => {
       const data = await request.formData();
       const name = data.get("name");
@@ -28489,47 +28979,10 @@ var init_page_server_ts = __esm({
   }
 });
 
-// .svelte-kit/output/server/chunks/SEO.js
-function SEO($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    var $$store_subs;
-    let meta, canonical, ogImageUrl;
-    let pageKey = $$props["pageKey"];
-    let type = fallback($$props["type"], "website");
-    let image = fallback($$props["image"], void 0);
-    const DEFAULT_OG_IMAGE = "/og-image.jpg";
-    $: meta = store_get($$store_subs ?? ($$store_subs = {}), "$t", t).seo[pageKey];
-    $: canonical = SITE_URL + routes[pageKey];
-    $: ogImageUrl = (() => {
-      const src = image || DEFAULT_OG_IMAGE;
-      return /^https?:\/\//.test(src) ? src : SITE_URL + src;
-    })();
-    head("ie66xt", $$renderer2, ($$renderer3) => {
-      $$renderer3.title(($$renderer4) => {
-        $$renderer4.push(`<title>${escape_html(meta.title)}</title>`);
-      });
-      $$renderer3.push(`<meta name="description"${attr("content", meta.description)}/> <meta name="robots" content="index,follow"/> <link rel="canonical"${attr("href", canonical)}/> <meta property="og:type"${attr("content", type)}/> <meta property="og:site_name" content="Ateli\xE9r Tomandlov\xE1"/> <meta property="og:title"${attr("content", meta.title)}/> <meta property="og:description"${attr("content", meta.description)}/> <meta property="og:url"${attr("content", canonical)}/> <meta property="og:image"${attr("content", ogImageUrl)}/> <meta property="og:image:width" content="1200"/> <meta property="og:image:height" content="630"/> <meta property="og:image:alt"${attr("content", meta.title)}/> <meta property="og:locale"${attr("content", OG_LOCALE)}/> <meta name="twitter:card" content="summary_large_image"/> <meta name="twitter:title"${attr("content", meta.title)}/> <meta name="twitter:description"${attr("content", meta.description)}/> <meta name="twitter:image"${attr("content", ogImageUrl)}/>`);
-    });
-    if ($$store_subs) unsubscribe_stores($$store_subs);
-    bind_props($$props, {
-      pageKey,
-      type,
-      image
-    });
-  });
-}
-var init_SEO = __esm({
-  ".svelte-kit/output/server/chunks/SEO.js"() {
-    init_dev();
-    init_routes();
-    init_useTranslations();
-  }
-});
-
 // .svelte-kit/output/server/entries/pages/kontakt/_page.svelte.js
-var page_svelte_exports9 = {};
-__export(page_svelte_exports9, {
-  default: () => _page9
+var page_svelte_exports10 = {};
+__export(page_svelte_exports10, {
+  default: () => _page10
 });
 function ContactForm($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
@@ -28632,7 +29085,7 @@ function ContactForm($$renderer, $$props) {
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
-function _page9($$renderer, $$props) {
+function _page10($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
     const MAP_SRC = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d352.6625814339094!2d12.368239292743317!3d50.079088328849885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a0f6985b12dd77%3A0xbb8a067ac58ed0fd!2zQXRlbGnDqXIgVG9tYW5kbG92w6E!5e0!3m2!1scs!2scz!4v1776887304590!5m2!1scs!2scz";
@@ -28687,7 +29140,7 @@ function _page9($$renderer, $$props) {
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
-var init_page_svelte9 = __esm({
+var init_page_svelte10 = __esm({
   ".svelte-kit/output/server/entries/pages/kontakt/_page.svelte.js"() {
     init_index_server();
     init_dev();
@@ -28703,26 +29156,26 @@ var init_page_svelte9 = __esm({
 });
 
 // .svelte-kit/output/server/nodes/14.js
-var __exports12 = {};
-__export(__exports12, {
-  component: () => component12,
-  fonts: () => fonts12,
-  imports: () => imports12,
-  index: () => index12,
+var __exports13 = {};
+__export(__exports13, {
+  component: () => component13,
+  fonts: () => fonts13,
+  imports: () => imports13,
+  index: () => index13,
   server: () => page_server_ts_exports,
   server_id: () => server_id,
-  stylesheets: () => stylesheets12
+  stylesheets: () => stylesheets13
 });
-var index12, component_cache12, component12, server_id, imports12, stylesheets12, fonts12;
-var init__12 = __esm({
+var index13, component_cache13, component13, server_id, imports13, stylesheets13, fonts13;
+var init__13 = __esm({
   ".svelte-kit/output/server/nodes/14.js"() {
     init_page_server_ts();
-    index12 = 14;
-    component12 = async () => component_cache12 ?? (component_cache12 = (await Promise.resolve().then(() => (init_page_svelte9(), page_svelte_exports9))).default);
+    index13 = 14;
+    component13 = async () => component_cache13 ?? (component_cache13 = (await Promise.resolve().then(() => (init_page_svelte10(), page_svelte_exports10))).default);
     server_id = "src/routes/kontakt/+page.server.ts";
-    imports12 = ["_app/immutable/nodes/14.DaO9VLka.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/mLi7bn2o.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/BFHZay5a.js", "_app/immutable/chunks/Q3Qn-Idf.js", "_app/immutable/chunks/Cuf-lMyo.js", "_app/immutable/chunks/DEXS9FLr.js"];
-    stylesheets12 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/14.DjfAKFnT.css"];
-    fonts12 = [];
+    imports13 = ["_app/immutable/nodes/14.D-AKnkNa.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/chunks/CcNEWuV0.js", "_app/immutable/chunks/BVEOzTpX.js", "_app/immutable/chunks/X4xm81YQ.js", "_app/immutable/chunks/CsayIwC0.js", "_app/immutable/chunks/BgPpdJyh.js", "_app/immutable/chunks/BFHZay5a.js", "_app/immutable/chunks/Q3Qn-Idf.js", "_app/immutable/chunks/Cuf-lMyo.js", "_app/immutable/chunks/5S7A8Mm5.js"];
+    stylesheets13 = ["_app/immutable/assets/Typography.CpDpgf46.css", "_app/immutable/assets/Button.D6-aP7MN.css", "_app/immutable/assets/Input.CRECXYY4.css", "_app/immutable/assets/Section.ZjT3hK3-.css", "_app/immutable/assets/14.DjfAKFnT.css"];
+    fonts13 = [];
   }
 });
 
@@ -28797,14 +29250,14 @@ async function deserialize_binary_form(request) {
   if (Number.isNaN(content_length)) throw deserialize_error("invalid Content-Length header");
   const reader = request.body.getReader();
   const chunks = [];
-  function get_chunk(index13) {
-    if (index13 in chunks) return chunks[index13];
+  function get_chunk(index14) {
+    if (index14 in chunks) return chunks[index14];
     let i = chunks.length;
-    while (i <= index13) {
+    while (i <= index14) {
       chunks[i] = reader.read().then((chunk) => chunk.value);
       i++;
     }
-    return chunks[index13];
+    return chunks[index14];
   }
   async function get_buffer(offset, length) {
     let start_chunk;
@@ -28860,11 +29313,11 @@ async function deserialize_binary_form(request) {
     files_start_offset = HEADER_BYTES + data_length + file_offsets_length;
   }
   const file_spans = [];
-  const [data, meta] = parse(text_decoder.decode(data_buffer), { File: ([name, type, size, last_modified, index13]) => {
-    if (typeof name !== "string" || typeof type !== "string" || typeof size !== "number" || typeof last_modified !== "number" || typeof index13 !== "number") throw deserialize_error("invalid file metadata");
-    let offset = file_offsets[index13];
+  const [data, meta] = parse(text_decoder.decode(data_buffer), { File: ([name, type, size, last_modified, index14]) => {
+    if (typeof name !== "string" || typeof type !== "string" || typeof size !== "number" || typeof last_modified !== "number" || typeof index14 !== "number") throw deserialize_error("invalid file metadata");
+    let offset = file_offsets[index14];
     if (offset === void 0) throw deserialize_error("duplicate file offset table index");
-    file_offsets[index13] = void 0;
+    file_offsets[index14] = void 0;
     offset += files_start_offset;
     if (offset + size > content_length) throw deserialize_error("file data overflow");
     file_spans.push({
@@ -29388,9 +29841,9 @@ async function render_endpoint(event, event_state, mod, state2) {
   let handler2 = mod[method] || mod.fallback;
   if (method === "HEAD" && !mod.HEAD && mod.GET) handler2 = mod.GET;
   if (!handler2) return method_not_allowed(mod, method);
-  const prerender3 = mod.prerender ?? state2.prerender_default;
-  if (prerender3 && (mod.POST || mod.PATCH || mod.PUT || mod.DELETE)) throw new Error("Cannot prerender endpoints that have mutative methods");
-  if (state2.prerendering && !state2.prerendering.inside_reroute && !prerender3) if (state2.depth > 0) throw new Error(`${event.route.id} is not prerenderable`);
+  const prerender4 = mod.prerender ?? state2.prerender_default;
+  if (prerender4 && (mod.POST || mod.PATCH || mod.PUT || mod.DELETE)) throw new Error("Cannot prerender endpoints that have mutative methods");
+  if (state2.prerendering && !state2.prerendering.inside_reroute && !prerender4) if (state2.depth > 0) throw new Error(`${event.route.id} is not prerenderable`);
   else return new Response(void 0, { status: 204 });
   try {
     const response = await with_request_store({
@@ -29398,14 +29851,14 @@ async function render_endpoint(event, event_state, mod, state2) {
       state: event_state
     }, () => handler2(event));
     if (!(response instanceof Response)) throw new Error(`Invalid response from route ${event.url.pathname}: handler should return a Response object`);
-    if (state2.prerendering && (!state2.prerendering.inside_reroute || prerender3)) {
+    if (state2.prerendering && (!state2.prerendering.inside_reroute || prerender4)) {
       const cloned = new Response(response.clone().body, {
         status: response.status,
         statusText: response.statusText,
         headers: new Headers(response.headers)
       });
-      cloned.headers.set("x-sveltekit-prerender", String(prerender3));
-      if (state2.prerendering.inside_reroute && prerender3) {
+      cloned.headers.set("x-sveltekit-prerender", String(prerender4));
+      if (state2.prerendering.inside_reroute && prerender4) {
         cloned.headers.set("x-sveltekit-routeid", encodeURI(event.route.id));
         state2.prerendering.dependencies.set(event.url.pathname, {
           response: cloned,
@@ -29613,7 +30066,7 @@ function server_data_serializer(event, event_state, options2) {
   let max_nodes = -1;
   const iterator = create_async_iterator();
   const global3 = get_global_name(options2);
-  function get_replacer(index13) {
+  function get_replacer(index14) {
     return function replacer(thing) {
       if (typeof thing?.then === "function") {
         const id = promise_id++;
@@ -29636,7 +30089,7 @@ function server_data_serializer(event, event_state, options2) {
               str = uneval([, error2], replacer);
             }
             return {
-              index: index13,
+              index: index14,
               str: `${global3}.resolve(${id}, ${str.includes("app.decode") ? `(app) => ${str}` : `() => ${str}`})`
             };
           }
@@ -29678,8 +30131,8 @@ function server_data_serializer(event, event_state, options2) {
 `;
       return {
         data: `[${compact(max_nodes > -1 ? strings.slice(0, max_nodes) : strings).join(",")}]`,
-        chunks: promise_id > 1 ? iterator.iterate(({ index: index13, str }) => {
-          if (max_nodes > -1 && index13 >= max_nodes) return "";
+        chunks: promise_id > 1 ? iterator.iterate(({ index: index14, str }) => {
+          if (max_nodes > -1 && index14 >= max_nodes) return "";
           return open + str + close;
         }) : null
       };
@@ -29758,9 +30211,9 @@ async function load_server_data({ event, event_state, state: state2, node, paren
     url: false,
     search_params: /* @__PURE__ */ new Set()
   };
-  const load = node.server.load;
+  const load2 = node.server.load;
   const slash = node.server.trailingSlash;
-  if (!load) return {
+  if (!load2) return {
     type: "data",
     data: null,
     uses,
@@ -29787,7 +30240,7 @@ async function load_server_data({ event, event_state, state: state2, node, paren
         return await with_request_store({
           event: traced_event,
           state: event_state
-        }, () => load.call(null, {
+        }, () => load2.call(null, {
           ...traced_event,
           fetch: (info, init2) => {
             new URL(info instanceof Request ? info.url : info, event.url);
@@ -29829,8 +30282,8 @@ async function load_server_data({ event, event_state, state: state2, node, paren
 }
 async function load_data({ event, event_state, fetched, node, parent, server_data_promise, state: state2, resolve_opts, csr }) {
   const server_data_node = await server_data_promise;
-  const load = node?.universal?.load;
-  if (!load) return server_data_node?.data ?? null;
+  const load2 = node?.universal?.load;
+  if (!load2) return server_data_node?.data ?? null;
   return await record_span({
     name: "sveltekit.load",
     attributes: {
@@ -29847,7 +30300,7 @@ async function load_data({ event, event_state, fetched, node, parent, server_dat
           ...event_state,
           is_in_universal_load: true
         }
-      }, () => load.call(null, {
+      }, () => load2.call(null, {
         url: event.url,
         params: event.params,
         data: server_data_node?.data ?? null,
@@ -30289,14 +30742,14 @@ var Csp = class {
   * @param {import('./types.js').CspConfig} config
   * @param {import('./types.js').CspOpts} opts
   */
-  constructor({ mode, directives, reportOnly }, { prerender: prerender3 }) {
+  constructor({ mode, directives, reportOnly }, { prerender: prerender4 }) {
     /** @readonly */
     __publicField(this, "nonce", generate_nonce());
     /** @type {CspProvider} */
     __publicField(this, "csp_provider");
     /** @type {CspReportOnlyProvider} */
     __publicField(this, "report_only_provider");
-    const use_hashes = mode === "hash" || mode === "auto" && prerender3;
+    const use_hashes = mode === "hash" || mode === "auto" && prerender4;
     this.csp_provider = new CspProvider(use_hashes, directives, this.nonce);
     this.report_only_provider = new CspReportOnlyProvider(use_hashes, reportOnly, this.nonce);
   }
@@ -30399,8 +30852,8 @@ async function render_response({ branch: branch2, fetched, options: options2, ma
   }
   const { client } = manifest2._;
   const modulepreloads = new Set(client.imports);
-  const stylesheets13 = new Set(client.stylesheets);
-  const fonts13 = new Set(client.fonts);
+  const stylesheets14 = new Set(client.stylesheets);
+  const fonts14 = new Set(client.fonts);
   const link_headers = /* @__PURE__ */ new Set();
   const inline_styles = /* @__PURE__ */ new Map();
   let rendered;
@@ -30490,8 +30943,8 @@ async function render_response({ branch: branch2, fetched, options: options2, ma
     }
     for (const { node } of branch2) {
       for (const url of node.imports) modulepreloads.add(url);
-      for (const url of node.stylesheets) stylesheets13.add(url);
-      for (const url of node.fonts) fonts13.add(url);
+      for (const url of node.stylesheets) stylesheets14.add(url);
+      for (const url of node.fonts) fonts14.add(url);
       if (node.inline_styles && !client.inline) Object.entries(await node.inline_styles()).forEach(([filename, css]) => {
         if (typeof css === "string") {
           inline_styles.set(filename, css);
@@ -30522,7 +30975,7 @@ async function render_response({ branch: branch2, fetched, options: options2, ma
     csp.add_style(style);
     head3.add_style(style, attributes2);
   }
-  for (const dep of stylesheets13) {
+  for (const dep of stylesheets14) {
     const path = prefixed(dep);
     const attributes2 = ['rel="stylesheet"'];
     if (inline_styles.has(dep)) attributes2.push("disabled", 'media="(max-width: 0)"');
@@ -30532,7 +30985,7 @@ async function render_response({ branch: branch2, fetched, options: options2, ma
     })) link_headers.add(`<${encodeURI(path)}>; rel="preload"; as="style"; nopush`);
     head3.add_stylesheet(path, attributes2);
   }
-  for (const dep of fonts13) {
+  for (const dep of fonts14) {
     const path = prefixed(dep);
     if (resolve_opts.preload({
       type: "font",
@@ -30638,14 +31091,14 @@ ${indent}}`);
     let serialized_prerender_data = "";
     if (remote.data) {
       const query = {};
-      const prerender3 = {};
+      const prerender4 = {};
       for (const [internals2, cache] of remote.data) {
         if (!internals2.id) continue;
         for (const key2 in cache) {
           const entry = cache[key2];
           if (!entry.serialize) continue;
           const remote_key = create_remote_key(internals2.id, key2);
-          const store = internals2.type === "prerender" ? prerender3 : query;
+          const store = internals2.type === "prerender" ? prerender4 : query;
           if (event_state.remote.refreshes?.[remote_key] !== void 0) store[remote_key] = await entry.data;
           else {
             const result = await Promise.race([Promise.resolve(entry.data).then((v) => ({
@@ -30673,7 +31126,7 @@ ${indent}}`);
       if (Object.keys(query).length > 0) serialized_query_data = `${global3}.query = ${uneval(query, replacer)};
 
 						`;
-      if (Object.keys(prerender3).length > 0) serialized_prerender_data = `${global3}.prerender = ${uneval(prerender3, replacer)};
+      if (Object.keys(prerender4).length > 0) serialized_prerender_data = `${global3}.prerender = ${uneval(prerender4, replacer)};
 
 						`;
     }
@@ -31267,8 +31720,8 @@ async function render_page(event, event_state, page3, options2, manifest2, state
         const status2 = get_status(err);
         const error2 = await handle_error_and_jsonify(event, event_state, options2, err);
         while (i--) if (page3.errors[i]) {
-          const index13 = page3.errors[i];
-          const node2 = await manifest2._.nodes[index13]();
+          const index14 = page3.errors[i];
+          const node2 = await manifest2._.nodes[index14]();
           let j = i;
           while (!branch2[j]) j -= 1;
           data_serializer.set_max_nodes(j + 1);
@@ -31891,19 +32344,19 @@ async function internal_respond(request, options2, manifest2, state2) {
       }
       if (state2.before_handle || state2.emulator?.platform) {
         let config = {};
-        let prerender3 = false;
+        let prerender4 = false;
         if (route.endpoint) {
           const node = await route.endpoint();
           config = node.config ?? config;
-          prerender3 = node.prerender ?? prerender3;
+          prerender4 = node.prerender ?? prerender4;
         } else if (page_nodes) {
           config = page_nodes.get_config() ?? config;
-          prerender3 = page_nodes.prerender();
+          prerender4 = page_nodes.prerender();
         }
-        if (state2.before_handle) state2.before_handle(event, config, prerender3);
+        if (state2.before_handle) state2.before_handle(event, config, prerender4);
         if (state2.emulator?.platform) event.platform = await state2.emulator.platform({
           config,
-          prerender: prerender3
+          prerender: prerender4
         });
       }
     }
@@ -32199,7 +32652,7 @@ var manifest = (() => {
     assets: /* @__PURE__ */ new Set(["favicon.png", "llms.txt", "manifest.json", "og-image.jpg", "robots.txt", "screenshot.png"]),
     mimeTypes: { ".png": "image/png", ".txt": "text/plain", ".json": "application/json", ".jpg": "image/jpeg", ".ttf": "font/ttf", ".woff": "font/woff" },
     _: {
-      client: { start: "_app/immutable/entry/start.BPfhG5ob.js", app: "_app/immutable/entry/app.fJ1H0uB3.js", imports: ["_app/immutable/entry/start.BPfhG5ob.js", "_app/immutable/chunks/pkIqWBDh.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/entry/app.fJ1H0uB3.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/B64WrFVF.js", "_app/immutable/chunks/BVEOzTpX.js"], stylesheets: [], fonts: [], uses_env_dynamic_public: false },
+      client: { start: "_app/immutable/entry/start.Dq8RLwNA.js", app: "_app/immutable/entry/app.JSGB1shv.js", imports: ["_app/immutable/entry/start.Dq8RLwNA.js", "_app/immutable/chunks/B4MIUW3M.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/BThA5bfN.js", "_app/immutable/entry/app.JSGB1shv.js", "_app/immutable/chunks/CvyUS8hg.js", "_app/immutable/chunks/B64WrFVF.js", "_app/immutable/chunks/BVEOzTpX.js"], stylesheets: [], fonts: [], uses_env_dynamic_public: false },
       nodes: [
         __memo(() => Promise.resolve().then(() => (init__(), __exports))),
         __memo(() => Promise.resolve().then(() => (init__2(), __exports2))),
@@ -32212,7 +32665,8 @@ var manifest = (() => {
         __memo(() => Promise.resolve().then(() => (init__9(), __exports9))),
         __memo(() => Promise.resolve().then(() => (init__10(), __exports10))),
         __memo(() => Promise.resolve().then(() => (init__11(), __exports11))),
-        __memo(() => Promise.resolve().then(() => (init__12(), __exports12)))
+        __memo(() => Promise.resolve().then(() => (init__12(), __exports12))),
+        __memo(() => Promise.resolve().then(() => (init__13(), __exports13)))
       ],
       remotes: {},
       routes: [
@@ -32273,14 +32727,21 @@ var manifest = (() => {
           endpoint: null
         },
         {
-          id: "/kontakt",
-          pattern: /^\/kontakt\/?$/,
+          id: "/akce",
+          pattern: /^\/akce\/?$/,
           params: [],
           page: { layouts: [0], errors: [1], leaf: 11 },
           endpoint: null
+        },
+        {
+          id: "/kontakt",
+          pattern: /^\/kontakt\/?$/,
+          params: [],
+          page: { layouts: [0], errors: [1], leaf: 12 },
+          endpoint: null
         }
       ],
-      prerendered_routes: /* @__PURE__ */ new Set(["/", "/akce", "/galerie", "/o-nas", "/sitemap.xml"]),
+      prerendered_routes: /* @__PURE__ */ new Set(["/", "/galerie", "/o-nas", "/sitemap.xml"]),
       matchers: async () => {
         return {};
       },

@@ -10,11 +10,20 @@
   export let upcoming: boolean = false;
   export let sortDesc: boolean = false;
   export let withPagination: boolean = false;
+  /**
+   * Optional initial events provided by a server-side `load` function. When
+   * supplied, the component skips the on-mount fetch and renders SSR-loaded
+   * events immediately. "Load more" still works — pagination resumes from
+   * `initialEvents.length`.
+   */
+  export let initialEvents: EventObject[] | undefined = undefined;
+  /** Total available rows (from the same SSR query). Required when paginating SSR-loaded data. */
+  export let initialTotalCount: number | undefined = undefined;
 
-  let events: EventObject[] = [];
-  let paginationStart = 0;
+  let events: EventObject[] = initialEvents ?? [];
   let paginationLimit = withPagination ? 10 : 100;
-  let totalCount: number;
+  let paginationStart = initialEvents ? initialEvents.length : 0;
+  let totalCount: number = initialTotalCount ?? 0;
   const filter = upcoming ? 'gte' : 'lt';
   const sort = sortDesc ? 'desc' : 'asc';
 
@@ -32,7 +41,14 @@
     }
   };
 
-  onMount(loadEvents);
+  onMount(() => {
+    // If the parent passed initial events from SSR, don't refetch on mount —
+    // the SSR data is already authoritative for the first page. Subsequent
+    // "Load more" clicks still go through `loadEvents`.
+    if (!initialEvents) {
+      loadEvents();
+    }
+  });
 </script>
 
 <div class="eventsContainer">

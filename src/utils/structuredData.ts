@@ -1,5 +1,7 @@
 import type { Translations } from './useTranslations';
 import { SITE_URL, HTML_LANG, routes } from './routes';
+import type { EventObject } from './eventsApi';
+import { getPosterPublicUrl } from '../lib/supabaseClient';
 
 /**
  * Schema.org JSON-LD builders.
@@ -90,6 +92,46 @@ export function buildLocalBusinessSchema(dict: Translations) {
       name: 'Czech Republic',
     },
   };
+}
+
+/**
+ * Single `Event` schema for one upcoming event. Returns `null` if the event
+ * lacks the minimum required fields (`name` and `startDate`) — those are the
+ * fields Google demands for event rich results.
+ *
+ * `startDate` is built from the `From` date plus optional `StartingTime`
+ * (HH:MM). No timezone is appended — Google tolerates timezone-less ISO 8601
+ * and will fall back to the country implied by the location.
+ */
+export function buildEventSchema(event: EventObject) {
+  const a = event.attributes;
+  if (!a.Title || !a.From) return null;
+
+  const startDate = a.StartingTime ? `${a.From}T${a.StartingTime}:00` : a.From;
+  const endDate = a.To ? `${a.To}T23:59:59` : undefined;
+  const posterUrl = a.PosterPath ? getPosterPublicUrl(a.PosterPath) : null;
+
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: a.Title,
+    startDate,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    organizer: { '@id': ATELIER_ID },
+  };
+
+  if (endDate) schema.endDate = endDate;
+  if (a.Description) schema.description = a.Description;
+  if (a.Place) {
+    schema.location = {
+      '@type': 'Place',
+      name: a.Place,
+    };
+  }
+  if (posterUrl) schema.image = posterUrl;
+
+  return schema;
 }
 
 /**
