@@ -17,5 +17,5 @@
 <svelte:element this={element} class="typography typography--{variant}"><slot /></svelte:element>
 
 <style lang="scss">
-  @import '../styles/typography.scss';
+  @use '../styles/typography.scss';
 </style>

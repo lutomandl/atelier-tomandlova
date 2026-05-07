@@ -20,5 +20,5 @@
 </Section>
 
 <style lang="scss">
-  @import '../styles/eventsSection.scss';
+  @use '../styles/eventsSection.scss';
 </style>

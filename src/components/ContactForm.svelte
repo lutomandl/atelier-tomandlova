@@ -157,5 +157,5 @@
 </form>
 
 <style lang="scss">
-  @import '../styles/contactForm.scss';
+  @use '../styles/contactForm.scss';
 </style>

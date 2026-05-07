@@ -22,5 +22,5 @@
 </div>
 
 <style lang="scss">
-  @import '../styles/openingHours.scss';
+  @use '../styles/openingHours.scss';
 </style>

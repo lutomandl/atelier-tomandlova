@@ -58,5 +58,5 @@
 </div>
 
 <style lang="scss">
-  @import '../styles/mobileMenu.scss';
+  @use '../styles/mobileMenu.scss';
 </style>

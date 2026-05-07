@@ -47,7 +47,7 @@
 </Section>
 
 <style lang="scss">
-  @import '../../styles/eventsPage.scss';
+  @use '../../styles/eventsPage.scss';
 
   .eventsPage__eyebrow {
     font-family: var(--font-sans);

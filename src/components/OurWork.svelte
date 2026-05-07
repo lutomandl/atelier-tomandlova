@@ -75,5 +75,5 @@
 </Section>
 
 <style lang="scss">
-  @import '../styles/ourWork.scss';
+  @use '../styles/ourWork.scss';
 </style>

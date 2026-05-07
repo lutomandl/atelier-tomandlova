@@ -51,5 +51,5 @@
 </div>
 
 <style lang="scss">
-  @import '../styles/input.scss';
+  @use '../styles/input.scss';
 </style>

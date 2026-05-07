@@ -40,5 +40,5 @@
 </header>
 
 <style lang="scss">
-  @import '../styles/header.scss';
+  @use '../styles/header.scss';
 </style>

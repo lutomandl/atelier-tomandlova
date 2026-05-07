@@ -7,5 +7,5 @@
 </section>
 
 <style lang="scss">
-  @import '../styles/section.scss';
+  @use '../styles/section.scss';
 </style>

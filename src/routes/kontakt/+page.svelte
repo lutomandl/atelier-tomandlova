@@ -50,7 +50,7 @@
 </div>
 
 <style lang="scss">
-  @import '../../styles/contact.scss';
+  @use '../../styles/contact.scss';
 
   .contactPage__eyebrow {
     font-family: var(--font-sans);

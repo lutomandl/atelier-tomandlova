@@ -46,5 +46,5 @@
 </div>
 
 <style lang="scss">
-  @import 'src/styles/posterView.scss';
+  @use '../styles/posterView.scss';
 </style>

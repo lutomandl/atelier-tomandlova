@@ -40,5 +40,5 @@
 </footer>
 
 <style lang="scss">
-  @import '../styles/footer.scss';
+  @use '../styles/footer.scss';
 </style>

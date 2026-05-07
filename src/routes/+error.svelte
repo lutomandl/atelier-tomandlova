@@ -25,5 +25,5 @@
 </Section>
 
 <style lang="scss">
-  @import '../styles/error.scss';
+  @use '../styles/error.scss';
 </style>

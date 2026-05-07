@@ -87,5 +87,5 @@
 {/if}
 
 <style lang="scss">
-  @import 'src/styles/event.scss';
+  @use '../styles/event.scss';
 </style>

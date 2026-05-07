@@ -65,5 +65,5 @@
 </div>
 
 <style lang="scss">
-  @import '../styles/eventsContainer.scss';
+  @use '../styles/eventsContainer.scss';
 </style>

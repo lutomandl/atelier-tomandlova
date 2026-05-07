@@ -20,5 +20,5 @@
 </nav>
 
 <style lang="scss">
-  @import '../styles/menu.scss';
+  @use '../styles/menu.scss';
 </style>

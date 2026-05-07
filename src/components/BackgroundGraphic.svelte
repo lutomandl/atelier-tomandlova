@@ -73,5 +73,5 @@
 </div>
 
 <style lang="scss">
-  @import '../styles/backgroundGraphic.scss';
+  @use '../styles/backgroundGraphic.scss';
 </style>

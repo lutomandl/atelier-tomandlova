@@ -23,5 +23,5 @@
 </div>
 
 <style lang="scss">
-  @import '../styles/languageSwitcher.scss';
+  @use '../styles/languageSwitcher.scss';
 </style>

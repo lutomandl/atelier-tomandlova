@@ -23,5 +23,5 @@
 </svelte:element>
 
 <style lang="scss">
-  @import '../styles/button.scss';
+  @use '../styles/button.scss';
 </style>

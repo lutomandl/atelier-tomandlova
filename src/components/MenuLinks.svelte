@@ -40,5 +40,5 @@
 </ul>
 
 <style lang="scss">
-  @import '../styles/menuLinks.scss';
+  @use '../styles/menuLinks.scss';
 </style>
